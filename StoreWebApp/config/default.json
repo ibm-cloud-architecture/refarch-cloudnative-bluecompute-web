@@ -13,7 +13,7 @@
     "inventory": {
       "base_path": "/api",
       "require": [
-          "client_id",
+          "client_id"
 //        "client_secret",
 //        "oauth"
       ]

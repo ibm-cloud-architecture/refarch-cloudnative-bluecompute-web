@@ -68,7 +68,7 @@ function setGetItemOptions(req, res) {
     org: _apiServerOrg,
     cat: _apiServerCatalog,
     api: _apis.inventory.base_path,
-    operation: "reviews?filter={\"where\":{\"itemId\":" + params.id + "}}"
+    operation: "reviews/list?itemId=" + params.id
   });
 
 
@@ -132,7 +132,7 @@ function setNewReviewOptions(req, res) {
     org: _apiServerOrg,
     cat: _apiServerCatalog,
     api: _apis.inventory.base_path,
-    operation: "reviews?filter={\"where\":{\"itemId\":" + params.id + "}}"
+    operation: "reviews/list?itemId=" + params.id
   });
 
 
