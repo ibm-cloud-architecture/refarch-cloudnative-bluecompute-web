@@ -1,0 +1,27 @@
+{
+  "soapenv:Envelope": {
+    "@xmlns": {
+      "ser": "http://services.think.ibm",
+      "soapenv": "http://schemas.xmlsoap.org/soap/envelope/"
+    },
+    "soapenv:Body": {
+      "@xmlns": {
+        "ser": "http://services.think.ibm",
+        "soapenv": "http://schemas.xmlsoap.org/soap/envelope/"
+      },
+      "ser:financingResult": {
+        "@xmlns": {
+          "ser": "http://services.think.ibm",
+          "soapenv": "http://schemas.xmlsoap.org/soap/envelope/"
+        },
+        "ser:paymentAmount": {
+          "@xmlns": {
+            "ser": "http://services.think.ibm",
+            "soapenv": "http://schemas.xmlsoap.org/soap/envelope/"
+          },
+          "$": "390.25"
+        }
+      }
+    }
+  }
+}

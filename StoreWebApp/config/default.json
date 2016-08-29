@@ -1,0 +1,48 @@
+{
+  "Application": {
+    "client_id": "3f1b4cc8-78dc-450e-9461-edf377105c7a",
+    "client_secret": ""
+  },
+  "API-Server": {
+    "protocol": "https",
+    "host": "api.us.apiconnect.ibmcloud.com",
+    "org": "centusibmcom-cloudnative-dev",
+    "catalog": "bluecompute"
+  },
+  "APIs": {
+    "inventory": {
+      "base_path": "/api",
+      "require": [
+          "client_id",
+//        "client_secret",
+//        "oauth"
+      ]
+    },
+    "financing": {
+      "base_path": "/financing",
+      "require": [
+        "client_id"
+      ]
+    },
+    "logistics": {
+      "base_path": "/logistics",
+      "require": [
+        "client_id"
+      ]
+    },
+    "oauth20": {
+      "base_path": "/oauth20",
+      "paths": {
+        "authz": "/authorize",
+        "token": "/token"
+      },
+      "grant_types": [
+        "password"
+      ],
+      "scopes": [
+        "inventory"
+      ],
+      "redirect_url": "http://localhost"
+    }
+  }
+}

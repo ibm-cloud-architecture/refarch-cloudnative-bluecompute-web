@@ -1,0 +1,56 @@
+extends inventory-layout
+
+block content
+  div.header
+    div.home-menu.pure-menu.pure-menu-horizontal.pure-menu-fixed
+      a(href="/").pure-menu-heading= title
+      ul.pure-menu-list
+        li.pure-menu-item
+          a(href="/").pure-menu-link Home
+        li.pure-menu-item.pure-menu-selected
+          a(href="#").pure-menu-link Inventory
+        //li.pure-menu-item
+        //  a(href="/login").pure-menu-link Log in
+  div.content-wrapper
+    //div.content.sort-bar
+    //  div.pure-g
+    //    div.pure-u-1
+    //      form.pure-form.pure-form-aligned
+    //        div.pure-control-group
+    //          label(for="filter").sort-label Sort by:
+    //          select(id="filter" name="filter").pure-input
+    //            option(value="filter[order]=name%20ASC") Name
+    //            option(value="filter[order]=price%20ASC") Price: lowest first
+    //            option(value="filter[order]=price%20DESC") Price: highest first
+    //            option(value="filter[order]=rating%20ASC") Rating: lowest first
+    //            option(value="filter[order]=rating%20DESC") Rating: highest first
+    div.content
+      div.pure-g
+        each item in item_array
+          div.pure-u-1.pure-u-md-1-3.pure-u-lg-1-5
+            div.item-box
+              a(href= "/item/" + item.id).pure-menu-link.item-link
+                div.pure-g
+                  div.pure-u-1
+                    img(src= base_url + item.img).pure-img
+                  div.pure-u-1
+                    div.item-section= item.name
+                  div.pure-u-1-2
+                    div.item-section= '$' + item.price
+                  div.pure-u-1-2
+                    div.item-section.item-rating
+                      - var rating = (item.rating) ? item.rating : 0;
+                      - var rounded_rating = Math.round(rating*2)/2;
+                      - var full_stars = Math.floor(rounded_rating);
+                      - var half_star = (rounded_rating % 1 != 0);
+                      - var o_stars = 5 - Math.ceil(rounded_rating);
+                      - for (var i=0; i<full_stars; i++) {
+                      i.fa.fa-star.star-style
+                      - };
+                      - if (half_star) {
+                      i.fa.fa-star-half-o.star-style
+                      - };
+                      - for (var i=0; i<o_stars; i++) {
+                      i.fa.fa-star-o.star-style
+                      - };
+    div.footer.l-box.is-center View the source of this layout to learn more. Made with love by the YUI Team.
