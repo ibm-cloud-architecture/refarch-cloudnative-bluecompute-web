@@ -16,7 +16,7 @@ Note this section requires an Apple computer running MacOS with Apple Xcode IDE 
   - host  
   - org  
 
-  ![Web App Configuration](static/imgs/bluemix_19.png?raw=true)
+  ![Web App Configuration](static/imgs/bluemix_23.png?raw=true)
 
 3. Run the Web application
 
@@ -32,7 +32,7 @@ Note this section requires an Apple computer running MacOS with Apple Xcode IDE 
 
    [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-   Clik the "Browser ITEM INVENTORY" will load the list of items:
+   Click the "Browser ITEM INVENTORY" will load the list of items:
 
   ![BlueCompute List](static/imgs/bluemix_24.png?raw=true)
 
