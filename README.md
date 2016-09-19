@@ -6,9 +6,7 @@ https://github.com/ibm-cloud-architecture/refarch-cloudnative*
 The BlueCompute Web application is built to demonstrate how to access the omnichannel APIs hosted on IBM Cloud. The application application provides the basic function to allow user to browse the Inventory items. It is built as a Node.js application that uses Express framework and Jade templates.
 
 
-## Run the iOS application locally
-
-Note this section requires an Apple computer running MacOS with Apple Xcode IDE installed.
+## Run the Web application locally
 
 1. Navigate to the web app folder `StoreWebApp` in the git repository.
 2. Edit the config/default.json file to configure the API endpoints. You need to update following fields:
