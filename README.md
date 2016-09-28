@@ -64,8 +64,10 @@ You need to have Bluemix command line (bx or cf) installed, as well as Node.js r
 - Deploy the application:
 
   `$ cd StoreWebApp`  
-  `$ cf login`
-  `$ cf push`   
+  `$ cf login`  
+  `$ cf push -n {your_app_host_name} -d {your_domain_name}`   
+
+Replace the {your_app_host_name} with your unique application name on Bluemix. And specify your domain name. For example `cf push -n bluecompute-web-qa -d mybluemix.net`
 
 - Validate the application:
 
