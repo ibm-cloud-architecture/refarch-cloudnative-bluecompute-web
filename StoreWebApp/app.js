@@ -5,15 +5,23 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
+var passport = require('passport');
 var index = require('./routes/index');
 var inventory = require('./routes/inventory');
 var item = require('./routes/item');
 var login = require('./routes/login');
 var logistics = require('./routes/logistics');
 var financing = require('./routes/financing');
+var MCAWebSiteStrategy = require('bms-mca-token-validation-strategy').MCAWebSiteStrategy;
+
+var options = {
+    callbackUrl: "https://jkwong-bluecompute-webapp-qa.mybluemix.net/authenticated"
+};
+
+passport.use(new MCAWebSiteStrategy(options));
 
 var app = express();
+app.use(passport.initialize());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,6 +45,7 @@ app.use('/item', item);
 app.use('/login', login);
 app.use('/logistics', logistics);
 app.use('/financing', financing);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
