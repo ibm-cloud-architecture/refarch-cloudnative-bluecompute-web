@@ -91,6 +91,10 @@
   padding-right: 4em;
 }
 
+.reviewer-name {
+  color: black;
+}
+
 .review-content {
   margin-top: 1em;
   margin-bottom: 1em;

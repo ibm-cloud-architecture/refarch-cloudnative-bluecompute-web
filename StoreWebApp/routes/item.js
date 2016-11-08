@@ -71,9 +71,6 @@ function setGetItemOptions(req, res) {
     operation: "reviews/list?itemId=" + params.id
   });
 
-
-  //var reviews_url = "https://api.us.apiconnect.ibmcloud.com/aseriyusibmcom-redbooks/inventory-catalog/api/items/" + params.id + "/reviews"
-
   var getItemReviews_options = {
     method: 'GET',
     url: reviews_url,
@@ -134,10 +131,6 @@ function setNewReviewOptions(req, res) {
     api: _apis.inventory.base_path,
     operation: "reviews/list?itemId=" + params.id
   });
-
-
-  //var reviews_url = "https://api.us.apiconnect.ibmcloud.com/aseriyusibmcom-redbooks/inventory-catalog/api/items/" + params.id + "/reviews"
-
 
   var options = {
     method: 'POST',
@@ -231,6 +224,8 @@ function renderPage(function_input) {
   var reviews = function_input.data.reviews;
   var res = function_input.res;
 
+console.log("Review Data: " + JSON.stringify(reviews));
+
  var imageBaseUrl = api_url.stringify({
     protocol: _apiServer.protocol,
     host: _apiServer.host,
@@ -242,7 +237,7 @@ function renderPage(function_input) {
 
   // Render the page with the results of the API call
   res.render('item', {
-    title: 'ThinkIBM Consumer',
+    title: 'IBM Cloud Architecture',
     item: item,
     reviews: reviews,
     base_url: imageBaseUrl,
