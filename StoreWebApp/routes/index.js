@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res) {
-  res.render('index', {title: 'ThinkIBM Consumer'});
+  res.render('index', {title: 'IBM Cloud Architecture'});
 });
 
 module.exports = router;

@@ -1,0 +1,59 @@
+extends item-layout
+block content
+  div.header
+    div.home-menu.pure-menu.pure-menu-horizontal.pure-menu-fixed
+      a(href="/").pure-menu-heading= title
+      ul.pure-menu-list
+        li.pure-menu-item
+          a(href="/").pure-menu-link Home
+        li.pure-menu-item
+          a(href="/inventory").pure-menu-link Inventory
+  div.content-wrapper
+    div.content.item-content
+      div.pure-g
+        div.pure-u-1-5.item-top-boxes
+          img(src= base_url + item.img).pure-img
+        div.pure-u-3-5.item-top-boxes
+          div.pure-u-1.item-info-box.section-heading.item-name-box
+            p= item.name
+        //  div.pure-u-1.item-info-box.item-star-box
+        //    +stars
+          div.pure-u-1.item-info-box.item-price-box#item-price
+            p= '$' + item.price
+          div.pure-u-1.item-info-box.get-financing-box#financing-section
+            a(href="#").get-financing-link#financing-link Calculate Monthly Payment
+        div.pure-u-1-5.item-top-boxes
+// Replace the Shipping Calculation with reviews
+
+
+
+//          div.pure-u-1.section-heading
+//            p Calculate Shipping
+//          div.pure-u-1#shipping-info-section
+//            div.pure-u-1.calc-form-item
+//              input(id="cs_zip_code" name="cs_zip_code" type="text" maxlength="5" placeholder="Zip Code").zip-input
+//            div.pure-u-1.calc-form-item
+//              button(id="cs_submit").pure-button.pure-button-primary Calculate
+        div.pure-u-1
+          hr
+        div.pure-u-1
+          div.pure-u-1.section-heading
+            p Product Description
+          div.pure-u-1.item-description-box
+            p= item.description
+    div.footer.l-box.is-center View the source of this layout to learn more. Made with love by the YUI Team.
+//mixin stars
+//  - var rating = (item.rating) ? item.rating : 0;
+//  - var rounded_rating = Math.round(rating*2)/2;
+//  - var full_stars = Math.floor(rounded_rating);
+//  - var half_star = (rounded_rating % 1 != 0);
+//  - var o_stars = 5 - Math.ceil(rounded_rating);
+//  - for (var i=0; i<full_stars; i++) {
+//  i.fa.fa-star.star-style
+//  - };
+//  - if (half_star) {
+//  i.fa.fa-star-half-o.star-style
+//  - };
+//  - for (var i=0; i<o_stars; i++) {
+//  i.fa.fa-star-o.star-style
+//  - };
