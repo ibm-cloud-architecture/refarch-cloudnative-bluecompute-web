@@ -15,7 +15,7 @@ describe('BlueCompute Web App Test Suites', function() {
 
 	//console.log(process.env);
 	//console.log("################");
-	//console.log(appEnv);
+	console.log("App Name" + appEnv.name);
 	var serviceBaseUrl = "http://localhost:8000";
 	if (process.env.test_env == 'cloud') {
 		serviceBaseUrl = 'http://' + appEnv.name + '.mybluemix.net';
