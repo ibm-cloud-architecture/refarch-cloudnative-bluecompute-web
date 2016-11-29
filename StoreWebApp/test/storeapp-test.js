@@ -4,18 +4,16 @@ const request = require('request');
 
 var cfenv = require('cfenv');
 // get the app environment from Cloud Foundry
-//var appEnv = cfenv.getAppEnv();
-//console.log(appEnv);
-//console.log(process.env);
-//console.log("################");
+var appEnv = cfenv.getAppEnv();
 
 describe('BlueCompute Web App Test Suites', function() {
 
-	//var serviceBaseUrl = "http://localhost:8000";
-	var serviceBaseUrl = "https://bluecompute-web-gangchen-dev.mybluemix.net";
+	var serviceBaseUrl = "http://localhost:8000";
+	//var serviceBaseUrl = "https://bluecompute-web-gangchen-dev.mybluemix.net";
 	if (process.env.test_env == 'cloud') {
 		//console.log("App Name" + appEnv.name);
-		serviceBaseUrl = 'http://' + process.env.appname + '.mybluemix.net';
+		//serviceBaseUrl = 'http://' + process.env.appname + '.mybluemix.net';
+		serviceBaseUrl = 'http://' + appEnv.name + '.mybluemix.net';
 	}
 
 	// test the home page loading
