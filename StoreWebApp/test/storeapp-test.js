@@ -1,22 +1,17 @@
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-//const chaiJquery  = require('chai-jquery')
 const request = require('request');
-
-// Register the plugin
-//chai.use(chaiJquery);
 
 var cfenv = require('cfenv');
 // get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
-console.log(appEnv);
+//var appEnv = cfenv.getAppEnv();
+//console.log(appEnv);
 
 describe('BlueCompute Web App Test Suites', function() {
 
 
 	console.log(process.env);
 	console.log("################");
-	console.log("App Name" + appEnv.name);
 	//var serviceBaseUrl = "http://localhost:8000";
 	var serviceBaseUrl = "https://bluecompute-web-gangchen-dev.mybluemix.net";
 	if (process.env.test_env == 'cloud') {
