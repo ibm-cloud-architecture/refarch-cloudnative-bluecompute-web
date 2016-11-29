@@ -8,7 +8,7 @@ const request = require('request');
 
 var cfenv = require('cfenv');
 // get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
+//var appEnv = cfenv.getAppEnv();
 
 describe('BlueCompute Web App Test Suites', function() {
 
