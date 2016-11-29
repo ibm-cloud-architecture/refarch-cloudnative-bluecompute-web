@@ -1,12 +1,12 @@
 {
   "Application": {
-    "client_id": "88423212-e956-4e1f-b971-5c5f4cc77200",
+    "client_id": "3f1b4cc8-78dc-450e-9461-edf377105c7a",
     "client_secret": ""
   },
   "API-Server": {
     "protocol": "https",
     "host": "api.us.apiconnect.ibmcloud.com",
-    "org": "centusibmcom-cloudnative-qa",
+    "org": "centusibmcom-cloudnative-dev",
     "catalog": "bluecompute"
   },
   "APIs": {
