@@ -6,8 +6,8 @@ var cfenv = require('cfenv');
 // get the app environment from Cloud Foundry
 //var appEnv = cfenv.getAppEnv();
 //console.log(appEnv);
-console.log(process.env);
-console.log("################");
+//console.log(process.env);
+//console.log("################");
 
 describe('BlueCompute Web App Test Suites', function() {
 
@@ -15,7 +15,7 @@ describe('BlueCompute Web App Test Suites', function() {
 	var serviceBaseUrl = "https://bluecompute-web-gangchen-dev.mybluemix.net";
 	if (process.env.test_env == 'cloud') {
 		//console.log("App Name" + appEnv.name);
-		//serviceBaseUrl = 'http://' + appEnv.name + '.mybluemix.net';
+		serviceBaseUrl = 'http://' + process.env.appname + '.mybluemix.net';
 	}
 
 	// test the home page loading
