@@ -57,6 +57,9 @@ stages:
   - name: appname
     value: bluecompute-web-gangchen-dev
     type: text
+  - name: domainname
+    value: mybluemix.net
+    type: text
   jobs:
   - name: Test
     type: tester
