@@ -13,8 +13,11 @@ The BlueCompute Web application is built to demonstrate how to access the omnich
   - client_id
   - host  
   - org  
+  - catalog  
 
-  ![Web App Configuration](static/imgs/bluemix_23.png?raw=true)
+  You can get these information from your API Connect management console. Click on the "BlueCompute" catalog, then navigate to **Settings -> Endpoints** tab. You will find the API Base URL. It is in the format of **https://[host]/[org]/[catalog]**. Catalog should always be "bluecompute" in this case.
+
+  ![Web App Configuration](static/imgs/bluecompute_config.png?raw=true)
 
 3. Run the Web application
 
@@ -32,7 +35,7 @@ The BlueCompute Web application is built to demonstrate how to access the omnich
 
    Click the "Browser ITEM INVENTORY" will load the list of items:
 
-  ![BlueCompute List](static/imgs/bluemix_24.png?raw=true)
+  ![BlueCompute List](static/imgs/bluecompute_web_home.png?raw=true)
 
   Click on one of the items will bring you to the detail page:
 
@@ -51,7 +54,7 @@ You need to have Bluemix command line (bx or cf) installed, as well as Node.js r
   ```yml
   applications:
   - path: .
-    memory: 512M
+    memory: 256M
     instances: 1
     domain: mybluemix.net
     name: bluecompute-web-app

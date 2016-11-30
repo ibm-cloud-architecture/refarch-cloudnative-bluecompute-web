@@ -126,7 +126,7 @@ function renderPage(function_input) {
 
   // Render the page with the results of the API call
   res.render('inventory', {
-    title: 'ThinkIBM Consumer',
+    title: 'IBM Cloud Architecture',
     item_count: data.length,
     item_array: data,
     base_url: imageBaseUrl,
