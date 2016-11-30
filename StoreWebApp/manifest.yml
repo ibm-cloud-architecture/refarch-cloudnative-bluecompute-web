@@ -3,8 +3,6 @@ applications:
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: jkwong-bluecompute-webapp-qa
-  host: jkwong-bluecompute-webapp-qa
+  name: bluecompute-web-app
+  host: bluecompute-web-app
   disk_quota: 1024M
-  services:
-    - bluecompute-android3-AdvancedMobileAccess
