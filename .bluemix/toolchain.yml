@@ -15,17 +15,19 @@ git-bluecompute-web:
 
 pipeline-deploy-webapp:
   service_id: pipeline
-  hidden: [form, description]
   parameters:
-    name: "Deploy Standalone MySQL Container"
-    ui-pipeline: true
-    services: ["git-bluecompute-web"]
+    name: "Deploy BlueCompute WebApp"
     configuration:
       content: $file(bluecomputeweb-pipeline.yml)
+      env:
+        REPO: "git-bluecompute-web"
       execute: false
+    services: ["git-bluecompute-web"]
+  hidden: [form, description]
 
 deploy:
-  schema: deploy.json
+  schema: 
+      $ref: deploy.json
   service-category: pipeline
   parameters:
     deploy-region: "{{region}}"
