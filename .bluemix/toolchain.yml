@@ -18,7 +18,8 @@ pipeline-deploy-webapp:
   parameters:
     name: "Deploy BlueCompute WebApp"
     configuration:
-      content: $file(bluecomputeweb-pipeline.yml)
+      content: 
+        $file: bluecomputeweb-pipeline.yml
       env:
         REPO: "git-bluecompute-web"
       execute: false
@@ -27,7 +28,7 @@ pipeline-deploy-webapp:
 
 deploy:
   schema: 
-      $ref: deploy.json
+    $ref: deploy.json
   service-category: pipeline
   parameters:
     deploy-region: "{{region}}"
