@@ -4,8 +4,10 @@ description: "BlueCompute Web App"
 version: 0.1
 required:
  - deploy
+ - github-repo
 
-git-bluecompute-web:
+# Repo
+github-repo:
   service_id: githubpublic
   parameters:
     repo_name: "refarch-cloudnative-bluecompute-web"
@@ -13,6 +15,7 @@ git-bluecompute-web:
     type: clone
     has_issues: false
 
+# Pipeline
 pipeline-deploy-webapp:
   service_id: pipeline
   parameters:
@@ -20,13 +23,15 @@ pipeline-deploy-webapp:
     configuration:
       content: $file(pipeline.yml)
       env:
-        REPO: "git-bluecompute-web"
+        REPO: "github-repo"
       execute: false
-    services: ["git-bluecompute-web"]
+    services: ["github-repo"]
   hidden: [form, description]
 
+# Deployment
 deploy:
-  schema: deploy.json
+  schema: 
+    $ref: deploy.json
   service-category: pipeline
   parameters:
     deploy-region: "{{region}}"
