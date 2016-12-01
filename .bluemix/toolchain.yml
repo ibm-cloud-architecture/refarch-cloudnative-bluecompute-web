@@ -1,0 +1,34 @@
+---
+name: "BlueCompute Web App Toolchain"
+description: "BlueCompute Web App"
+version: 0.1
+required:
+ - deploy
+
+git-bluecompute-web:
+  service_id: githubpublic
+  parameters:
+    repo_name: "refarch-cloudnative-bluecompute-web"
+    repo_url: "https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web"
+    type: existing
+    has_issues: false
+
+pipeline-deploy-webapp:
+  service_id: pipeline
+  hidden: [form, description]
+  parameters:
+    name: "Deploy Standalone MySQL Container"
+    ui-pipeline: true
+    services: ["git-bluecompute-web"]
+    configuration:
+      content: $file(bluecomputeweb-pipeline.yml)
+      execute: false
+
+deploy:
+  schema: deploy.json
+  service-category: pipeline
+  parameters:
+    deploy-region: "{{region}}"
+    deploy-org: "{{organization}}"
+    deploy-space: "{{space}}"
+    route-domain: "mybluemix.net"
