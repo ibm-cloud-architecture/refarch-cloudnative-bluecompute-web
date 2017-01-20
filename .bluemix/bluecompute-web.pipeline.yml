@@ -1,0 +1,171 @@
+---
+stages:
+- name: BUILD US-South
+  inputs:
+  - service: ${REPO}
+    type: git
+    branch: ${BRANCH}
+  triggers:
+  - type: commit
+  jobs:
+  - name: Build BlueCompute Webapp
+    type: builder
+    working_dir: StoreWebApp
+    artifact_dir: ''
+    build_type: npm
+    script: |-
+      #!/bin/bash
+      # The default Node.js version is 0.10.40
+      # To use Node.js 0.12.7, uncomment the following line:
+      export PATH=/opt/IBM/node-v0.12/bin:$PATH
+      # To use Node.js 4.2.2, uncomment the following line:
+      #export PATH=/opt/IBM/node-v4.2/bin:$PATH
+      npm install newrelic --save
+      cp node_modules/newrelic/newrelic.js ./
+      npm install
+
+- name: DEPLOY US-South
+  inputs:
+  - type: job
+    stage: BUILD US-South
+    job: Build BlueCompute Webapp
+  triggers:
+  - type: stage
+  properties:
+  - name: APP_DOMAIN
+    value: ${DOMAIN_US}
+    type: text
+  - name: NEW_RELIC_LICENSE
+    value: ${NEW_RELIC_LICENSE}
+    type: text
+  jobs:
+  - name: Deploy BlueCompute Webapp
+    type: deployer
+    target:
+      region_id: ${REGION_US}
+      organization: ${ORG}
+      space: ${SPACE}
+      application: ${NAME_US}
+    script: |
+      #!/bin/bash
+      cf create-service Auto-Scaling free cloudnative-autoscale
+      cf push "${CF_APP}" -n "${CF_APP}" -d "${APP_DOMAIN}" --no-start
+      cf set-env "${CF_APP}" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE}"
+      cf set-env "${CF_APP}" NEW_RELIC_APP_NAME "${CF_APP}"
+      cf start "${CF_APP}"
+
+- name: VALIDATE US-South
+  inputs:
+  - type: job
+    stage: BUILD US-South
+    job: Build BlueCompute Webapp
+  triggers:
+  - type: stage
+  properties:
+  - name: test_env
+    value: cloud
+    type: text
+  - name: appname
+    value: ${NAME_US}
+    type: text
+  - name: domainname
+    value: ${DOMAIN_US}
+    type: text
+  jobs:
+  - name: Contract Validation
+    type: tester
+    script: |-
+      #!/bin/bash
+      # invoke tests here
+      mkdir tests
+      touch tests/TEST-MochaResults.xml
+      npm install
+      ls node_modules/mocha/bin
+      echo "Start running the test"
+      node_modules/mocha/bin/mocha -R xunit test/storeapp-test.js > tests/TEST-MochaResults.xml
+    enable_tests: true
+    test_file_pattern: tests/TEST-*.xml
+
+- name: BUILD London
+  inputs:
+  - service: ${REPO}
+    type: git
+    branch: ${BRANCH}
+  triggers:
+  - type: commit
+  jobs:
+  - name: Build BlueCompute Webapp
+    type: builder
+    working_dir: StoreWebApp
+    artifact_dir: ''
+    build_type: npm
+    script: |-
+      #!/bin/bash
+      # The default Node.js version is 0.10.40
+      # To use Node.js 0.12.7, uncomment the following line:
+      export PATH=/opt/IBM/node-v0.12/bin:$PATH
+      # To use Node.js 4.2.2, uncomment the following line:
+      #export PATH=/opt/IBM/node-v4.2/bin:$PATH
+      npm install newrelic --save
+      cp node_modules/newrelic/newrelic.js ./
+      npm install
+
+- name: DEPLOY London
+  inputs:
+  - type: job
+    stage: BUILD London
+    job: Build BlueCompute Webapp
+  triggers:
+  - type: stage
+  properties:
+  - name: APP_DOMAIN
+    value: ${DOMAIN_EU}
+    type: text
+  jobs:
+  - name: Deploy BlueCompute Webapp
+    type: deployer
+    target:
+      region_id: ${REGION_EU}
+      organization: ${ORG}
+      space: ${SPACE}
+      application: ${NAME_EU}
+    script: |
+      #!/bin/bash
+      cf create-service Auto-Scaling free cloudnative-autoscale
+      cf push "${CF_APP}" -n "${CF_APP}" -d "${APP_DOMAIN}" --no-start
+      cf set-env "${CF_APP}" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE}"
+      cf set-env "${CF_APP}" NEW_RELIC_APP_NAME "${CF_APP}"
+      cf start "${CF_APP}"
+
+- name: VALIDATE London
+  inputs:
+  - type: job
+    stage: BUILD London
+    job: Build BlueCompute Webapp
+    dir_name: null
+  triggers:
+  - type: stage
+  properties:
+  - name: test_env
+    value: cloud
+    type: text
+  - name: appname
+    value: ${NAME_EU}
+    type: text
+  - name: domainname
+    value: ${DOMAIN_EU}
+    type: text
+  jobs:
+  - name: Contract Validation
+    type: tester
+    script: |-
+      #!/bin/bash
+      # invoke tests here
+      mkdir tests
+      touch tests/TEST-MochaResults.xml
+      npm install
+      ls node_modules/mocha/bin
+      echo "Start running the test"
+      node_modules/mocha/bin/mocha -R xunit test/storeapp-test.js > tests/TEST-MochaResults.xml
+    enable_tests: true
+    test_file_pattern: tests/TEST-*.xml
