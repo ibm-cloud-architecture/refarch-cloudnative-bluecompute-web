@@ -5,7 +5,6 @@ https://github.com/ibm-cloud-architecture/refarch-cloudnative*
 
 The BlueCompute Web application is built to demonstrate how to access the omnichannel APIs hosted on IBM Cloud. The application application provides the basic function to allow user to browse the Inventory items. It is built as a Node.js application that uses Express framework and Jade templates.
 
-
 ## Run the Web application locally
 
 1. Navigate to the web app folder `StoreWebApp` in the git repository.
@@ -44,7 +43,10 @@ The BlueCompute Web application is built to demonstrate how to access the omnich
 Feel free to play around and explore the mobile inventory application.
 
 ## Deploy the application to Bluemix hosting:
+### Deploy using Bluemix DevOps Continuous Delivery Toolchain
+[![bluecompute-web-toolchain](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web.git&branch=master)
 
+### Deploy using Bluemix CLI
 You need to have Bluemix command line (bx or cf) installed, as well as Node.js runtime in your development environment.
 
 - Configure the application
