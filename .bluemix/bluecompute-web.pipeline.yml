@@ -121,6 +121,9 @@ stages:
   - name: APP_DOMAIN
     value: ${DOMAIN_EU}
     type: text
+  - name: NEW_RELIC_LICENSE
+    value: ${NEW_RELIC_LICENSE}
+    type: text
   jobs:
   - name: Deploy BlueCompute Webapp
     type: deployer
