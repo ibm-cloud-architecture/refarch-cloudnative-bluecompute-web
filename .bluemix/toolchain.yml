@@ -1,0 +1,50 @@
+---
+name: "bluecompute-web toolchain"
+description: "deploy refarch-cloudnative-bluecompute-web"
+version: 0.1
+required:
+ - deploy
+
+git-bluecompute-web:
+  service_id: githubpublic
+  parameters:
+    repo_name: "refarch-cloudnative-bluecompute-web-{{name}}"
+    repo_url: "https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web"
+    type: clone
+    has_issues: true
+
+pipeline-bluecompute-web:
+  service_id: pipeline
+  hidden: [form, description]
+  parameters:
+    name: "bluecompute-web"
+    ui-pipeline: true
+    services: ["git-bluecompute-web"]
+    configuration:
+      content: $file(bluecompute-web.pipeline.yml)
+      env:
+       DOMAIN_US: "{{deploy.parameters.route-domain-us}}"
+       DOMAIN_EU: "{{deploy.parameters.route-domain-eu}}"
+       REPO: "git-bluecompute-web"
+       BRANCH: "{{deploy.parameters.repo-branch}}"
+       REGION_US: "{{deploy.parameters.deploy-region-us}}"
+       REGION_EU: "{{deploy.parameters.deploy-region-eu}}"
+       ORG: "{{deploy.parameters.deploy-org}}"
+       SPACE: "{{deploy.parameters.deploy-space}}"
+       NAME_US: "us-{{pipeline-bluecompute-web.parameters.name}}-{{deploy.parameters.deploy-space}}"
+       NAME_EU: "eu-{{pipeline-bluecompute-web.parameters.name}}-{{deploy.parameters.deploy-space}}"
+       NEW_RELIC_LICENSE: "{{deploy.parameters.new-relic-lic-key}}"
+      execute: false
+
+deploy:
+  schema: deploy.json
+  service-category: pipeline
+  parameters:
+    repo-branch: "{{branch}}"
+    deploy-org: "{{organization}}"
+    deploy-space: "{{space}}"
+    deploy-region-us: "ibm:yp:us-south"
+    deploy-region-eu: "ibm:yp:eu-gb"
+    route-domain-us: "mybluemix.net"
+    route-domain-eu: "eu-gb.mybluemix.net"
+    new-relic-lic-key: ""

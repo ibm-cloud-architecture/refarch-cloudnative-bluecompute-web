@@ -1,0 +1,96 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Bluecompute Toolchain Deployment to Bluemix",
+    "description": "bluecompute toolchain",
+    "longDescription": "Information entered here will be used at deployment time.",
+    "type": "object",
+    "properties": {
+        "repo-branch": {
+            "description": "Git repo branch",
+            "type": "string"
+        },
+        "deploy-org": {
+            "description": "Deploy to this Bluemix Organization",
+            "type": "string"
+        },
+        "deploy-space": {
+            "description": "Deploy to this space",
+            "type": "string"
+        },
+        "deploy-region-us": {
+            "description": "Deploy to this US region",
+            "type": "string"
+        },
+        "deploy-region-eu": {
+            "description": "Deploy to this EU region",
+            "type": "string"
+        },
+        "route-domain-us": {
+            "description": "US Route Domain",
+            "type": "string"
+        },
+        "route-domain-eu": {
+            "description": "EU Route Domain",
+            "type": "string"
+        },
+        "new-relic-lic-key": {
+            "description": "New Relic License Key",
+            "type": "string"
+        }
+    },
+    "required": [
+        "repo-branch",
+        "deploy-org",
+        "deploy-space"
+        ],
+    "form": [
+        {
+            "type": "validator",
+            "url": "/devops/setup/bm-helper/helper.html"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "Git repo branch",
+            "key": "repo-branch"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "New Relic License Key",
+            "key": "new-relic-lic-key"
+        },
+        {
+            "type": "table",
+            "columnCount": 3,
+            "widths": ["30%", "35%", "35%"],
+            "items": [
+                {
+                    "type": "label",
+                    "title": ""
+                },
+                {
+                    "type": "label",
+                    "title": "Organization"
+                },
+                {
+                    "type": "label",
+                    "title": "Space"
+                },
+                {
+                    "type": "label",
+                    "title": "Deploy to (in US-South and London)"
+                },
+                {
+                    "type": "select",
+                    "key": "deploy-org"
+                },
+                {
+                    "type": "select",
+                    "key": "deploy-space",
+                    "readonly": false
+                }
+            ]
+        }
+    ]
+}
