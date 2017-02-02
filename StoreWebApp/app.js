@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var index = require('./routes/index');
-var inventory = require('./routes/inventory');
-var item = require('./routes/item');
+var catalog = require('./routes/catalog');
+var review = require('./routes/review');
 var login = require('./routes/login');
 var logistics = require('./routes/logistics');
 var financing = require('./routes/financing');
@@ -32,8 +32,8 @@ app.use(session({
 }));
 
 app.use('/', index);
-app.use('/inventory', inventory);
-app.use('/item', item);
+app.use('/catalog', catalog);
+app.use('/review', review);
 app.use('/login', login);
 app.use('/logistics', logistics);
 app.use('/financing', financing);

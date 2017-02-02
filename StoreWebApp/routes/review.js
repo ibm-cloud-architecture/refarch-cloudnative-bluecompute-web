@@ -18,9 +18,9 @@ var _apis = config.get('APIs');
 router.get('/:id', function (req, res) {
   session = req.session;
 
-  setGetItemOptions(req, res)
-    .then(sendItemReq)
-    .then(renderPage)
+  setGetReviewOptions(req, res)
+    .then(sendApiReq)
+    .then(sendResponse)
     .catch(renderErrorPage)
     .done();
 
@@ -37,30 +37,8 @@ router.post('/submitReview', function (req, res) {
 
 });
 
-function setGetItemOptions(req, res) {
+function setGetReviewOptions(req, res) {
   var params = req.params;
-
-  var item_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
-    api: _apis.inventory.base_path,
-    operation: "items/" + params.id
-  });
-
-
-  //var item_url = "https://api.us.apiconnect.ibmcloud.com/aseriyusibmcom-redbooks/inventory-catalog/api/items/" + params.id
-
-  var getItem_options = {
-    method: 'GET',
-    url: item_url,
-    strictSSL: false,
-    headers: {}
-  };
-
-  if (_apis.inventory.require.indexOf("client_id") != -1) getItem_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.inventory.require.indexOf("client_secret") != -1) getItem_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   var reviews_url = api_url.stringify({
     protocol: _apiServer.protocol,
@@ -91,8 +69,7 @@ function setGetItemOptions(req, res) {
         getItem_options.headers.Authorization = 'Bearer ' + session.oauth2token;
         getItemReviews_options.headers.Authorization = 'Bearer ' + session.oauth2token;
         fulfill({
-          getItem_options: getItem_options,
-          getItemReviews_options: getItemReviews_options,
+          options: getItemReviews_options,
           res: res
         });
       } else {
@@ -102,8 +79,7 @@ function setGetItemOptions(req, res) {
 
     }
     else fulfill({
-      getItem_options: getItem_options,
-      getItemReviews_options: getItemReviews_options,
+      options: getItemReviews_options,
       res: res
     });
   });
@@ -169,6 +145,41 @@ function setNewReviewOptions(req, res) {
     });
   });
 
+}
+
+function sendApiReq(function_input) {
+  var options = function_input.options;
+  var res = function_input.res;
+
+  console.log("MY OPTIONS:\n" + JSON.stringify(options));
+
+  // Make API call for Catalog data
+  return new Promise(function (fulfill, reject) {
+    http.request(options)
+      .then(function (result) {
+        //console.log("Catalog call succeeded with result: " + JSON.stringify(result));
+        fulfill({
+          data: result,
+          res: res
+        });
+      })
+      .fail(function (reason) {
+        console.log("Inventory call failed with reason: " + JSON.stringify(reason));
+        reject({
+          err: reason,
+          res: res
+        });
+      });
+  });
+}
+
+function sendResponse(function_input) {
+  var data = function_input.data;
+  var res = function_input.res;
+
+  // Render the page with the results of the API call
+  res.setHeader('Content-Type', 'application/json');
+  res.send(data);
 }
 
 function sendItemReq(function_input) {

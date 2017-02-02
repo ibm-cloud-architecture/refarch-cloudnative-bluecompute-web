@@ -14,7 +14,7 @@ var _apiServerOrg = ((_apiServer.org == "") || (typeof _apiServer.org == 'undefi
 var _apiServerCatalog = ((_apiServer.catalog == "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
 var _apis = config.get('APIs');
 
-/* GET inventory listing and render the page */
+/* GET Catalog listing from API and return JSON */
 router.get('/', function (req, res) {
   session = req.session;
 
@@ -23,7 +23,20 @@ router.get('/', function (req, res) {
 
   setGetItemsOptions(req, res)
     .then(sendApiReq)
-    .then(renderPage)
+//    .then(renderPage)
+    .then(sendResponse)
+    .catch(renderErrorPage)
+    .done();
+
+});
+
+/* Handle the GET request for obtaining  individual catalog item information*/
+router.get('/:id', function (req, res) {
+  session = req.session;
+
+  setGetItemOptions(req, res)
+    .then(sendApiReq)
+    .then(sendResponse)
     .catch(renderErrorPage)
     .done();
 
@@ -84,17 +97,65 @@ function setGetItemsOptions(req, res) {
 
 }
 
+function setGetItemOptions(req, res) {
+  var params = req.params;
+
+  var item_url = api_url.stringify({
+    protocol: _apiServer.protocol,
+    host: _apiServer.host,
+    org: _apiServerOrg,
+    cat: _apiServerCatalog,
+    api: _apis.inventory.base_path,
+    operation: "items/" + params.id
+  });
+
+  var getItem_options = {
+    method: 'GET',
+    url: item_url,
+    strictSSL: false,
+    headers: {}
+  };
+
+  if (_apis.inventory.require.indexOf("client_id") != -1) getItem_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  if (_apis.inventory.require.indexOf("client_secret") != -1) getItem_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+
+  return new Promise(function (fulfill) {
+
+    // Get OAuth Access Token, if needed
+    if (_apis.inventory.require.indexOf("oauth") != -1) {
+
+      // If already logged in, add token to request
+      if (typeof session.oauth2token !== 'undefined') {
+        getItem_options.headers.Authorization = 'Bearer ' + session.oauth2token;
+        fulfill({
+          options: getItem_options,
+          res: res
+        });
+      } else {
+        // Otherwise redirect to login page
+        res.redirect('/login');
+      }
+
+    }
+    else fulfill({
+      options: getItem_options,
+      res: res
+    });
+  });
+
+}
+
 function sendApiReq(function_input) {
   var options = function_input.options;
   var res = function_input.res;
 
   console.log("MY OPTIONS:\n" + JSON.stringify(options));
 
-  // Make API call for inventory data
+  // Make API call for Catalog data
   return new Promise(function (fulfill, reject) {
     http.request(options)
       .then(function (result) {
-          //console.log("Inventory call succeeded with result: " + JSON.stringify(result));
+        //console.log("Catalog call succeeded with result: " + JSON.stringify(result));
         fulfill({
           data: result,
           res: res
@@ -108,6 +169,15 @@ function sendApiReq(function_input) {
         });
       });
   });
+}
+
+function sendResponse(function_input) {
+  var data = function_input.data;
+  var res = function_input.res;
+
+  // Render the page with the results of the API call
+  res.setHeader('Content-Type', 'application/json');
+  res.send(data);
 }
 
 function renderPage(function_input) {
