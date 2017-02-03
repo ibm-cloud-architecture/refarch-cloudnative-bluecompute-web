@@ -24,6 +24,7 @@
     "request-promise-json": "^1.0.4",
     "serve-favicon": "~2.3.0",
     "url-pattern": "^1.0.1",
+    "pkgcloud": "^1.4.0",
     "mocha": "^2.3.4",
     "request": "^2.67.0",
     "cfenv": "^1.0.0",

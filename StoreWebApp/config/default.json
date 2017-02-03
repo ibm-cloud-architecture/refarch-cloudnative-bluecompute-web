@@ -1,7 +1,8 @@
 {
   "Application": {
     "client_id": "ae4b5e57-0c67-4e39-b4a4-73be4fc3ff55",
-    "client_secret": ""
+    "client_secret": "",
+    "local_mode":false
   },
   "API-Server": {
     "protocol": "https",
