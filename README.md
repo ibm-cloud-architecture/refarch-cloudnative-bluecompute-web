@@ -44,7 +44,7 @@ Feel free to play around and explore the mobile inventory application.
 
 ## Deploy the application to Bluemix hosting:
 ### Deploy using Bluemix DevOps Continuous Delivery Toolchain
-[![bluecompute-web-toolchain](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web.git&branch=master)
+[![bluecompute-web-toolchain](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/gangchen03/refarch-cloudnative-bluecompute-web.git&branch=master)
 
 ### Deploy using Bluemix CLI
 You need to have Bluemix command line (bx or cf) installed, as well as Node.js runtime in your development environment.
