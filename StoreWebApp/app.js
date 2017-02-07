@@ -1,4 +1,3 @@
-require('newrelic');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,10 +7,10 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var index = require('./routes/index');
-var inventory = require('./routes/inventory');
-var item = require('./routes/item');
+var catalog = require('./routes/catalog');
+var review = require('./routes/review');
 var login = require('./routes/login');
-var logistics = require('./routes/logistics');
+var images = require('./routes/images');
 var financing = require('./routes/financing');
 
 var app = express();
@@ -19,9 +18,6 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-// enable app to run behind a proxy
-app.set('trust proxy', true);
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -36,10 +32,10 @@ app.use(session({
 }));
 
 app.use('/', index);
-app.use('/inventory', inventory);
-app.use('/item', item);
+app.use('/catalog', catalog);
+app.use('/review', review);
 app.use('/login', login);
-app.use('/logistics', logistics);
+app.use('/image', images);
 app.use('/financing', financing);
 
 // catch 404 and forward to error handler
