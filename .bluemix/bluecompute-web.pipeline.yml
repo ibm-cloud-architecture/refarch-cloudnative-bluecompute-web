@@ -32,6 +32,9 @@ stages:
   triggers:
   - type: stage
   properties:
+  - name: REGION
+    value: ${REGION_US}
+    type: text
   - name: APP_DOMAIN
     value: ${DOMAIN_US}
     type: text
@@ -91,9 +94,9 @@ stages:
         sudo pip install --upgrade python-swiftclient
         sudo pip install --upgrade python-keystoneclient
 
-        # upload public/images/items/ to swift container
+        # upload image folder to swift container
         swift post ${objstorage_container}
-        swift upload --changed --skip-identical ${objstorage_container} public/images/items/
+        swift upload --changed --skip-identical ${objstorage_container} image
         swift list ${objstorage_container}
 
         # create auto-scaling service
@@ -170,6 +173,9 @@ stages:
   triggers:
   - type: stage
   properties:
+  - name: REGION
+    value: ${REGION_EU}
+    type: text
   - name: APP_DOMAIN
     value: ${DOMAIN_EU}
     type: text
@@ -229,9 +235,9 @@ stages:
         sudo pip install --upgrade python-swiftclient
         sudo pip install --upgrade python-keystoneclient
 
-        # upload public/images/items/ to swift container
+        # upload image folder to swift container
         swift post ${objstorage_container}
-        swift upload --changed --skip-identical ${objstorage_container} public/images/items/
+        swift upload --changed --skip-identical ${objstorage_container} image
         swift list ${objstorage_container}
 
         # create auto-scaling service
