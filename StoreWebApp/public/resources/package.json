@@ -1,0 +1,14 @@
+{
+  "name": "ibm-cloud-arch",
+  "private": true,
+  "version": "0.0.1",
+  "description": "IBM Cloud Architecture",
+  "devDependencies": {
+    "bower": "^1.3.1"
+  },
+  "scripts": {
+    "postinstall": "bower install",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "npm install"
+  }
+}

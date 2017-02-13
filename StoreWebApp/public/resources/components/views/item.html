@@ -1,0 +1,57 @@
+<div class="header">
+  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed"><a class="pure-menu-heading" href="/"></a>
+    <ul class="pure-menu-list">
+      <li class="pure-menu-item"><a class="pure-menu-link" href="/">Home</a></li>
+      <li class="pure-menu-item"><a class="pure-menu-link" href="/inventory">Inventory</a></li>
+    </ul>
+  </div>
+</div>
+<div style="top: 62px;" class="content-wrapper">
+  <div class="content item-content">
+    <div class="pure-g">
+      <div class="pure-u-1-5 item-top-boxes"></div>
+    </div>
+    <!--    img(src= base_url + item.img).pure-img
+    div.pure-u-2-5.item-top-boxes
+      div.pure-u-1.item-info-box.section-heading.item-name-box
+      //  p= item.name
+      div.pure-u-1.item-info-box.item-price-box#item-price
+    //    p= '$' + item.price
+      div.pure-u-1.item-info-box.get-financing-box#financing-section
+        a(href="#").get-financing-link#financing-link Calculate Monthly Payment
+    div.pure-u-2-5.item-top-boxes
+        //Add review comments
+        each review in reviews
+         div.pure-g
+             div.pure-u-1-2
+               div.reviewer-name= review.reviewer_name
+             div.pure-u-1-2
+               div.review-rating
+               - var rating = (review.rating) ? review.rating : 0;
+               - var rounded_rating = Math.round(rating*2)/2;
+               - var full_stars = Math.floor(rounded_rating);
+               - var half_star = (rounded_rating % 1 != 0);
+               - var o_stars = 5 - Math.ceil(rounded_rating);
+               - for (var i=0; i<full_stars; i++) {
+               i.fa.fa-star.star-style
+               - };
+               - if (half_star) {
+               i.fa.fa-star-half-o.star-style
+               - };
+               - for (var i=0; i<o_stars; i++) {
+               i.fa.fa-star-o.star-style
+               - };
+             div.pure-u-1
+               div.review-section= review.comment
+             hr
+    div.pure-u-1
+      hr
+    div.pure-u-1
+      div.pure-u-1.section-heading
+      //  p Product Description
+      div.pure-u-1.item-description-box
+    //    p= item.description
+    -->
+  </div>
+  <div class="footer l-box is-center"><a href="https://developer.ibm.com/architecture/" target="_blank" style="text-decoration: none;color: white">IBM Cloud Architecture Center</a></div>
+</div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="ibm-cloud-arch">
+<head>
+<title>IBM Cloud Architecture</title>
+     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="pure/pure-min.css" />
+<link rel="stylesheet" href="pure/grids-responsive-min.css" />
+<link rel="stylesheet" href="font-awesome/font-awesome.css" />
+<link rel="stylesheet" href="pure/layouts/main.css" />
+<link rel="stylesheet" href="pure/layouts/inventory.css" />
+<!--
+<link rel="stylesheet" href="pure/layouts/item.css" />
+<link rel="stylesheet" href="pure/layouts/login.css" />
+-->
+  <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+
+  	<script src="components/controllers/HomeController.js"></script>
+    <script src="components/controllers/LoginController.js"></script>
+    <script src="components/controllers/InventoryController.js"></script>
+    <script src="components/controllers/ItemController.js"></script>
+
+    <script src="components/services/BlueAPIService.js"></script>
+</head>
+<body ng-view>
+
+
+</body>
+</html>
