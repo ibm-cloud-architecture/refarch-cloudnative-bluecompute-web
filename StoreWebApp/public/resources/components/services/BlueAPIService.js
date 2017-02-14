@@ -10,17 +10,17 @@ app.service('BlueAPIService', ['$http', function($http) {
 
 		if (requestType == 'GET') {
 			$http({
-          headers: {
-            "X-IBM-Client-Id" : "59563f83-1f52-4e87-87e9-4b07414a1f27"
-          },
+          //headers: {
+          //  "X-IBM-Client-Id" : "59563f83-1f52-4e87-87e9-4b07414a1f27"
+          //},
 				  method: 'GET',
-				  url: baseURL + restUrl
+				  url: restUrl
 				}).then(successCallback, errorCallback);
 		}
 		else if (requestType == 'DELETE'){
 			$http({
 					method: 'DELETE',
-					url: baseURL + restUrl
+					url: restUrl
 				}).then(successCallback, errorCallback);
 		}
 		else {
@@ -29,19 +29,19 @@ app.service('BlueAPIService', ['$http', function($http) {
 						"Content-Type": undefined
 					},
 					method: 'POST',
-					url: baseURL + restUrl,
+					url: restUrl,
 					data: parameters
 				}).then(successCallback, errorCallback);
 		}
 	}
 		return  {
-			getInventory : function(successCallback, errorCallback) {
-				var restUrl = 'api/items/';
+			getCatalog : function(successCallback, errorCallback) {
+				var restUrl = 'catalog/';
 				var requestType = 'GET';
 				invokeService(restUrl, requestType, null, successCallback, errorCallback);
 			},
 			getItemById : function(itemId, successCallback, errorCallback) {
-				var restUrl = 'api/items/' + itemId;
+				var restUrl = 'catalog/' + itemId;
 				var requestType = 'GET';
 				invokeService(restUrl, requestType, null, successCallback, errorCallback);
 			}

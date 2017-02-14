@@ -13,9 +13,9 @@ app.config(['$routeProvider', function($routeProvider) {
        templateUrl : baseUrl + 'login.html',
        controller: 'LoginController'
     })
-		.when('/inventory', {
-       templateUrl : baseUrl + 'inventory.html',
-       controller: 'InventoryController'
+		.when('/catalog', {
+       templateUrl : baseUrl + 'catalog.html',
+       controller: 'CatalogController'
     })
 		.when('/item/:id', {
        templateUrl : baseUrl + 'item.html',
