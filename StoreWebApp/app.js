@@ -38,6 +38,18 @@ app.use('/login', login);
 app.use('/image', images);
 app.use('/financing', financing);
 
+
+//Setup HealthCheck API
+const healthchecks = require('./server/lib/healthchecks');
+const CHECKS_FILE = __dirname+"/config/checks";
+const healthcheck_options = {
+  filename: CHECKS_FILE,
+  timeout: '5s',
+  returnJSON: true
+};
+app.use('/_healthchecks', healthchecks(healthcheck_options));
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
