@@ -1,57 +1,203 @@
 <div class="header">
-  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed"><a class="pure-menu-heading" href="/"></a>
+  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+    <a href="/" class="pure-menu-heading">IBM Cloud Architecture</a>
     <ul class="pure-menu-list">
       <li class="pure-menu-item"><a class="pure-menu-link" href="/">Home</a></li>
-      <li class="pure-menu-item"><a class="pure-menu-link" href="/inventory">Inventory</a></li>
+      <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
     </ul>
   </div>
 </div>
 <div style="top: 62px;" class="content-wrapper">
   <div class="content item-content">
     <div class="pure-g">
-      <div class="pure-u-1-5 item-top-boxes"></div>
+      <div class="pure-u-1-5 item-top-boxes">
+        <img ng-src="{{baseURL + item.img}}" class="pure-img">
+      </div>
+      <div class="pure-u-2-5 item-top-boxes">
+        <div class="pure-u-1 item-info-box section-heading item-name-box">
+          <p>{{item.name}}</p>
+        </div>
+        <div id="item-price" class="pure-u-1 item-info-box item-price-box">
+          <p>${{item.price}}</p>
+        </div>
+        <div id="financing-section" class="pure-u-1 item-info-box get-financing-box">
+          <a href="#" id="financing-link" class="get-financing-link">Calculate Monthly Payment</a>
+        </div>
+      </div>
+      <div class="pure-u-2-5 item-top-boxes">
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <div class="reviewer-name">CASE</div>
+          </div>
+          <div class="pure-u-1-2">
+            <div class="review-rating">
+            </div><i class="fa fa-star star-style"></i>
+                  <i class="fa fa-star star-style"></i>
+                  <i class="fa fa-star star-style"></i>
+                  <i class="fa fa-star star-style"></i>
+                  <i class="fa fa-star-o star-style"></i>
+          </div>
+          <div class="pure-u-1">
+            <div class="review-section">Another test</div>
+          </div>
+          <hr>
+        </div>
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <div class="reviewer-name">Gang Chen</div>
+          </div>
+          <div class="pure-u-1-2">
+            <div class="review-rating"></div>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+          </div>
+          <div class="pure-u-1">
+            <div class="review-section">Test EU Deployment</div>
+          </div>
+          <hr>
+        </div>
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <div class="reviewer-name">Gang Chen</div>
+          </div>
+          <div class="pure-u-1-2">
+            <div class="review-rating"></div>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+            <i class="fa fa-star star-style"></i>
+          </div>
+          <div class="pure-u-1">
+            <div class="review-section">Nice product!</div>
+          </div>
+          <hr>
+        </div>
+      </div>
+
+      <div class="pure-u-1">
+        <hr>
+      </div>
+      <div class="pure-u-1">
+        <div class="pure-u-1 section-heading">
+          <p>Product Description</p>
+        </div>
+        <div class="pure-u-1 item-description-box">
+          <p>{{item.description}}</p>
+        </div>
+      </div>
     </div>
-    <!--    img(src= base_url + item.img).pure-img
-    div.pure-u-2-5.item-top-boxes
-      div.pure-u-1.item-info-box.section-heading.item-name-box
-      //  p= item.name
-      div.pure-u-1.item-info-box.item-price-box#item-price
-    //    p= '$' + item.price
-      div.pure-u-1.item-info-box.get-financing-box#financing-section
-        a(href="#").get-financing-link#financing-link Calculate Monthly Payment
-    div.pure-u-2-5.item-top-boxes
-        //Add review comments
-        each review in reviews
-         div.pure-g
-             div.pure-u-1-2
-               div.reviewer-name= review.reviewer_name
-             div.pure-u-1-2
-               div.review-rating
-               - var rating = (review.rating) ? review.rating : 0;
-               - var rounded_rating = Math.round(rating*2)/2;
-               - var full_stars = Math.floor(rounded_rating);
-               - var half_star = (rounded_rating % 1 != 0);
-               - var o_stars = 5 - Math.ceil(rounded_rating);
-               - for (var i=0; i<full_stars; i++) {
-               i.fa.fa-star.star-style
-               - };
-               - if (half_star) {
-               i.fa.fa-star-half-o.star-style
-               - };
-               - for (var i=0; i<o_stars; i++) {
-               i.fa.fa-star-o.star-style
-               - };
-             div.pure-u-1
-               div.review-section= review.comment
-             hr
-    div.pure-u-1
-      hr
-    div.pure-u-1
-      div.pure-u-1.section-heading
-      //  p Product Description
-      div.pure-u-1.item-description-box
-    //    p= item.description
-    -->
   </div>
   <div class="footer l-box is-center"><a href="https://developer.ibm.com/architecture/" target="_blank" style="text-decoration: none;color: white">IBM Cloud Architecture Center</a></div>
 </div>
+
+<!--
+<body>
+  <div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+      <a href="/" class="pure-menu-heading">IBM Cloud Architecture</a>
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item">
+          <a href="/" class="pure-menu-link">Home</a>
+        </li>
+        <li class="pure-menu-item">
+          <a href="/inventory" class="pure-menu-link">Inventory</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="content-wrapper">
+    <div class="content item-content">
+      <div class="pure-g">
+        <div class="pure-u-1-5 item-top-boxes">
+          <img src="https://api.us.apiconnect.ibmcloud.com/centusibmcom-cloudnative-prod/bluecompute/api/image/selectric.jpg" class="pure-img">
+        </div>
+        <div class="pure-u-2-5 item-top-boxes">
+          <div class="pure-u-1 item-info-box section-heading item-name-box">
+            <p>Selectric Typewriter</p>
+          </div>
+          <div id="item-price" class="pure-u-1 item-info-box item-price-box">
+            <p>$2199</p>
+          </div>
+          <div id="financing-section" class="pure-u-1 item-info-box get-financing-box">
+            <a href="#" id="financing-link" class="get-financing-link">Calculate Monthly Payment</a>
+          </div>
+        </div>
+        <div class="pure-u-2-5 item-top-boxes">
+          Review Comments
+          <div class="pure-g">
+            <div class="pure-u-1-2">
+              <div class="reviewer-name">CASE</div>
+            </div>
+            <div class="pure-u-1-2">
+              <div class="review-rating">
+              </div><i class="fa fa-star star-style"></i>
+                    <i class="fa fa-star star-style"></i>
+                    <i class="fa fa-star star-style"></i>
+                    <i class="fa fa-star star-style"></i>
+                    <i class="fa fa-star-o star-style"></i>
+            </div>
+            <div class="pure-u-1">
+              <div class="review-section">Another test</div>
+            </div>
+            <hr>
+          </div>
+          <div class="pure-g">
+            <div class="pure-u-1-2">
+              <div class="reviewer-name">Gang Chen</div>
+            </div>
+            <div class="pure-u-1-2">
+              <div class="review-rating"></div>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+            </div>
+            <div class="pure-u-1">
+              <div class="review-section">Test EU Deployment</div>
+            </div>
+            <hr>
+          </div>
+          <div class="pure-g">
+            <div class="pure-u-1-2">
+              <div class="reviewer-name">Gang Chen</div>
+            </div>
+            <div class="pure-u-1-2">
+              <div class="review-rating"></div>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+              <i class="fa fa-star star-style"></i>
+            </div>
+            <div class="pure-u-1">
+              <div class="review-section">Nice product!</div>
+            </div>
+            <hr>
+          </div>
+        </div>
+
+        <div class="pure-u-1">
+          <hr>
+        </div>
+        <div class="pure-u-1">
+          <div class="pure-u-1 section-heading">
+            <p>Product Description</p>
+          </div>
+          <div class="pure-u-1 item-description-box">
+            <p>Unveiled in 1961, the revolutionary Selectric typewriter eliminated the need for conventional type bars and movable carriages by using an innovative typing element on a head-and-rocker assembly, which, in turn, was mounted on a small carrier to move from left to right while typing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer l-box is-center">
+      <a href="https://developer.ibm.com/architecture/" target="_blank" style="text-decoration: none;color: white">IBM Cloud Architecture Center</a>
+    </div>
+  </div>
+  <script src="/javascripts/calc-shipping.js"></script>
+  <script src="/javascripts/calc-financing.js"></script></body>
+-->

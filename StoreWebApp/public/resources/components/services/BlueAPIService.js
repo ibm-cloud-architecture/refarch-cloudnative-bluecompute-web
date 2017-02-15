@@ -44,6 +44,11 @@ app.service('BlueAPIService', ['$http', function($http) {
 				var restUrl = 'catalog/' + itemId;
 				var requestType = 'GET';
 				invokeService(restUrl, requestType, null, successCallback, errorCallback);
+			},
+			getItemReviewById : function(itemId, successCallback, errorCallback) {
+				var restUrl = 'review/' + itemId;
+				var requestType = 'GET';
+				invokeService(restUrl, requestType, null, successCallback, errorCallback);
 			}
 		}
 }]);
