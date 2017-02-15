@@ -20,16 +20,11 @@ init_object_storage();
 function init_object_storage() {
   var config = {};
   if(local_mode)
-  {/*
+  {
     var username = "xxx",
         password = "xxx",
         projectId = "688d49f5f5784aa8a36450c7b36c3ddf",
-        domainId = "f5cd32c788594b15bff1a093467e4864";*/
-
-    var username = "admin_21b66b75c4173e796c897bf16c9e13f361d2b4ff",
-       password = "W}O1uDxV6pbX-l_c",
-       projectId = "688d49f5f5784aa8a36450c7b36c3ddf",
-       domainId = "f5cd32c788594b15bff1a093467e4864";
+        domainId = "f5cd32c788594b15bff1a093467e4864";
 
     config = {
       provider: 'openstack',
