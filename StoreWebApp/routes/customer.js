@@ -21,7 +21,7 @@ router.get('/', function (req, res) {
   //page_filter = (typeof req.query.filter !== 'undefined') ? JSON.stringify(req.query.filter.order) : false;
   page_filter = "";
 
-  setGetItemsOptions(req, res)
+  setGetCustomerOptions(req, res)
     .then(sendApiReq)
     .then(sendResponse)
     .catch(renderErrorPage)
@@ -29,40 +29,29 @@ router.get('/', function (req, res) {
 
 });
 
-/* Handle the GET request for obtaining  individual catalog item information*/
-router.get('/:id', function (req, res) {
-  session = req.session;
 
-  setGetItemOptions(req, res)
-    .then(sendApiReq)
-    .then(sendResponse)
-    .catch(renderErrorPage)
-    .done();
-
-});
-
-function setGetItemsOptions(req, res) {
+function setGetCustomerOptions(req, res) {
   var query = req.query;
 
-  var items_url = api_url.stringify({
+  var customer_url = api_url.stringify({
     protocol: _apiServer.protocol,
     host: _apiServer.host,
     org: _apiServerOrg,
     cat: _apiServerCatalog,
-    api: _apis.catalog.base_path,
-    operation: "items"
+    api: _apis.customer.base_path,
+    operation: "customer"
   });
 
 
   var options = {
     method: 'GET',
-    url: items_url,
+    url: customer_url,
     strictSSL: false,
     headers: {}
   };
 
-  if (_apis.catalog.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.catalog.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+  if (_apis.customer.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  if (_apis.customer.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   // Apply the query filter, if one is present
   //if (typeof query.filter !== 'undefined') options.url += '?filter=' + JSON.stringify(query.filter);
@@ -71,7 +60,7 @@ function setGetItemsOptions(req, res) {
   return new Promise(function (fulfill) {
 
     // Get OAuth Access Token, if needed
-    if (_apis.catalog.require.indexOf("oauth") != -1) {
+    if (_apis.customer.require.indexOf("oauth") != -1) {
 
       // If already logged in, add token to request
       if (typeof session.oauth2token !== 'undefined') {
@@ -96,53 +85,6 @@ function setGetItemsOptions(req, res) {
 
 }
 
-function setGetItemOptions(req, res) {
-  var params = req.params;
-
-  var item_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
-    api: _apis.catalog.base_path,
-    operation: "items/" + params.id
-  });
-
-  var getItem_options = {
-    method: 'GET',
-    url: item_url,
-    strictSSL: false,
-    headers: {}
-  };
-
-  if (_apis.catalog.require.indexOf("client_id") != -1) getItem_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.catalog.require.indexOf("client_secret") != -1) getItem_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
-
-  return new Promise(function (fulfill) {
-
-    // Get OAuth Access Token, if needed
-    if (_apis.catalog.require.indexOf("oauth") != -1) {
-
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        getItem_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        fulfill({
-          options: getItem_options,
-          res: res
-        });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
-    }
-    else fulfill({
-      options: getItem_options,
-      res: res
-    });
-  });
-
-}
 
 function sendApiReq(function_input) {
   var options = function_input.options;
@@ -161,7 +103,7 @@ function sendApiReq(function_input) {
         });
       })
       .fail(function (reason) {
-        console.log("catalog call failed with reason: " + JSON.stringify(reason));
+        console.log("Customer call failed with reason: " + JSON.stringify(reason));
         reject({
           err: reason,
           res: res
@@ -182,7 +124,7 @@ function sendResponse(function_input) {
 function renderErrorPage(function_input) {
   var err = function_input.err;
   var res = function_input.res;
-  
+
   // Render the error message in JSON
   res.setHeader('Content-Type', 'application/json');
   res.send(err);

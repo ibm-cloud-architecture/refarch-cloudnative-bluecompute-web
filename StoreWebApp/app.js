@@ -9,9 +9,9 @@ var session = require('express-session');
 var index = require('./routes/index');
 var catalog = require('./routes/catalog');
 var review = require('./routes/review');
-var login = require('./routes/login');
+var customer = require('./routes/customer');
 var images = require('./routes/images');
-var financing = require('./routes/financing');
+var orders = require('./routes/orders');
 
 var app = express();
 
@@ -33,10 +33,11 @@ app.use(session({
 
 app.use('/', index);
 app.use('/catalog', catalog);
+app.use('/customer', customer);
 app.use('/review', review);
-app.use('/login', login);
+//app.use('/login', login);
 app.use('/image', images);
-app.use('/financing', financing);
+app.use('/order', orders);
 
 app.use('/', express.static('public/resources'))
 app.use('/', express.static('public/stylesheets'))

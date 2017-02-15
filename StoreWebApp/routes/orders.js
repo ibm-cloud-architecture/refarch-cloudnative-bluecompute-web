@@ -6,7 +6,7 @@ var UrlPattern = require('url-pattern');
 var oauth = require('../server/js/oauth.js');
 var config = require('config');
 
-var session, page_filter;
+var session;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(/:org)(/:cat)(:api)/(:operation)');
 var _myApp = config.get('Application');
 var _apiServer = config.get('API-Server');
@@ -14,14 +14,11 @@ var _apiServerOrg = ((_apiServer.org == "") || (typeof _apiServer.org == 'undefi
 var _apiServerCatalog = ((_apiServer.catalog == "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
 var _apis = config.get('APIs');
 
-/* GET Catalog listing from API and return JSON */
+/* Handle the GET request for obtaining item information and render the page */
 router.get('/', function (req, res) {
   session = req.session;
 
-  //page_filter = (typeof req.query.filter !== 'undefined') ? JSON.stringify(req.query.filter.order) : false;
-  page_filter = "";
-
-  setGetItemsOptions(req, res)
+  setGetOrdersOptions(req, res)
     .then(sendApiReq)
     .then(sendResponse)
     .catch(renderErrorPage)
@@ -29,57 +26,106 @@ router.get('/', function (req, res) {
 
 });
 
-/* Handle the GET request for obtaining  individual catalog item information*/
-router.get('/:id', function (req, res) {
+/* Handle the POST request for creating a new item review */
+router.post('/', function (req, res) {
   session = req.session;
 
-  setGetItemOptions(req, res)
-    .then(sendApiReq)
-    .then(sendResponse)
+  setNewOrderOptions(req, res)
+    .then(submitNewReview)
     .catch(renderErrorPage)
     .done();
 
 });
 
-function setGetItemsOptions(req, res) {
-  var query = req.query;
+function setGetOrdersOptions(req, res) {
+  var params = req.params;
 
-  var items_url = api_url.stringify({
+  var orders_url = api_url.stringify({
     protocol: _apiServer.protocol,
     host: _apiServer.host,
     org: _apiServerOrg,
     cat: _apiServerCatalog,
-    api: _apis.catalog.base_path,
-    operation: "items"
+    api: _apis.order.base_path,
+    operation: "orders"
   });
 
-
-  var options = {
+  var getOrders_options = {
     method: 'GET',
-    url: items_url,
+    url: orders_url,
     strictSSL: false,
     headers: {}
   };
 
-  if (_apis.catalog.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.catalog.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
-
-  // Apply the query filter, if one is present
-  //if (typeof query.filter !== 'undefined') options.url += '?filter=' + JSON.stringify(query.filter);
-  //else options.url += '?filter[order]=name%20ASC';
+  if (_apis.order.require.indexOf("client_id") != -1) getOrders_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  if (_apis.order.require.indexOf("client_secret") != -1) getOrders_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
 
     // Get OAuth Access Token, if needed
-    if (_apis.catalog.require.indexOf("oauth") != -1) {
+    if (_apis.order.require.indexOf("oauth") != -1) {
 
       // If already logged in, add token to request
       if (typeof session.oauth2token !== 'undefined') {
+        getOrders_options.headers.Authorization = 'Bearer ' + session.oauth2token;
+        getOrders_options.headers.Authorization = 'Bearer ' + session.oauth2token;
+        fulfill({
+          options: getOrders_options,
+          res: res
+        });
+      } else {
+        // Otherwise redirect to login page
+        res.redirect('/login');
+      }
 
-        console.log("Render catalog with Token: " + session.oauth2token)
+    }
+    else fulfill({
+      options: getOrders_options,
+      res: res
+    });
+  });
+
+}
+
+function setNewOrderOptions(req, res) {
+  var form_body = req.body;
+
+  var reqBody = {
+    itemId: form_body.itemId,
+    count: form_body.count
+  };
+
+
+  var orders_url = api_url.stringify({
+    protocol: _apiServer.protocol,
+    host: _apiServer.host,
+    org: _apiServerOrg,
+    cat: _apiServerCatalog,
+    api: _apis.order.base_path,
+    operation: "orders"
+  });
+
+  var options = {
+    method: 'POST',
+    url: orders_url,
+    strictSSL: false,
+    headers: {},
+    body: reqBody,
+    JSON: true
+  };
+
+  if (_apis.order.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  if (_apis.order.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+
+  return new Promise(function (fulfill) {
+    // Get OAuth Access Token, if needed
+    if (_apis.order.require.indexOf("oauth") != -1) {
+
+      // If already logged in, add token to request
+      if (typeof session.oauth2token !== 'undefined') {
         options.headers.Authorization = 'Bearer ' + session.oauth2token;
         fulfill({
           options: options,
+          item_id: form_body.itemId,
           res: res
         });
       } else {
@@ -90,54 +136,7 @@ function setGetItemsOptions(req, res) {
     }
     else fulfill({
       options: options,
-      res: res
-    });
-  });
-
-}
-
-function setGetItemOptions(req, res) {
-  var params = req.params;
-
-  var item_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
-    api: _apis.catalog.base_path,
-    operation: "items/" + params.id
-  });
-
-  var getItem_options = {
-    method: 'GET',
-    url: item_url,
-    strictSSL: false,
-    headers: {}
-  };
-
-  if (_apis.catalog.require.indexOf("client_id") != -1) getItem_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.catalog.require.indexOf("client_secret") != -1) getItem_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
-
-  return new Promise(function (fulfill) {
-
-    // Get OAuth Access Token, if needed
-    if (_apis.catalog.require.indexOf("oauth") != -1) {
-
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        getItem_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        fulfill({
-          options: getItem_options,
-          res: res
-        });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
-    }
-    else fulfill({
-      options: getItem_options,
+      item_id: form_body.itemId,
       res: res
     });
   });
@@ -161,7 +160,7 @@ function sendApiReq(function_input) {
         });
       })
       .fail(function (reason) {
-        console.log("catalog call failed with reason: " + JSON.stringify(reason));
+        console.log("Order call failed with reason: " + JSON.stringify(reason));
         reject({
           err: reason,
           res: res
@@ -179,13 +178,30 @@ function sendResponse(function_input) {
   res.send(data);
 }
 
+function submitNewReview(function_input) {
+  var options = function_input.options;
+  var item_id = function_input.item_id;
+  var res = function_input.res;
+
+  http.request(options)
+    .then(function (data) {
+      console.log("DATA: " + JSON.stringify(data));
+      res.redirect('/item/' + item_id);
+    })
+    .fail(function (err) {
+      console.log("ERR: " + JSON.stringify(err));
+      res.redirect('/item/' + item_id);
+    });
+}
+
 function renderErrorPage(function_input) {
   var err = function_input.err;
   var res = function_input.res;
-  
+
   // Render the error message in JSON
   res.setHeader('Content-Type', 'application/json');
   res.send(err);
+
 }
 
 module.exports = router;

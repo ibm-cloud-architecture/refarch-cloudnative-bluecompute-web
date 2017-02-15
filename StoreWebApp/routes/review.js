@@ -45,7 +45,7 @@ function setGetReviewOptions(req, res) {
     host: _apiServer.host,
     org: _apiServerOrg,
     cat: _apiServerCatalog,
-    api: _apis.inventory.base_path,
+    api: _apis.review.base_path,
     operation: "reviews/list?itemId=" + params.id
   });
 
@@ -56,13 +56,13 @@ function setGetReviewOptions(req, res) {
     headers: {}
   };
 
-  if (_apis.inventory.require.indexOf("client_id") != -1) getItemReviews_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.inventory.require.indexOf("client_secret") != -1) getItemReviews_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+  if (_apis.review.require.indexOf("client_id") != -1) getItemReviews_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  if (_apis.review.require.indexOf("client_secret") != -1) getItemReviews_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
 
     // Get OAuth Access Token, if needed
-    if (_apis.inventory.require.indexOf("oauth") != -1) {
+    if (_apis.review.require.indexOf("oauth") != -1) {
 
       // If already logged in, add token to request
       if (typeof session.oauth2token !== 'undefined') {
@@ -104,7 +104,7 @@ function setNewReviewOptions(req, res) {
     host: _apiServer.host,
     org: _apiServerOrg,
     cat: _apiServerCatalog,
-    api: _apis.inventory.base_path,
+    api: _apis.review.base_path,
     operation: "reviews/list?itemId=" + params.id
   });
 
@@ -117,12 +117,12 @@ function setNewReviewOptions(req, res) {
     JSON: true
   };
 
-  if (_apis.inventory.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.inventory.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+  if (_apis.review.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  if (_apis.review.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
-    if (_apis.inventory.require.indexOf("oauth") != -1) {
+    if (_apis.review.require.indexOf("oauth") != -1) {
 
       // If already logged in, add token to request
       if (typeof session.oauth2token !== 'undefined') {
@@ -164,7 +164,7 @@ function sendApiReq(function_input) {
         });
       })
       .fail(function (reason) {
-        console.log("Inventory call failed with reason: " + JSON.stringify(reason));
+        console.log("review call failed with reason: " + JSON.stringify(reason));
         reject({
           err: reason,
           res: res
@@ -230,36 +230,13 @@ function submitNewReview(function_input) {
     });
 }
 
-function renderPage(function_input) {
-  var item = function_input.data.item;
-  var reviews = function_input.data.reviews;
-  var res = function_input.res;
-
-console.log("Review Data: " + JSON.stringify(reviews));
-
- var imageBaseUrl = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
-    api: "",
-    operation: ""
-  });
-
-  // Render the page with the results of the API call
-  res.render('item', {
-    title: 'IBM Cloud Architecture',
-    item: item,
-    reviews: reviews,
-    base_url: imageBaseUrl,
-    reviews_count: reviews.length
-  });
-}
-
 function renderErrorPage(function_input) {
   var err = function_input.err;
   var res = function_input.res;
-  res.render('error', {reason: err});
+
+  // Render the error message in JSON
+  res.setHeader('Content-Type', 'application/json');
+  res.send(err);
 }
 
 module.exports = router;

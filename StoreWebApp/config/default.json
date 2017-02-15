@@ -11,7 +11,7 @@
     "catalog": "bluecompute"
   },
   "APIs": {
-    "inventory": {
+    "catalog": {
       "base_path": "/api",
       "require": [
           "client_id"
@@ -19,14 +19,20 @@
 //        "oauth"
       ]
     },
-    "financing": {
-      "base_path": "/financing",
+    "order": {
+      "base_path": "/api",
       "require": [
         "client_id"
       ]
     },
-    "logistics": {
-      "base_path": "/logistics",
+    "review": {
+      "base_path": "/api",
+      "require": [
+        "client_id"
+      ]
+    },
+    "customer": {
+      "base_path": "/api",
       "require": [
         "client_id"
       ]
