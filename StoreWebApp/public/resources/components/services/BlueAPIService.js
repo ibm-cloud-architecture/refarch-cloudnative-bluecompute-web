@@ -26,7 +26,7 @@ app.service('BlueAPIService', ['$http', function($http) {
 		else {
 			$http({
 					headers: {
-						"Content-Type": undefined
+						"Content-Type": 'application/x-www-form-urlencoded'
 					},
 					method: 'POST',
 					url: restUrl,
@@ -49,6 +49,11 @@ app.service('BlueAPIService', ['$http', function($http) {
 				var restUrl = 'review/' + itemId;
 				var requestType = 'GET';
 				invokeService(restUrl, requestType, null, successCallback, errorCallback);
+			},
+			loginUser : function(parameters, successCallback, errorCallback) {
+				var restUrl = 'https://api.us.apiconnect.ibmcloud.com/centusibmcom-cloudnative-integration/bluecompute/oauth20/token';
+				var requestType = 'POST';
+				invokeService(restUrl, requestType, parameters, successCallback, errorCallback);
 			}
 		}
 }]);

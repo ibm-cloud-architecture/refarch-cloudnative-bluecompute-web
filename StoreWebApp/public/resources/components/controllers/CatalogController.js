@@ -1,8 +1,8 @@
-app.controller('CatalogController', ['$scope','BlueAPIService',function($scope, BlueAPIService) {
+app.controller('CatalogController', ['$scope','BlueAPIService','UserInfoService',function($scope, BlueAPIService, UserInfoService) {
 
 	console.log("Entering Catalog Controller")
-	//$scope.baseURL = "https://api.us.apiconnect.ibmcloud.com/centusibmcom-cloudnative-dev/bluecompute"
 	$scope.baseURL = "/image/"
+	$scope.loggedIn = UserInfoService.authenticated
 
 	BlueAPIService.getCatalog(function (response) {
 			console.log("Get Catalog Result" + response)

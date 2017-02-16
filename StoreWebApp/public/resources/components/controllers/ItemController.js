@@ -1,7 +1,8 @@
-app.controller('ItemController', ['$scope','$routeParams','BlueAPIService',function($scope,$routeParams,BlueAPIService) {
+app.controller('ItemController', ['$scope','$routeParams','BlueAPIService','UserInfoService',function($scope,$routeParams,BlueAPIService, UserInfoService) {
 
 	console.log("Entering Inventory Controller")
 	$scope.baseURL = "/image/"
+	$scope.loggedIn = UserInfoService.authenticated
 
 	BlueAPIService.getItemById($routeParams.id, function (response) {
 			console.log("Get Item Detail Result" + response)
