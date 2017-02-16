@@ -120,9 +120,8 @@ function setNewOrderOptions(req, res) {
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
     if (_apis.order.require.indexOf("oauth") != -1) {
-
         // Add OAuth access token to the header
-        options.headers.Authorization = req.headers.Authorization;
+        options.headers.Authorization = req.headers.authorization;
         fulfill({
           options: options,
           item_id: form_body.itemId,
@@ -177,7 +176,7 @@ function submitNewOrder(function_input) {
   var options = function_input.options;
   var item_id = function_input.item_id;
   var res = function_input.res;
-
+  console.log("Order OPTIONS:\n" + JSON.stringify(options));
   http.request(options)
     .then(function (data) {
       console.log("DATA: " + JSON.stringify(data));

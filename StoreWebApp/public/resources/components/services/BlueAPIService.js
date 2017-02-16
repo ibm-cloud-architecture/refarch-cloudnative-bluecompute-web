@@ -2,7 +2,7 @@ app.service('BlueAPIService', ['$http', function($http) {
 
 	var invokeService = function(restUrl,
 			requestType, parameters, successCallback,
-			errorCallback) {
+			errorCallback, access_token) {
 
         baseURL = "https://api.us.apiconnect.ibmcloud.com/centusibmcom-cloudnative-integration/bluecompute/"
 
@@ -21,6 +21,16 @@ app.service('BlueAPIService', ['$http', function($http) {
 			$http({
 					method: 'DELETE',
 					url: restUrl
+				}).then(successCallback, errorCallback);
+		}else if (requestType == 'BUY'){
+			$http({
+				headers: {
+				//	"Content-Type": 'application/x-www-form-urlencoded'
+					"Authorization": 'Bearer '+ access_token
+				},
+				method: 'POST',
+				url: restUrl,
+				data: parameters
 				}).then(successCallback, errorCallback);
 		}
 		else {
@@ -54,6 +64,11 @@ app.service('BlueAPIService', ['$http', function($http) {
 				var restUrl = 'https://api.us.apiconnect.ibmcloud.com/centusibmcom-cloudnative-integration/bluecompute/oauth20/token';
 				var requestType = 'POST';
 				invokeService(restUrl, requestType, parameters, successCallback, errorCallback);
+			},
+			buyItems : function(access_token, parameters, successCallback, errorCallback) {
+				var restUrl = 'order/';
+				var requestType = 'BUY';
+				invokeService(restUrl, requestType, parameters, successCallback, errorCallback, access_token);
 			}
 		}
 }]);

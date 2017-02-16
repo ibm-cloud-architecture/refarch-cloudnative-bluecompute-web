@@ -19,4 +19,18 @@ app.controller('ItemController', ['$scope','$routeParams','BlueAPIService','User
 			console.log("Get Item Detail Result Error: " + error);
 	});
 
+	$scope.buy = function () {
+			$scope.payload = {'count':$scope.itemQuantity,
+												'itemId':$scope.item.id
+											}
+
+			BlueAPIService.buyItems(UserInfoService.accessToken, $scope.payload, function (response) {
+					console.log("Buy Item Result" + response)
+					$scope.result = response.data
+
+				}, function (error){
+					console.log("Buy Item Error: " + error);
+			});
+	}
+
 }]);

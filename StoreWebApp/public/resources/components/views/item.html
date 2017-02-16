@@ -22,7 +22,20 @@
           <p>${{item.price}}</p>
         </div>
         <div ng-show="loggedIn" class="pure-u-1 item-info-box">
-          <button type="submit"  ng-click="buy()" class="pure-button pure-button-primary">Buy</button>
+          <form class="pure-form pure-form-stacked">
+              <fieldset>
+                  <label for="quantity">Quantity</label>
+                  <select id="quantity" ng-model="itemQuantity">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                  </select>
+                  <button type="submit"  ng-click="buy()" class="pure-button pure-button-primary">Buy</button>
+              </fieldset>
+            </form>
+          <!--<button type="submit"  ng-click="buy()" class="pure-button pure-button-primary">Buy</button>-->
         </div>
       </div>
       <div class="pure-u-2-5 item-top-boxes">
