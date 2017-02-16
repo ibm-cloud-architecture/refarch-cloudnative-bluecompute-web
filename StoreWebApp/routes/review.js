@@ -27,7 +27,7 @@ router.get('/:id', function (req, res) {
 });
 
 /* Handle the POST request for creating a new item review */
-router.post('/submitReview', function (req, res) {
+router.post('/:id', function (req, res) {
   session = req.session;
 
   setNewReviewOptions(req, res)
@@ -61,24 +61,7 @@ function setGetReviewOptions(req, res) {
 
   return new Promise(function (fulfill) {
 
-    // Get OAuth Access Token, if needed
-    if (_apis.review.require.indexOf("oauth") != -1) {
-
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        getItem_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        getItemReviews_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        fulfill({
-          options: getItemReviews_options,
-          res: res
-        });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
-    }
-    else fulfill({
+    fulfill({
       options: getItemReviews_options,
       res: res
     });
@@ -105,7 +88,7 @@ function setNewReviewOptions(req, res) {
     org: _apiServerOrg,
     cat: _apiServerCatalog,
     api: _apis.review.base_path,
-    operation: "reviews/list?itemId=" + params.id
+    operation: "reviews/comment"
   });
 
   var options = {
@@ -118,25 +101,18 @@ function setNewReviewOptions(req, res) {
   };
 
   if (_apis.review.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.review.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
     if (_apis.review.require.indexOf("oauth") != -1) {
 
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        options.headers.Authorization = 'Bearer ' + session.oauth2token;
+      // Add OAuth access token to the header
+      options.headers.Authorization = req.headers.Authorization;
         fulfill({
           options: options,
           item_id: form_body.itemId,
           res: res
         });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
     }
     else fulfill({
       options: options,
@@ -222,11 +198,15 @@ function submitNewReview(function_input) {
   http.request(options)
     .then(function (data) {
       console.log("DATA: " + JSON.stringify(data));
-      res.redirect('/item/' + item_id);
+      // Render the page with the results of the API call
+      res.setHeader('Content-Type', 'application/json');
+      res.send(data);
     })
     .fail(function (err) {
       console.log("ERR: " + JSON.stringify(err));
-      res.redirect('/item/' + item_id);
+      // Render the error message in JSON
+      res.setHeader('Content-Type', 'application/json');
+      res.send(err);
     });
 }
 

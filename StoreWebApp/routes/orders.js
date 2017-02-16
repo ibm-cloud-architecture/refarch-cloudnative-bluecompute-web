@@ -31,7 +31,7 @@ router.post('/', function (req, res) {
   session = req.session;
 
   setNewOrderOptions(req, res)
-    .then(submitNewReview)
+    .then(submitNewOrder)
     .catch(renderErrorPage)
     .done();
 
@@ -113,26 +113,21 @@ function setNewOrderOptions(req, res) {
     JSON: true
   };
 
+  // Add APIC Client ID to the header
   if (_apis.order.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.order.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
     if (_apis.order.require.indexOf("oauth") != -1) {
 
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        options.headers.Authorization = 'Bearer ' + session.oauth2token;
+        // Add OAuth access token to the header
+        options.headers.Authorization = req.headers.Authorization;
         fulfill({
           options: options,
           item_id: form_body.itemId,
           res: res
         });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
     }
     else fulfill({
       options: options,
@@ -153,7 +148,7 @@ function sendApiReq(function_input) {
   return new Promise(function (fulfill, reject) {
     http.request(options)
       .then(function (result) {
-        //console.log("Catalog call succeeded with result: " + JSON.stringify(result));
+        //console.log("Order call succeeded with result: " + JSON.stringify(result));
         fulfill({
           data: result,
           res: res
@@ -178,7 +173,7 @@ function sendResponse(function_input) {
   res.send(data);
 }
 
-function submitNewReview(function_input) {
+function submitNewOrder(function_input) {
   var options = function_input.options;
   var item_id = function_input.item_id;
   var res = function_input.res;
@@ -186,11 +181,15 @@ function submitNewReview(function_input) {
   http.request(options)
     .then(function (data) {
       console.log("DATA: " + JSON.stringify(data));
-      res.redirect('/item/' + item_id);
+      // Render the page with the results of the API call
+      res.setHeader('Content-Type', 'application/json');
+      res.send(data);
     })
     .fail(function (err) {
       console.log("ERR: " + JSON.stringify(err));
-      res.redirect('/item/' + item_id);
+      // Render the error message in JSON
+      res.setHeader('Content-Type', 'application/json');
+      res.send(err);
     });
 }
 

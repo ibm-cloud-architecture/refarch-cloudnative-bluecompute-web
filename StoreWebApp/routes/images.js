@@ -22,7 +22,7 @@ function init_object_storage() {
   if(local_mode)
   {
     var username = "admin_21b66b75c4173e796c897bf16c9e13f361d2b4ff",
-        password = "xxxx",
+        password = "",
         projectId = "688d49f5f5784aa8a36450c7b36c3ddf",
         domainId = "f5cd32c788594b15bff1a093467e4864";
 
