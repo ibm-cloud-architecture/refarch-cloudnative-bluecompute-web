@@ -88,7 +88,7 @@ function setNewReviewOptions(req, res) {
     org: _apiServerOrg,
     cat: _apiServerCatalog,
     api: _apis.review.base_path,
-    operation: "reviews/comment"
+    operation: "reviews/comment?itemId=" + params.id
   });
 
   var options = {
@@ -107,7 +107,7 @@ function setNewReviewOptions(req, res) {
     if (_apis.review.require.indexOf("oauth") != -1) {
 
       // Add OAuth access token to the header
-      options.headers.Authorization = req.headers.Authorization;
+      options.headers.Authorization = req.headers.authorization;
         fulfill({
           options: options,
           item_id: form_body.itemId,
@@ -156,38 +156,6 @@ function sendResponse(function_input) {
   // Render the page with the results of the API call
   res.setHeader('Content-Type', 'application/json');
   res.send(data);
-}
-
-function sendItemReq(function_input) {
-  var getItem_options = function_input.getItem_options;
-  var getItemReviews_options = function_input.getItemReviews_options;
-  var res = function_input.res;
-
-  // Make API call for item and reviews data
-  return new Promise(function (fulfill, reject) {
-    http.request(getItem_options)
-      .then(function (item) {
-        http.request(getItemReviews_options)
-          .then(function (reviews) {
-
-            fulfill({
-              data: {
-                item: item,
-                reviews: reviews
-              },
-              res: res
-            });
-          })
-          .done();
-      })
-      .fail(function (reason) {
-        reject({
-          err: reason,
-          res: res
-        });
-      })
-      .done();
-  });
 }
 
 function submitNewReview(function_input) {
