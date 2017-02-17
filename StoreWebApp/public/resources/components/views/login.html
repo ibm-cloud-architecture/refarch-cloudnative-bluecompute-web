@@ -8,7 +8,8 @@
   </div>
 </div>
 <div class="content-wrapper">
-  <div ng-show="!loggedIn" class="content is-center">
+  <div ng-show="!loggedIn" class="content is-center" style="margin-top:50px;">
+    <span style="margin-bottom:10px;">Sign in to BlueCompute Store</span><br/>
     <form name="loginForm" class="pure-form pure-form-aligned">
       <fieldset>
         <div class="pure-control-group">
@@ -17,7 +18,9 @@
         <div class="pure-control-group">
           <input class="login-input" id="password" ng-model="password" name="password" type="password" placeholder="Password"/>
         </div>
-        <button type="submit"  ng-click="save(loginForm)" class="pure-button pure-button-primary">Sign in</button>
+        <div class="pure-control-group">
+          <button type="submit"  ng-click="save(loginForm)" class="pure-button pure-button-primary" style="width:300px;">Sign in</button>
+        </div>
       </fieldset>
     </form>
   </div>

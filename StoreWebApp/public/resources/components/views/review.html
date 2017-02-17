@@ -11,25 +11,8 @@
 <div style="top: 62px;" class="content-wrapper">
   <div class="content item-content">
     <div class="pure-g">
-      <!--
-      <div class="pure-u-1-5 item-top-boxes">
-        <img ng-src="{{baseURL + item.img}}" class="pure-img">
-      </div>
-
-      <div class="pure-u-1">
-        <hr>
-      </div>
-    -->
       <div class="pure-u-1-5">
-        <!--
-        <div class="pure-u-1 section-heading">
-          <p>Product Description</p>
-        </div>
-        <div class="pure-u-1 item-description-box">
-          <p>{{item.description}}</p>
-        </div>
-      -->
-            <form class="pure-form pure-form-aligned">
+            <form class="pure-form">
               <fieldset>
                   <div class="pure-control-group">
                       <label for="name">Reviewer Name</label>
@@ -41,18 +24,19 @@
                       <input id="email" type="text" ng-model="reviewer_email">
                   </div>
 
-                  <div>Click to assign star rating:
-                       <div id="stars" class="starrr" ng-click="getStars()"></div>
+                  <div>
+                      <label for="stars">Rating:</label>
+                       <div style="float:right;" id="stars" class="starrr" ng-click="getStars()"></div>
                   </div>
 
                   <div class="pure-control-group">
-                      <label for="commemts">Comments</label>
-                      <textarea class="pure-input-1-2" id="comments" type="textarea" ng-model="comments"></textarea>
+                      <!--<label for="commemts">Comments</label>-->
+                      <textarea style="width: 100%;margin-top: 20px;" id="comments" type="textarea" ng-model="comments" placeholder="Write your review here"></textarea>
                   </div>
 
-                  <div class="pure-controls">
+                  <div class="pure-controls" style="margin-top:20px;">
 
-                      <button ng-click="addReview()" class="pure-button pure-button-primary">Submit</button>
+                      <button style="width:100%;" ng-click="addReview()" class="pure-button pure-button-primary">Submit</button>
                   </div>
               </fieldset>
             </form>

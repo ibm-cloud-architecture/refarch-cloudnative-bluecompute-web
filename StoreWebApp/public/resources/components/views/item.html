@@ -14,17 +14,20 @@
       <div class="pure-u-1-5 item-top-boxes">
         <img ng-src="{{baseURL + item.img}}" class="pure-img">
       </div>
-      <div class="pure-u-2-5 item-top-boxes">
-        <div class="pure-u-1 item-info-box section-heading item-name-box">
-          <p>{{item.name}}</p>
+      <div class="pure-u-4-5 item-top-boxes">
+        <div class="pure-u-2-5 item-info-box item-name-box">
+          <p class="section-heading">{{item.name}}</p>
+          <p>${{item.price}}</p>
         </div>
+        <!--
         <div id="item-price" class="pure-u-1 item-info-box item-price-box">
           <p>${{item.price}}</p>
         </div>
-        <div ng-show="loggedIn" class="pure-u-1 item-info-box">
+      -->
+        <div ng-show="loggedIn" class="pure-u-1-5 item-info-box">
           <form class="pure-form pure-form-stacked">
               <fieldset>
-                  <label for="quantity">Quantity</label>
+                  <label for="quantity">Place your order here:</label>
                   <select id="quantity" ng-model="itemQuantity">
                       <option>1</option>
                       <option>2</option>
@@ -35,10 +38,10 @@
                   <button type="submit"  ng-click="buy()" class="pure-button pure-button-primary">Buy</button>
               </fieldset>
             </form>
-          <!--<button type="submit"  ng-click="buy()" class="pure-button pure-button-primary">Buy</button>-->
         </div>
       </div>
-      <div class="pure-u-2-5 item-top-boxes">
+      <!--
+      <div class="pure-u-2-5 item-top-boxes" style="overflow-y: scroll;">
         <div ng-repeat="itemReview in itemReviewList"  class="pure-g">
           <div class="pure-u-1-2">
             <div class="reviewer-name">{{itemReview.reviewer_name}}</div>
@@ -61,7 +64,7 @@
           <button type="submit"  ng-click="addReview()" class="pure-button pure-button-primary">Add Review</button>
         </div>
       </div>
-
+      -->
       <div class="pure-u-1">
         <hr>
       </div>
@@ -71,6 +74,41 @@
         </div>
         <div class="pure-u-1 item-description-box">
           <p>{{item.description}}</p>
+        </div>
+      </div>
+      <div class="pure-u-1">
+        <hr>
+      </div>
+      <div class="pure-u-1">
+        <div class="pure-u-1 section-heading" style="margin-bottom: 20px;">
+          <p>Customer Reviews</p>
+        </div>
+        <div ng-show="loggedIn" class="pure-u-1">
+          <button type="submit"  ng-click="addReview()" class="pure-button pure-button-primary" style="margin-bottom: 30px;">Add Review</button>
+        </div>
+        <div class="pure-u-2-5 item-top-boxes">
+          <div ng-repeat="itemReview in itemReviewList"  class="pure-g">
+            <div class="pure-u-1-2">
+              <div class="reviewer-name">{{itemReview.reviewer_name}}</div>
+            </div>
+            <div class="pure-u-1-2">
+              <div class="review-rating">
+              </div>
+                <i class="fa fa-star star-style"></i>
+                <i ng-class="itemReview.rating >= 2 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+                <i ng-class="itemReview.rating >= 3 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+                <i ng-class="itemReview.rating >= 4 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+                <i ng-class="itemReview.rating >= 5 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+            </div>
+            <div class="pure-u-1">
+              <div class="review-section">{{itemReview.comment}}</div>
+            </div>
+            <hr>
+          </div>
+          <!--
+          <div ng-show="loggedIn" class="pure-u-2-5  item-info-box">
+            <button type="submit"  ng-click="addReview()" class="pure-button pure-button-primary">Add Review</button>
+          </div>-->
         </div>
       </div>
     </div>

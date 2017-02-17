@@ -11,7 +11,7 @@ app.controller('LoginController', ['$scope','$location','BlueAPIService','UserIn
 	 			console.log("Login Result" + response)
 				UserInfoService.accessToken = response.data.access_token
 				UserInfoService.authenticated = true;
-				$location.path('!#/catalog');
+				$location.path('/catalog');
 
 	 		}, function (error){
 	 			console.log("Login Error: " + error);

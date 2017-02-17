@@ -1,4 +1,4 @@
-app.controller('ReviewItemController', ['$scope','$routeParams','UserInfoService','BlueAPIService',function($scope, $routeParams, UserInfoService, BlueAPIService) {
+app.controller('ReviewItemController', ['$scope','$routeParams','$location','UserInfoService','BlueAPIService',function($scope, $routeParams, $location, UserInfoService, BlueAPIService) {
 
 	console.log("Entering Review Item Controller")
 
