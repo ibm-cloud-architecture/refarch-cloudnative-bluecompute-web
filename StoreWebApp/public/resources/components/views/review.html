@@ -41,15 +41,8 @@
                       <input id="email" type="text" ng-model="reviewer_email">
                   </div>
 
-                  <div >
-                      <label for="rating">Rating</label>
-                      <select id="rating" ng-model="rating">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                      </select>
+                  <div>Click to assign star rating:
+                       <div id="stars" class="starrr" ng-click="getStars()"></div>
                   </div>
 
                   <div class="pure-control-group">

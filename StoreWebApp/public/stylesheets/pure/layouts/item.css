@@ -23,6 +23,8 @@
  */
 .item-top-boxes {
   margin-bottom: 20px;
+  height: 200px;
+  overflow-y: scroll;
 }
 
 .item-info-box {
