@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- "6"
+
+before_install: 
+- npm install
+- npm install -g jshint
+- cd StoreWebApp
+
+script: 
+- jshint app.js
+- jshint routes/
