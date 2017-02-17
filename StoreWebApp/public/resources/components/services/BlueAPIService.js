@@ -22,7 +22,7 @@ app.service('BlueAPIService', ['$http', function($http) {
 					method: 'DELETE',
 					url: restUrl
 				}).then(successCallback, errorCallback);
-		}else if (requestType == 'BUY'){
+		}else if (requestType == 'POST_AUTH'){
 			$http({
 				headers: {
 				//	"Content-Type": 'application/x-www-form-urlencoded'
@@ -67,7 +67,12 @@ app.service('BlueAPIService', ['$http', function($http) {
 			},
 			buyItems : function(access_token, parameters, successCallback, errorCallback) {
 				var restUrl = 'order/';
-				var requestType = 'BUY';
+				var requestType = 'POST_AUTH';
+				invokeService(restUrl, requestType, parameters, successCallback, errorCallback, access_token);
+			},
+			addReviewItem : function(access_token, itemId, parameters, successCallback, errorCallback) {
+				var restUrl = 'review/' + itemId;
+				var requestType = 'POST_AUTH';
 				invokeService(restUrl, requestType, parameters, successCallback, errorCallback, access_token);
 			}
 		}

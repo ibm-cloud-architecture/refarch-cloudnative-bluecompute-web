@@ -71,15 +71,16 @@ function setGetReviewOptions(req, res) {
 
 function setNewReviewOptions(req, res) {
   var form_body = req.body;
+  var params = req.params;
 
   var reqBody = {
-    date: new Date(),
+    review_date: new Date(),
     rating: form_body.rating
   };
 
   // Add optional portions to the request body
-  if (form_body.name !== '') reqBody.reviewer_name = form_body.name;
-  if (form_body.email !== '') reqBody.reviewer_email = form_body.email;
+  if (form_body.name !== '') reqBody.reviewer_name = form_body.reviewer_name;
+  if (form_body.email !== '') reqBody.reviewer_email = form_body.reviewer_email;
   if (form_body.comment !== '') reqBody.comment = form_body.comment;
 
   var reviews_url = api_url.stringify({

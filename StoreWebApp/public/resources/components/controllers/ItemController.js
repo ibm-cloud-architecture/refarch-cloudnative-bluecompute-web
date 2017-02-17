@@ -1,4 +1,4 @@
-app.controller('ItemController', ['$scope','$routeParams','BlueAPIService','UserInfoService',function($scope,$routeParams,BlueAPIService, UserInfoService) {
+app.controller('ItemController', ['$scope','$routeParams','$location', 'BlueAPIService','UserInfoService',function($scope,$routeParams, $location, BlueAPIService, UserInfoService) {
 
 	console.log("Entering Inventory Controller")
 	$scope.baseURL = "/image/"
@@ -31,6 +31,9 @@ app.controller('ItemController', ['$scope','$routeParams','BlueAPIService','User
 				}, function (error){
 					console.log("Buy Item Error: " + error);
 			});
+	}
+	$scope.addReview = function () {
+			$location.path('review/'+$scope.item.id);
 	}
 
 }]);
