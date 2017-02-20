@@ -25,6 +25,10 @@ app.config(['$routeProvider', function($routeProvider) {
        templateUrl : baseUrl + 'review.html',
        controller: 'ReviewItemController'
     })
+		.when('/customer', {
+       templateUrl : baseUrl + 'customer.html',
+       controller: 'CustomerController'
+    })
     .otherwise({
         redirectTo: '/home'
       });

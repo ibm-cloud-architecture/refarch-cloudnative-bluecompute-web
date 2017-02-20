@@ -10,9 +10,16 @@ app.service('BlueAPIService', ['$http', function($http) {
 
 		if (requestType == 'GET') {
 			$http({
-          //headers: {
-          //  "X-IBM-Client-Id" : "59563f83-1f52-4e87-87e9-4b07414a1f27"
-          //},
+				  method: 'GET',
+				  url: restUrl
+				}).then(successCallback, errorCallback);
+		}
+		else if (requestType == 'GET_AUTH') {
+			$http({
+				headers: {
+				//	"Content-Type": 'application/x-www-form-urlencoded'
+					"Authorization": 'Bearer '+ access_token
+					},
 				  method: 'GET',
 				  url: restUrl
 				}).then(successCallback, errorCallback);
@@ -74,6 +81,11 @@ app.service('BlueAPIService', ['$http', function($http) {
 				var restUrl = 'review/' + itemId;
 				var requestType = 'POST_AUTH';
 				invokeService(restUrl, requestType, parameters, successCallback, errorCallback, access_token);
+			},
+			getCustomerProfile : function(access_token, successCallback, errorCallback) {
+				var restUrl = 'customer/';
+				var requestType = 'GET_AUTH';
+				invokeService(restUrl, requestType, null, successCallback, errorCallback, access_token);
 			}
 		}
 }]);
