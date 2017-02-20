@@ -51,38 +51,23 @@ function setGetCustomerOptions(req, res) {
   };
 
   if (_apis.customer.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.customer.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
-
-  // Apply the query filter, if one is present
-  //if (typeof query.filter !== 'undefined') options.url += '?filter=' + JSON.stringify(query.filter);
-  //else options.url += '?filter[order]=name%20ASC';
+  //if (_apis.customer.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
 
     // Get OAuth Access Token, if needed
     if (_apis.customer.require.indexOf("oauth") != -1) {
-
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-
-        console.log("Render catalog with Token: " + session.oauth2token)
-        options.headers.Authorization = 'Bearer ' + session.oauth2token;
+        options.headers.Authorization = req.headers.authorization;
         fulfill({
           options: options,
           res: res
         });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
       }
-
-    }
-    else fulfill({
-      options: options,
-      res: res
+      else fulfill({
+        options: options,
+        res: res
+      });
     });
-  });
-
 }
 
 
