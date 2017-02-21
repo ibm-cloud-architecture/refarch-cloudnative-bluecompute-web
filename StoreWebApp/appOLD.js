@@ -7,15 +7,19 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var index = require('./routes/index');
+/*
 var catalog = require('./routes/catalog');
 var review = require('./routes/review');
-var customer = require('./routes/customer');
+var login = require('./routes/login');
 var images = require('./routes/images');
-var orders = require('./routes/orders');
-
+var financing = require('./routes/financing');
+*/
 var app = express();
+//var router = express.Router();
 
 // view engine setup
+
+/*
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -33,14 +37,21 @@ app.use(session({
 
 app.use('/', index);
 app.use('/catalog', catalog);
-app.use('/customer', customer);
 app.use('/review', review);
-//app.use('/login', login);
+app.use('/login', login);
 app.use('/image', images);
-app.use('/order', orders);
-
+app.use('/financing', financing);
+*/
+app.use('/', index);
 app.use('/', express.static('public/resources'))
 app.use('/', express.static('public/stylesheets'))
+//app.use(express.static(path.join(__dirname, '../', 'public/resources/index.html'));
+
+//app.use('/', express.static(path.join(__dirname, 'public')))
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!')
+})
 
 
 //Setup HealthCheck API
@@ -55,6 +66,7 @@ app.use('/_healthchecks', healthchecks(healthcheck_options));
 
 
 // catch 404 and forward to error handler
+/*
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
@@ -65,6 +77,7 @@ app.use(function (req, res, next) {
 
 // development error handler
 // will print stacktrace
+
 if (app.get('env') === 'development') {
   app.use(function (err, req, res) {
     res.status(err.status || 500);
@@ -84,5 +97,5 @@ app.use(function (err, req, res) {
     error: {}
   });
 });
-
+*/
 module.exports = app;

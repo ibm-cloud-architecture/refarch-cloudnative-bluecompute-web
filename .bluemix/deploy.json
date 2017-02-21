@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "BlueCompute Web Deployment to Bluemix",
-    "description": "bluecompute web toolchain",
+    "title": "Bluecompute Toolchain Deployment to Bluemix",
+    "description": "bluecompute toolchain",
     "longDescription": "Information entered here will be used at deployment time.",
     "type": "object",
     "properties": {
-        "deploy-region": {
-            "description": "Deploy to this Bluemix Region",
+        "repo-branch": {
+            "description": "Git repo branch",
             "type": "string"
         },
         "deploy-org": {
@@ -17,17 +17,32 @@
             "description": "Deploy to this space",
             "type": "string"
         },
-        "route-domain": {
-            "description": "Domain name. Example: mybluemix.net for runtimes in US-South",
+        "deploy-region-us": {
+            "description": "Deploy to this US region",
+            "type": "string"
+        },
+        "deploy-region-eu": {
+            "description": "Deploy to this EU region",
+            "type": "string"
+        },
+        "route-domain-us": {
+            "description": "US Route Domain",
+            "type": "string"
+        },
+        "route-domain-eu": {
+            "description": "EU Route Domain",
+            "type": "string"
+        },
+        "new-relic-lic-key": {
+            "description": "New Relic License Key",
             "type": "string"
         }
     },
     "required": [
-        "deploy-region",
+        "repo-branch",
         "deploy-org",
-        "deploy-space",
-        "route-domain"
-    ],
+        "deploy-space"
+        ],
     "form": [
         {
             "type": "validator",
@@ -36,17 +51,23 @@
         {
             "type": "text",
             "readonly": false,
-            "title": "Domain name for all routes",
-            "key": "route-domain"
+            "title": "Git repo branch",
+            "key": "repo-branch"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "New Relic License Key",
+            "key": "new-relic-lic-key"
         },
         {
             "type": "table",
             "columnCount": 3,
-            "widths": ["33%", "33%", "33%"],
+            "widths": ["30%", "35%", "35%"],
             "items": [
                 {
                     "type": "label",
-                    "title": "Region"
+                    "title": ""
                 },
                 {
                     "type": "label",
@@ -57,14 +78,12 @@
                     "title": "Space"
                 },
                 {
-                    "type": "select",
-                    "key": "deploy-region",
-                    "readonly": false
+                    "type": "label",
+                    "title": "Deploy to (in US-South and London)"
                 },
                 {
                     "type": "select",
-                    "key": "deploy-org",
-                    "readonly": false
+                    "key": "deploy-org"
                 },
                 {
                     "type": "select",

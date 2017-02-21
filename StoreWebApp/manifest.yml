@@ -1,8 +1,10 @@
 applications:
-- path: .
+- services:
+  - gchen-object-storage
+  path: .
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: bluecompute-web-app
-  host: bluecompute-web-app
+  name: bluecompute-web-gangchen-dev
+  host: bluecompute-web-gangchen-dev
   disk_quota: 1024M

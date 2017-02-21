@@ -2,10 +2,11 @@
  * -- CONTENT STYLES --
  * This represents the content area (everything below the blue section)
  */
+ /*
 .content-wrapper {
   top: 62px;
 }
-
+*/
 .item-content {
   padding: 2em;
 }

@@ -1,0 +1,48 @@
+<div class="header">
+  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+    <a href="/" class="pure-menu-heading">IBM Cloud Architecture</a>
+    <ul class="pure-menu-list">
+      <li class="pure-menu-item"><a class="pure-menu-link" href="/#">Home</a></li>
+      <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
+      <li ng-show="!loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/login">Log In</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+    </ul>
+  </div>
+</div>
+<div style="top: 62px;" class="content-wrapper">
+  <div class="content item-content">
+    <div class="pure-g">
+      <div class="pure-u-1-5">
+            <form class="pure-form">
+              <fieldset>
+                  <div class="pure-control-group">
+                      <label for="name">Reviewer Name</label>
+                      <input id="name" type="text" ng-model="reviewer_name">
+                  </div>
+
+                  <div class="pure-control-group">
+                      <label for="email">Reviewer Email</label>
+                      <input id="email" type="text" ng-model="reviewer_email">
+                  </div>
+
+                  <div>
+                      <label for="stars">Rating:</label>
+                       <div style="float:right;" id="stars" class="starrr" ng-click="getStars()"></div>
+                  </div>
+
+                  <div class="pure-control-group">
+                      <!--<label for="commemts">Comments</label>-->
+                      <textarea style="width: 100%;margin-top: 20px;" id="comments" type="textarea" ng-model="comments" placeholder="Write your review here"></textarea>
+                  </div>
+
+                  <div class="pure-controls" style="margin-top:20px;">
+
+                      <button style="width:100%;" ng-click="addReview()" class="pure-button pure-button-primary">Submit</button>
+                  </div>
+              </fieldset>
+            </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer l-box is-center"><a href="https://developer.ibm.com/architecture/" target="_blank" style="text-decoration: none;color: white">IBM Cloud Architecture Center</a></div>
+</div>
