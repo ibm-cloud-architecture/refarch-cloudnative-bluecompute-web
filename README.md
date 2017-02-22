@@ -56,7 +56,16 @@ The web application stores the product images/photos in Cloud storage using Blue
 
   ![Web App Configuration](static/imgs/bluecompute_config.png?raw=true)
 
-3. Run the Web application
+3. Edit the file `StoreWebApp/routes/images.js`, under `function init_object_storage()`, replace the local_mode credential with the Oject Storage credential you just created, for example
+
+  ```
+     var username = "admin_xxxx",
+        password = "xxx",
+        projectId = "xxx",
+        domainId = "xxx";
+  ```
+
+4. Run the Web application
 
   The application uses [Bower](https://bower.io/) to manage the dependencies for Web front end library like AngularJS. You need to install all the dependencies first:
   
@@ -72,7 +81,7 @@ The web application stores the product images/photos in Cloud storage using Blue
 
    This will start the Node.js application on your local environment and open a browser with app homepage.
 
-4. Validate the application.
+5. Validate the application.
 
    The application is lunched in a browser at:
 
