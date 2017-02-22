@@ -67,6 +67,8 @@ You need to have Bluemix command line (bx or cf) installed, as well as Node.js r
 
 - Configure the application
 
+  You need to change the `config\default.json` configuration to inform application is running in Bluemix by change the setting  `local_mode` to `false` before deployment.
+
   You need to change the Cloud Foundry application route for your own web application hostname. Edit the `StoreWebApp/manefest.yml` file to update the name and host fields:
 
   ```yml
