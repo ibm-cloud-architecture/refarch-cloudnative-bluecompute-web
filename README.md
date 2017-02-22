@@ -15,12 +15,22 @@ The BlueCompute Web application is built to demonstrate how to access the Omnich
   - catalog  
 
   You can get these information from your API Connect management console. Click on the "BlueCompute" catalog, then navigate to **Settings -> Endpoints** tab. You will find the API Base URL. It is in the format of **https://[host]/[org]/[catalog]**. Catalog should always be "bluecompute" in this case.
+  
+  You need to make sure the setting `local_mode` is set as `true` when testing locally.
 
   ![Web App Configuration](static/imgs/bluecompute_config.png?raw=true)
 
 3. Run the Web application
 
-   `$ cd StoreWebApp`  
+  The application uses [Bower](https://bower.io/) to manage the dependencies for Web front end library like AngularJS. You need to install all the dependencies first:
+  
+   `$ cd StoreWebApp`
+   `$ cd public/resources`
+   `$ bower install`
+  
+    Now, you can prepare the Node.js BFF modules and run the application
+     
+   `$ cd ../..`
    `$ npm install`  
    `$ npm start`  
 
@@ -32,15 +42,15 @@ The BlueCompute Web application is built to demonstrate how to access the Omnich
 
    [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-   Click the "Browser ITEM INVENTORY" will load the list of items:
+   Click the "Browse Item Catalog" will load the list of items:
 
   ![BlueCompute List](static/imgs/bluecompute_web_home.png?raw=true)
 
-  Click on one of the items will bring you to the detail page:
-
   ![BlueCompute Detail](static/imgs/bluemix_25.png?raw=true)
+  
+  Click on one of the items will bring you to the detail page. 
 
-Feel free to play around and explore the mobile inventory application.
+Feel free to play around and explore the Web application.
 
 ## Deploy the application to Bluemix hosting:
 ### Deploy using Bluemix DevOps Continuous Delivery Toolchain
