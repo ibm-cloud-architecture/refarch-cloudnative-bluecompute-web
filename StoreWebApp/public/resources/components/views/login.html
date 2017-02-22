@@ -22,6 +22,9 @@
         <div class="pure-control-group">
           <button type="submit"  ng-click="save(loginForm)" class="pure-button pure-button-primary" style="width:300px;">Sign in</button>
         </div>
+        <div ng-show="loginError" class="content is-center" style="color: red;">
+          * Invalid user information, please sign in again.
+        </div>
       </fieldset>
     </form>
   </div>

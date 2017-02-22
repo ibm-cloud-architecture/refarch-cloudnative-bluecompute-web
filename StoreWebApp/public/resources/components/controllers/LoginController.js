@@ -2,6 +2,7 @@ app.controller('LoginController', ['$scope','$location','BlueAPIService','UserIn
 
 	console.log("Entering Login Controller")
 	$scope.loggedIn = UserInfoService.authenticated
+	$scope.loginError = false;
 
 	 $scope.save = function (loginForm) {
 
@@ -15,6 +16,7 @@ app.controller('LoginController', ['$scope','$location','BlueAPIService','UserIn
 
 	 		}, function (error){
 	 			console.log("Login Error: " + error);
+				$scope.loginError = true;
 	 	});
 
 	 }

@@ -20,11 +20,6 @@
           <p class="section-heading">{{item.name}}</p>
           <p>${{item.price}}</p>
         </div>
-        <!--
-        <div id="item-price" class="pure-u-1 item-info-box item-price-box">
-          <p>${{item.price}}</p>
-        </div>
-      -->
         <div ng-show="loggedIn" class="pure-u-1-5 item-info-box">
           <form class="pure-form pure-form-stacked">
               <fieldset>
@@ -39,33 +34,14 @@
                   <button type="submit"  ng-click="buy()" class="pure-button pure-button-primary">Buy</button>
               </fieldset>
             </form>
-        </div>
-      </div>
-      <!--
-      <div class="pure-u-2-5 item-top-boxes" style="overflow-y: scroll;">
-        <div ng-repeat="itemReview in itemReviewList"  class="pure-g">
-          <div class="pure-u-1-2">
-            <div class="reviewer-name">{{itemReview.reviewer_name}}</div>
-          </div>
-          <div class="pure-u-1-2">
-            <div class="review-rating">
+            <div ng-show="success" class="is-center" style="color: green;white-space: nowrap;">
+              * Your order was placed successfully!
             </div>
-              <i class="fa fa-star star-style"></i>
-              <i ng-class="itemReview.rating >= 2 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
-              <i ng-class="itemReview.rating >= 3 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
-              <i ng-class="itemReview.rating >= 4 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
-              <i ng-class="itemReview.rating >= 5 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
-          </div>
-          <div class="pure-u-1">
-            <div class="review-section">{{itemReview.comment}}</div>
-          </div>
-          <hr>
-        </div>
-        <div ng-show="loggedIn" class="pure-u-2-5  item-info-box">
-          <button type="submit"  ng-click="addReview()" class="pure-button pure-button-primary">Add Review</button>
+            <div ng-show="fail" class="is-center" style="color: red;white-space: nowrap;">
+              * Your order was not processed, please try again.
+            </div>
         </div>
       </div>
-      -->
       <div class="pure-u-1">
         <hr>
       </div>
@@ -84,10 +60,40 @@
         <div class="pure-u-1 section-heading" style="margin-bottom: 20px;">
           <p>Customer Reviews</p>
         </div>
+        <!--
         <div ng-show="loggedIn" class="pure-u-1">
           <button type="submit"  ng-click="addReview()" class="pure-button pure-button-primary" style="margin-bottom: 30px;">Add Review</button>
         </div>
+      -->
+        <div ng-show="loggedIn" class="pure-u-1">
+          <!--<button type="submit"  ng-click="addReview()" class="pure-button pure-button-primary" style="margin-bottom: 30px;">Add Review</button>-->
+          <a ng-click="showReview = !showReview" style="margin-bottom: 30px;" href="">Click to Add Review</a>
+        </div>
         <div class="pure-u-2-5 item-top-boxes">
+          <form ng-show="showReview" class="pure-form pure-u-4-5">
+            <fieldset>
+                <div>
+                    <label for="stars">Rating:</label>
+                     <div style="float:right;" id="stars" class="starrr" ng-click="getStars()"></div>
+                </div>
+
+                <div class="pure-control-group">
+                    <!--<label for="commemts">Comments</label>-->
+                    <textarea style="width: 100%;margin-top: 20px;" id="comments" type="textarea" ng-model="comments" placeholder="Write your review here"></textarea>
+                </div>
+
+                <div class="pure-controls" style="margin-top:20px;">
+
+                    <button style="width:100%;" ng-click="addReview()" class="pure-button pure-button-primary">Submit</button>
+                </div>
+            </fieldset>
+          </form>
+          <div ng-show="reviewFail" style="color: red;white-space: nowrap;margin-bottom:10px;">
+            * Your review submission was not processed, please try again.
+          </div>
+          <div ng-show="reviewSuccess" style="color: green;white-space: nowrap;margin-bottom:10px;">
+            * Your review was submitted successfully, page will refresh shortly!
+          </div>
           <div ng-repeat="itemReview in itemReviewList"  class="pure-g">
             <div class="pure-u-1-2">
               <div class="reviewer-name">{{itemReview.reviewer_name}}</div>
@@ -106,10 +112,6 @@
             </div>
             <hr>
           </div>
-          <!--
-          <div ng-show="loggedIn" class="pure-u-2-5  item-info-box">
-            <button type="submit"  ng-click="addReview()" class="pure-button pure-button-primary">Add Review</button>
-          </div>-->
         </div>
       </div>
     </div>

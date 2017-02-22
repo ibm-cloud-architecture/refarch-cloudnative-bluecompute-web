@@ -3,6 +3,7 @@ app.controller('ReviewItemController', ['$scope','$routeParams','$location','Use
 	console.log("Entering Review Item Controller")
 
 	$scope.loggedIn = UserInfoService.authenticated
+	$scope.reviewFail = false;
 
 	angular.element('#stars').starrr();
 
@@ -13,8 +14,8 @@ app.controller('ReviewItemController', ['$scope','$routeParams','$location','Use
   $scope.addReview = function () {
 
   			$scope.payload = {
-                          'reviewer_name':$scope.reviewer_name,
-  												'reviewer_email':$scope.reviewer_email,
+                        //  'reviewer_name':$scope.reviewer_name,
+  											//	'reviewer_email':$scope.reviewer_email,
                           'rating':$scope.count.length,
                           'comment':$scope.comments
   											}
@@ -26,6 +27,7 @@ app.controller('ReviewItemController', ['$scope','$routeParams','$location','Use
 
   				}, function (error){
   					console.log("Add Review Item Error: " + error);
+						$scope.reviewFail = true;
   			});
 
   }

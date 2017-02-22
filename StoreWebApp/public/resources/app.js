@@ -21,10 +21,10 @@ app.config(['$routeProvider', function($routeProvider) {
        templateUrl : baseUrl + 'item.html',
        controller: 'ItemController'
     })
-		.when('/review/:id', {
-       templateUrl : baseUrl + 'review.html',
-       controller: 'ReviewItemController'
-    })
+//		.when('/review/:id', {
+//       templateUrl : baseUrl + 'review.html',
+//       controller: 'ReviewItemController'
+//    })
 		.when('/customer', {
        templateUrl : baseUrl + 'customer.html',
        controller: 'CustomerController'
