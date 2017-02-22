@@ -3,7 +3,7 @@
 *This project is part of the 'IBM Cloud Native Reference Architecture' suite, available at
 https://github.com/ibm-cloud-architecture/refarch-cloudnative*
 
-The BlueCompute Web application is built to demonstrate how to access the omnichannel APIs hosted on IBM Cloud. The application application provides the basic function to allow user to browse the Inventory items. It is built as a Node.js application that uses Express framework and Jade templates.
+The BlueCompute Web application is built to demonstrate how to access the Omnichannel APIs hosted on IBM Cloud. The application provides the basic function to allow user to browse the Catalog items, make an Order and submit review comments. The Web application is built with AngularJS in Web 2.0 Single Page App style. It uses a Node.js backend to host the static content and implement the BFF (Backend for Frontend) pattern.
 
 ## Run the Web application locally
 
