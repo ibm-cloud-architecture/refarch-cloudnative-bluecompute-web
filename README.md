@@ -41,10 +41,10 @@ The BlueCompute Web application is built to demonstrate how to access the Omnich
    The application is lunched in a browser at:
 
    [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-
-   Click the "Browse Item Catalog" will load the list of items:
-
+   
   ![BlueCompute List](static/imgs/bluecompute_web_home.png?raw=true)
+
+  Click the "Browse Item Catalog" will load the list of items:
 
   ![BlueCompute Detail](static/imgs/bluemix_25.png?raw=true)
   
@@ -53,7 +53,13 @@ The BlueCompute Web application is built to demonstrate how to access the Omnich
 Feel free to play around and explore the Web application.
 
 ## Deploy the application to Bluemix hosting:
+
+You can deploy the application to your Bluemix environment using the automated DevOps open toolchain or manually if you would like to get familiar with how to operate in Bluemix. 
+
 ### Deploy using Bluemix DevOps Continuous Delivery Toolchain
+
+Click the button below will create the automated DevOps open toolchain in your environment and kick off the deployment. 
+
 [![bluecompute-web-toolchain](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web.git&branch=master)
 
 ### Deploy using Bluemix CLI
@@ -61,7 +67,7 @@ You need to have Bluemix command line (bx or cf) installed, as well as Node.js r
 
 - Configure the application
 
-  This need to change the Cloud Foundry application route for your own web application hostname. Edit the `StoreWebApp/manefest.yml` file to update the name and host fields:
+  You need to change the Cloud Foundry application route for your own web application hostname. Edit the `StoreWebApp/manefest.yml` file to update the name and host fields:
 
   ```yml
   applications:
@@ -74,15 +80,15 @@ You need to have Bluemix command line (bx or cf) installed, as well as Node.js r
     disk_quota: 1024M
   ```
 
-  Replace the `bluecompute-web-app` with your own application host name.
+  Replace the `bluecompute-web-app` with your own application host name for example: `bluecompute-web-app-firstname-lastname-date`.
 
 - Deploy the application:
 
   `$ cd StoreWebApp`  
   `$ cf login`  
-  `$ cf push -n {your_app_host_name} -d {your_domain_name}`   
+  `$ cf push`   
 
-Replace the {your_app_host_name} with your unique application name on Bluemix. And specify your domain name. For example `cf push -n bluecompute-web-qa -d mybluemix.net`
+Replace the {your_app_host_name} with your unique application name on Bluemix.
 
 - Validate the application:
 
