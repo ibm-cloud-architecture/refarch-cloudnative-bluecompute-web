@@ -7,7 +7,7 @@ The BlueCompute Web application is built to demonstrate how to access the Omnich
 
 Here is an overview of the project's features:
 - AngularJS SPA
-- Node.js based BFF application to access APIs 
+- Node.js based BFF application to access APIs
 - Authentication and Authorization through OAuth 2.0
 - Integration wiht Bluemix Objec Storage
 - DevOps toolchain to build/deploy web app
@@ -20,7 +20,7 @@ The web application stores the product images/photos in Cloud storage using Blue
    - Specify the name for your service instance.
    - Choose the Free plan
    - Click the Create button.
-   
+
 2. Now obtain the Object Storage service credentials.
    - Click on Service Credentials tab.
    - Then click on the View Credentials dropdown next to the credentials. (You may need to create a new credential)
@@ -30,17 +30,17 @@ The web application stores the product images/photos in Cloud storage using Blue
     username
     password
     domainId
-    
+
     Keep those credential handy as they will be needed when running the web app locally.
-    
+
 3. Create a Object Storage container and Upload the application images into the container
-   
-   Bluemix Object Storage uses container as unit of managing content. 
-   
-   - Click the "Manage" tab, then click the "Select Action" dropdown, and choose "**Create Container**". 
-   - Name the Container "**bluecompute**". 
-   - From your compute file explore (or Finder in Mac), locate the folder `StoreWebApp/image`. Drag and drop all the images to the Browser Object Storage bluecompute container. (alternative, you can click add file actions to load images). 
-    
+
+   Bluemix Object Storage uses container as unit of managing content.
+
+   - Click the "Manage" tab, then click the "Select Action" dropdown, and choose "**Create Container**".
+   - Name the Container "**bluecompute**".
+   - From your compute file explore (or Finder in Mac), locate the folder `StoreWebApp/image`. Drag and drop all the images to the Browser Object Storage bluecompute container. (alternative, you can click add file actions to load images).
+
 ## Run the Web application locally
 
 1. Navigate to the web app folder `StoreWebApp` in the git repository.
@@ -51,7 +51,7 @@ The web application stores the product images/photos in Cloud storage using Blue
   - catalog  
 
   You can get these information from your API Connect management console. Click on the "BlueCompute" catalog, then navigate to **Settings -> Endpoints** tab. You will find the API Base URL. It is in the format of **https://[host]/[org]/[catalog]**. Catalog should always be "bluecompute" in this case.
-  
+
   You need to make sure the setting `local_mode` is set as `true` when testing locally.
 
   ![Web App Configuration](static/imgs/bluecompute_config.png?raw=true)
@@ -68,16 +68,16 @@ The web application stores the product images/photos in Cloud storage using Blue
 4. Run the Web application
 
   The application uses [Bower](https://bower.io/) to manage the dependencies for Web front end library like AngularJS. You need to install all the dependencies first:
-  
-   `$ cd StoreWebApp`
-   `$ cd public/resources`
-   `$ bower install`
-  
+
+   `$ cd StoreWebApp`  
+   `$ cd public/resources`  
+   `$ bower install`  
+
     Now, you can prepare the Node.js BFF modules and run the application
-     
-   `$ cd ../..`
+
+   `$ cd ../..`  
    `$ npm install`  
-   `$ npm start`  
+   `$ npm start`    
 
    This will start the Node.js application on your local environment and open a browser with app homepage.
 
@@ -86,24 +86,24 @@ The web application stores the product images/photos in Cloud storage using Blue
    The application is lunched in a browser at:
 
    [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-   
+
   ![BlueCompute List](static/imgs/bluecompute_web_home.png?raw=true)
 
   Click the "Browse Item Catalog" will load the list of items:
 
   ![BlueCompute Detail](static/imgs/bluemix_25.png?raw=true)
-  
-  Click on one of the items will bring you to the detail page. 
+
+  Click on one of the items will bring you to the detail page.
 
 Feel free to play around and explore the Web application.
 
 ## Deploy the application to Bluemix hosting:
 
-You can deploy the application to your Bluemix environment using the automated DevOps open toolchain or manually if you would like to get familiar with how to operate in Bluemix. 
+You can deploy the application to your Bluemix environment using the automated DevOps open toolchain or manually if you would like to get familiar with how to operate in Bluemix.
 
 ### Deploy using Bluemix DevOps Continuous Delivery Toolchain
 
-Click the button below will create the automated DevOps open toolchain in your environment and kick off the deployment. 
+Click the button below will create the automated DevOps open toolchain in your environment and kick off the deployment.
 
 [![bluecompute-web-toolchain](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web.git&branch=master)
 
