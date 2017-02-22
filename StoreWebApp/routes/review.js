@@ -79,8 +79,8 @@ function setNewReviewOptions(req, res) {
   };
 
   // Add optional portions to the request body
-  if (form_body.name !== '') reqBody.reviewer_name = form_body.reviewer_name;
-  if (form_body.email !== '') reqBody.reviewer_email = form_body.reviewer_email;
+  //if (form_body.name !== '') reqBody.reviewer_name = form_body.reviewer_name;
+  //if (form_body.email !== '') reqBody.reviewer_email = form_body.reviewer_email;
   if (form_body.comment !== '') reqBody.comment = form_body.comment;
 
   var reviews_url = api_url.stringify({
@@ -130,7 +130,7 @@ function sendApiReq(function_input) {
 
   console.log("MY OPTIONS:\n" + JSON.stringify(options));
 
-  // Make API call for Catalog data
+  // Make API call for Review data
   return new Promise(function (fulfill, reject) {
     http.request(options)
       .then(function (result) {
@@ -164,19 +164,54 @@ function submitNewReview(function_input) {
   var item_id = function_input.item_id;
   var res = function_input.res;
 
-  http.request(options)
-    .then(function (data) {
-      console.log("DATA: " + JSON.stringify(data));
-      // Render the page with the results of the API call
-      res.setHeader('Content-Type', 'application/json');
-      res.send(data);
-    })
-    .fail(function (err) {
-      console.log("ERR: " + JSON.stringify(err));
-      // Render the error message in JSON
-      res.setHeader('Content-Type', 'application/json');
-      res.send(err);
-    });
+  //Inject the call to customer here
+  var customer_url = api_url.stringify({
+    protocol: _apiServer.protocol,
+    host: _apiServer.host,
+    org: _apiServerOrg,
+    cat: _apiServerCatalog,
+    api: _apis.customer.base_path,
+    operation: "customer"
+  });
+
+
+  var customer_options = {
+    method: 'GET',
+    url: customer_url,
+    strictSSL: false,
+    headers: {}
+  };
+  if (_apis.customer.require.indexOf("client_id") != -1) customer_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  customer_options.headers.Authorization = options.headers.Authorization;
+
+  // Call the APIs
+  http.request(customer_options)
+    .then(function (customer_data) {
+
+        //Pull the customer name and email from customer API
+        options.body.reviewer_name = customer_data.firstName + " " + customer_data.lastName;
+        options.body.reviewer_email = customer_data.email;
+
+        http.request(options)
+          .then(function (data) {
+            console.log("DATA: " + JSON.stringify(data));
+            // Render the page with the results of the API call
+            res.setHeader('Content-Type', 'application/json');
+            res.send(data);
+          })
+          .fail(function (err) {
+            console.log("ERR: " + JSON.stringify(err));
+            // Render the error message in JSON
+            res.setHeader('Content-Type', 'application/json');
+            res.send(err);
+          });
+      })
+      .fail(function (err) {
+        console.log("ERR: " + JSON.stringify(err));
+        // Render the error message in JSON
+        res.setHeader('Content-Type', 'application/json');
+        res.send(err);
+      });
 }
 
 function renderErrorPage(function_input) {
