@@ -67,15 +67,9 @@ The web application stores the product images/photos in Cloud storage using Blue
 
 4. Run the Web application
 
-  The application uses [Bower](https://bower.io/) to manage the dependencies for Web front end library like AngularJS. You need to install all the dependencies first:
+  The application uses [Bower](https://bower.io/) to manage the dependencies for Web front end library like AngularJS. It uses several other npm libraries such as Express.js. You need to install all the dependencies first:
 
    `$ cd StoreWebApp`  
-   `$ cd public/resources`  
-   `$ bower install`  
-
-    Now, you can prepare the Node.js BFF modules and run the application
-
-   `$ cd ../..`  
    `$ npm install`  
    `$ npm start`    
 
