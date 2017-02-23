@@ -8,6 +8,7 @@ app.controller('ItemController', ['$scope','$routeParams','$location','$route','
 	$scope.showReview = false;
 	$scope.reviewSuccess = false;
 	$scope.reviewFail = false;
+	$scope.showReviewList = true;
 
 	angular.element('#stars').starrr();
 
@@ -20,10 +21,15 @@ app.controller('ItemController', ['$scope','$routeParams','$location','$route','
 			$scope.item = response.data
 			BlueAPIService.getItemReviewById($routeParams.id, function (response) {
 					console.log("Get Item Review List Result" + response)
-					$scope.itemReviewList = response.data
+					if (response.data.statusCode == 404) {
+						$scope.showReviewList = false;
+					} else {
+						$scope.itemReviewList = response.data
+					}
 
 				}, function (error){
 					console.log("Get Item Review List Error: " + error);
+					$scope.showReviewList = false;
 			});
 
 		}, function (error){

@@ -20,5 +20,9 @@
   "dependencies": {
     "angular": "1.6.1",
     "angular-route": "~1.6.2"
+  },
+  "directory": "public/resources",
+  "resolutions": {
+    "angular": "1.6.2"
   }
 }
