@@ -1,7 +1,7 @@
 app.controller('ItemController', ['$scope','$routeParams','$location','$route','$timeout', 'BlueAPIService','UserInfoService',function($scope,$routeParams, $location,$route,$timeout, BlueAPIService, UserInfoService) {
 
 	console.log("Entering Inventory Controller")
-	$scope.baseURL = "/image/"
+	//$scope.baseimURL = "/image/"
 	$scope.loggedIn = UserInfoService.authenticated
 	$scope.success = false;
 	$scope.fail = false;
