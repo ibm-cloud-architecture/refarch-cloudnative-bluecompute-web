@@ -14,6 +14,16 @@ var _apiServerOrg = ((_apiServer.org == "") || (typeof _apiServer.org == 'undefi
 var _apiServerCatalog = ((_apiServer.catalog == "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
 var _apis = config.get('APIs');
 
+
+/* Return application configuration to client */
+router.get('/config', function (req, res) {
+
+  // Render the page with the results of the API call
+  res.setHeader('Content-Type', 'application/json');
+  res.send(config);
+
+});
+
 /* GET Catalog listing from API and return JSON */
 router.get('/', function (req, res) {
   session = req.session;
@@ -182,7 +192,7 @@ function sendResponse(function_input) {
 function renderErrorPage(function_input) {
   var err = function_input.err;
   var res = function_input.res;
-  
+
   // Render the error message in JSON
   res.setHeader('Content-Type', 'application/json');
   res.send(err);
