@@ -1,4 +1,4 @@
-app.service('BlueAPIService', ['$http', function($http) {
+app.service('BlueAPIService',['$http', 'CONFIG', function($http, CONFIG) {
 
 	var invokeService = function(restUrl,
 			requestType, parameters, successCallback,
@@ -68,7 +68,7 @@ app.service('BlueAPIService', ['$http', function($http) {
 				invokeService(restUrl, requestType, null, successCallback, errorCallback);
 			},
 			loginUser : function(parameters, successCallback, errorCallback) {
-				var restUrl = 'https://api.us.apiconnect.ibmcloud.com/centusibmcom-cloudnative-integration/bluecompute/oauth20/token';
+				var restUrl = CONFIG["API-Server"].protocol + '://' + CONFIG["API-Server"].host + '/' + CONFIG["API-Server"].org + '/' + CONFIG["API-Server"].catalog + '/oauth20/token'
 				var requestType = 'POST';
 				invokeService(restUrl, requestType, parameters, successCallback, errorCallback);
 			},
