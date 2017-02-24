@@ -1,0 +1,34 @@
+<div class="header">
+  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed"><a class="pure-menu-heading" href="#">IBM Cloud Architecture</a>
+    <ul class="pure-menu-list">
+      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/">Home</a></li>
+      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
+      <li ng-show="!loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/login">Log In</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+    </ul>
+  </div>
+</div>
+<div class="content-wrapper" style="left:50px;">
+  <div class="content">
+    <h2 class="section-heading">Please review your profile</a></h2>
+  </div>
+
+  <div class="content">
+    <div class="content">
+          <img style="border-radius: 50%" ng-src="{{customerInfo.image || 'images/common/ibmprofile.jpg'}}" class="pure-img">
+    </div>
+    <div class="content" style="padding-top:20px;">
+        <span class="profileColor">First Name: </span><span class="profileColor">{{customerInfo.firstName || 'N/A'}}</span>
+    </div>
+    <div class="content">
+        <span class="profileColor">Last Name: </span><span class="profileColor">{{customerInfo.lastName || 'N/A'}}</span>
+    </div>
+    <div class="content">
+        <span class="profileColor">Email: </span><span class="profileColor">{{customerInfo.email || 'N/A'}}</span>
+    </div>
+    <div class="content">
+        <span class="profileColor">Username: </span><span class="profileColor">{{customerInfo.username || 'N/A'}}</span>
+    </div>
+
+  </div>
+</div>

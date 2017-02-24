@@ -12,15 +12,15 @@ var session = require('express-session');
 var index = require('./routes/index');
 var catalog = require('./routes/catalog');
 var review = require('./routes/review');
-var login = require('./routes/login');
+var customer = require('./routes/customer');
 var images = require('./routes/images');
-var financing = require('./routes/financing');
+var orders = require('./routes/orders');
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -36,10 +36,14 @@ app.use(session({
 
 app.use('/', index);
 app.use('/catalog', catalog);
+app.use('/customer', customer);
 app.use('/review', review);
-app.use('/login', login);
+//app.use('/login', login);
 app.use('/image', images);
-app.use('/financing', financing);
+app.use('/order', orders);
+
+app.use('/', express.static('public/resources'))
+app.use('/', express.static('public/stylesheets'))
 
 
 //Setup HealthCheck API

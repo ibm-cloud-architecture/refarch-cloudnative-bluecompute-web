@@ -29,6 +29,10 @@ label {
   height: auto;
 }
 
+.profileColor {
+  color:black;
+}
+
 /*
  * -- LAYOUT STYLES --
  * These are some useful classes which I will need
@@ -298,3 +302,12 @@ a.pure-button-primary {
 .star-style {
   color: #1D8FEB;
 }
+
+.starrr {
+  display: inline-block; }
+  .starrr a {
+    font-size: 16px;
+    padding: 0 1px;
+    cursor: pointer;
+    color: #1D8FEB;
+    text-decoration: none; }

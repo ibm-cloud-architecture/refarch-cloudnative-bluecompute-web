@@ -27,7 +27,7 @@ router.get('/:id', function (req, res) {
 });
 
 /* Handle the POST request for creating a new item review */
-router.post('/submitReview', function (req, res) {
+router.post('/:id', function (req, res) {
   session = req.session;
 
   setNewReviewOptions(req, res)
@@ -45,7 +45,7 @@ function setGetReviewOptions(req, res) {
     host: _apiServer.host,
     org: _apiServerOrg,
     cat: _apiServerCatalog,
-    api: _apis.inventory.base_path,
+    api: _apis.review.base_path,
     operation: "reviews/list?itemId=" + params.id
   });
 
@@ -56,29 +56,12 @@ function setGetReviewOptions(req, res) {
     headers: {}
   };
 
-  if (_apis.inventory.require.indexOf("client_id") != -1) getItemReviews_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.inventory.require.indexOf("client_secret") != -1) getItemReviews_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+  if (_apis.review.require.indexOf("client_id") != -1) getItemReviews_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  if (_apis.review.require.indexOf("client_secret") != -1) getItemReviews_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
 
-    // Get OAuth Access Token, if needed
-    if (_apis.inventory.require.indexOf("oauth") != -1) {
-
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        getItem_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        getItemReviews_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        fulfill({
-          options: getItemReviews_options,
-          res: res
-        });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
-    }
-    else fulfill({
+    fulfill({
       options: getItemReviews_options,
       res: res
     });
@@ -88,15 +71,16 @@ function setGetReviewOptions(req, res) {
 
 function setNewReviewOptions(req, res) {
   var form_body = req.body;
+  var params = req.params;
 
   var reqBody = {
-    date: new Date(),
+    review_date: new Date(),
     rating: form_body.rating
   };
 
   // Add optional portions to the request body
-  if (form_body.name !== '') reqBody.reviewer_name = form_body.name;
-  if (form_body.email !== '') reqBody.reviewer_email = form_body.email;
+  //if (form_body.name !== '') reqBody.reviewer_name = form_body.reviewer_name;
+  //if (form_body.email !== '') reqBody.reviewer_email = form_body.reviewer_email;
   if (form_body.comment !== '') reqBody.comment = form_body.comment;
 
   var reviews_url = api_url.stringify({
@@ -104,8 +88,8 @@ function setNewReviewOptions(req, res) {
     host: _apiServer.host,
     org: _apiServerOrg,
     cat: _apiServerCatalog,
-    api: _apis.inventory.base_path,
-    operation: "reviews/list?itemId=" + params.id
+    api: _apis.review.base_path,
+    operation: "reviews/comment?itemId=" + params.id
   });
 
   var options = {
@@ -117,26 +101,19 @@ function setNewReviewOptions(req, res) {
     JSON: true
   };
 
-  if (_apis.inventory.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.inventory.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+  if (_apis.review.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
-    if (_apis.inventory.require.indexOf("oauth") != -1) {
+    if (_apis.review.require.indexOf("oauth") != -1) {
 
-      // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        options.headers.Authorization = 'Bearer ' + session.oauth2token;
+      // Add OAuth access token to the header
+      options.headers.Authorization = req.headers.authorization;
         fulfill({
           options: options,
           item_id: form_body.itemId,
           res: res
         });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
     }
     else fulfill({
       options: options,
@@ -153,7 +130,7 @@ function sendApiReq(function_input) {
 
   console.log("MY OPTIONS:\n" + JSON.stringify(options));
 
-  // Make API call for Catalog data
+  // Make API call for Review data
   return new Promise(function (fulfill, reject) {
     http.request(options)
       .then(function (result) {
@@ -164,7 +141,7 @@ function sendApiReq(function_input) {
         });
       })
       .fail(function (reason) {
-        console.log("Inventory call failed with reason: " + JSON.stringify(reason));
+        console.log("review call failed with reason: " + JSON.stringify(reason));
         reject({
           err: reason,
           res: res
@@ -182,84 +159,68 @@ function sendResponse(function_input) {
   res.send(data);
 }
 
-function sendItemReq(function_input) {
-  var getItem_options = function_input.getItem_options;
-  var getItemReviews_options = function_input.getItemReviews_options;
-  var res = function_input.res;
-
-  // Make API call for item and reviews data
-  return new Promise(function (fulfill, reject) {
-    http.request(getItem_options)
-      .then(function (item) {
-        http.request(getItemReviews_options)
-          .then(function (reviews) {
-
-            fulfill({
-              data: {
-                item: item,
-                reviews: reviews
-              },
-              res: res
-            });
-          })
-          .done();
-      })
-      .fail(function (reason) {
-        reject({
-          err: reason,
-          res: res
-        });
-      })
-      .done();
-  });
-}
-
 function submitNewReview(function_input) {
   var options = function_input.options;
   var item_id = function_input.item_id;
   var res = function_input.res;
 
-  http.request(options)
-    .then(function (data) {
-      console.log("DATA: " + JSON.stringify(data));
-      res.redirect('/item/' + item_id);
-    })
-    .fail(function (err) {
-      console.log("ERR: " + JSON.stringify(err));
-      res.redirect('/item/' + item_id);
-    });
-}
-
-function renderPage(function_input) {
-  var item = function_input.data.item;
-  var reviews = function_input.data.reviews;
-  var res = function_input.res;
-
-console.log("Review Data: " + JSON.stringify(reviews));
-
- var imageBaseUrl = api_url.stringify({
+  //Inject the call to customer here
+  var customer_url = api_url.stringify({
     protocol: _apiServer.protocol,
     host: _apiServer.host,
     org: _apiServerOrg,
     cat: _apiServerCatalog,
-    api: "",
-    operation: ""
+    api: _apis.customer.base_path,
+    operation: "customer"
   });
 
-  // Render the page with the results of the API call
-  res.render('item', {
-    title: 'IBM Cloud Architecture',
-    item: item,
-    reviews: reviews,
-    base_url: imageBaseUrl,
-    reviews_count: reviews.length
-  });
+
+  var customer_options = {
+    method: 'GET',
+    url: customer_url,
+    strictSSL: false,
+    headers: {}
+  };
+  if (_apis.customer.require.indexOf("client_id") != -1) customer_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
+  customer_options.headers.Authorization = options.headers.Authorization;
+
+  // Call the APIs
+  http.request(customer_options)
+    .then(function (customer_data) {
+
+        //Pull the customer name and email from customer API
+        options.body.reviewer_name = customer_data.firstName + " " + customer_data.lastName;
+        options.body.reviewer_email = customer_data.email;
+
+        http.request(options)
+          .then(function (data) {
+            console.log("DATA: " + JSON.stringify(data));
+            // Render the page with the results of the API call
+            res.setHeader('Content-Type', 'application/json');
+            res.send(data);
+          })
+          .fail(function (err) {
+            console.log("ERR: " + JSON.stringify(err));
+            // Render the error message in JSON
+            res.setHeader('Content-Type', 'application/json');
+            res.send(err);
+          });
+      })
+      .fail(function (err) {
+        console.log("ERR: " + JSON.stringify(err));
+        // Render the error message in JSON
+        res.setHeader('Content-Type', 'application/json');
+        res.send(err);
+      });
 }
 
 function renderErrorPage(function_input) {
   var err = function_input.err;
   var res = function_input.res;
-  res.render('error', {reason: err});
+
+  // Render the error message in JSON
+  res.setHeader('Content-Type', 'application/json');
+  res.send(err);
 }
 
 module.exports = router;
