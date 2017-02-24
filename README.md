@@ -89,6 +89,12 @@ The web application stores the product images/photos in Cloud storage using Blue
 
   Click on one of the items will bring you to the detail page.
 
+  Click "login" and enter "foo" as username and "bar" as password. This should log you in.
+
+  Navigate to any of the item detail page, now you should see "Buy" and "Add review" buttons, as well as "Profile" menu item. Try to Buy some items and Add reviews.
+
+  ![BlueCompute Buy](static/imgs/bluecompute_web_buy.png?raw=true)
+
 Feel free to play around and explore the Web application.
 
 ## Deploy the application to Bluemix hosting:
