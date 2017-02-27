@@ -1,6 +1,5 @@
 applications:
 - services:
-  - gchen-object-storage
   path: .
   memory: 512M
   instances: 1

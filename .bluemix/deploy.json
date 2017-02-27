@@ -17,20 +17,20 @@
             "description": "Deploy to this space",
             "type": "string"
         },
-        "deploy-region-us": {
-            "description": "Deploy to this US region",
+        "deploy-region": {
+            "description": "Deploy to this region",
             "type": "string"
         },
-        "deploy-region-eu": {
-            "description": "Deploy to this EU region",
+        "route-domain": {
+            "description": "Route Domain",
             "type": "string"
         },
-        "route-domain-us": {
-            "description": "US Route Domain",
+        "apic-user": {
+            "description": "API Connect Username",
             "type": "string"
         },
-        "route-domain-eu": {
-            "description": "EU Route Domain",
+        "apic-pass": {
+            "description": "API Connect Password",
             "type": "string"
         },
         "new-relic-lic-key": {
@@ -40,8 +40,11 @@
     },
     "required": [
         "repo-branch",
+        "deploy-region",
         "deploy-org",
-        "deploy-space"
+        "deploy-space",
+        "apic-user",
+        "apic-pass"
         ],
     "form": [
         {
@@ -57,8 +60,14 @@
         {
             "type": "text",
             "readonly": false,
-            "title": "New Relic License Key",
-            "key": "new-relic-lic-key"
+            "title": "API Connect User Name",
+            "key": "apic-user"
+        },
+        {
+            "type": "password",
+            "readonly": false,
+            "title": "API Connect Password",
+            "key": "apic-pass"
         },
         {
             "type": "table",
@@ -78,8 +87,8 @@
                     "title": "Space"
                 },
                 {
-                    "type": "label",
-                    "title": "Deploy to (in US-South and London)"
+                    "type": "select",
+                    "key": "deploy-region"
                 },
                 {
                     "type": "select",
