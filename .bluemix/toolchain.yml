@@ -31,7 +31,7 @@ pipeline-bluecompute-web:
        NAME: "us-{{pipeline-bluecompute-web.parameters.name}}-{{deploy.parameters.deploy-space}}"
        NEW_RELIC_LICENSE: "{{deploy.parameters.new-relic-lic-key}}"
        APIC_URL: "{{deploy.parameters.apic-url}}"
-       APIC_NAME: "{{deploy.parameters.apic-user}}"
+       APIC_USER: "{{deploy.parameters.apic-user}}"
        APIC_PASS: "{{deploy.parameters.apic-pass}}"
       execute: false
 
