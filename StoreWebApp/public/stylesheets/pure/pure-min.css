@@ -747,12 +747,12 @@ td, th {
 .pure-menu-link, .pure-menu-heading {
   display: block;
   text-decoration: none;
-  white-space: nowrap
+  /*white-space: nowrap*/
 }
 
 .pure-menu-horizontal {
   width: 100%;
-  white-space: nowrap
+  /*white-space: nowrap*/
 }
 
 .pure-menu-horizontal .pure-menu-list {
