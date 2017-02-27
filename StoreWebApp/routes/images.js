@@ -13,7 +13,7 @@ var pkgcloud = require('pkgcloud');
 var _myApp = config.get('Application');
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
-var containerName="os-container1", local_mode=_myApp.local_mode, auth=false, storageClient;
+var containerName=_myApp.ObjectStore.container, local_mode=_myApp.local_mode, auth=false, storageClient;
 
 init_object_storage();
 

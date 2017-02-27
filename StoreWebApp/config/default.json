@@ -2,7 +2,10 @@
   "Application": {
     "client_id": "59563f83-1f52-4e87-87e9-4b07414a1f27",
     "client_secret": "",
-    "local_mode":true
+    "local_mode":true,
+    "ObjectStorage": {
+        "container": "bluecompute"
+    }
   },
   "API-Server": {
     "protocol": "https",

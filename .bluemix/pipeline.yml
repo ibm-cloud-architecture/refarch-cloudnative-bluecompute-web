@@ -1,0 +1,81 @@
+---
+stages:
+- name: BUILD
+  inputs:
+  - url: https://github.com/jkwong888/refarch-cloudnative-bluecompute-web.git
+    type: git
+    branch: master
+    dir_name: null
+  triggers:
+  - type: commit
+  jobs:
+  - name: Build
+    type: builder
+    working_dir: StoreWebApp
+    artifact_dir: ''
+    build_type: npm
+    script: |-
+      #!/bin/bash
+      # The default Node.js version is 0.10.40
+      # To use Node.js 0.12.7, uncomment the following line:
+      export PATH=/opt/IBM/node-v0.12/bin:$PATH
+      # To use Node.js 4.2.2, uncomment the following line:
+      #export PATH=/opt/IBM/node-v4.2/bin:$PATH
+      npm install
+- name: DEPLOY
+  inputs:
+  - type: job
+    stage: BUILD
+    job: Build
+    dir_name: null
+  triggers:
+  - type: stage
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ibm:yp:us-south
+      organization: cent@us.ibm.com
+      space: jkwong-dev
+      application: jkwong-refarch-cloudnative-bluecompute-web
+    script: |
+      #!/bin/bash
+      cf create-service Auto-Scaling free cloudnative-autoscale
+      cf push "${CF_APP}" -n "${CF_APP}" -d "${APP_DOMAIN}"
+- name: TEST
+  inputs:
+  - type: job
+    stage: BUILD
+    job: Build
+    dir_name: null
+  triggers:
+  - type: stage
+  properties:
+  - name: test_env
+    value: cloud
+    type: text
+  - name: appname
+    value: jkwong-refarch-cloudnative-bluecompute-web
+    type: text
+  - name: domainname
+    value: mybluemix.net
+    type: text
+  jobs:
+  - name: Test
+    type: tester
+    script: |-
+      #!/bin/bash
+      set -x
+      mkdir tests
+      touch tests/TEST-MochaResults.xml
+      npm install
+      ls node_modules/mocha/bin
+      echo "Start running the test"
+      node_modules/mocha/bin/mocha -R xunit test/storeapp-test.js > tests/TEST-MochaResults.xml
+    enable_tests: true
+    test_file_pattern: tests/TEST-*.xml
+hooks:
+- enabled: true
+  label: null
+  ssl_enabled: false
+  url: https://devops-api.ng.bluemix.net/v1/messaging/webhook/publish
