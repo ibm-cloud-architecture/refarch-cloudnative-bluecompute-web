@@ -29,6 +29,10 @@ label {
   height: auto;
 }
 
+.profileColor {
+  color:black;
+}
+
 /*
  * -- LAYOUT STYLES --
  * These are some useful classes which I will need
