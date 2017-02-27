@@ -1,45 +1,3 @@
----
-<<<<<<< HEAD
-name: "BlueCompute Web App Toolchain"
-description: "BlueCompute Web App"
-version: 0.1
-required:
- - deploy
- - github-repo
-
-# Repo
-github-repo:
-  service_id: githubpublic
-  parameters:
-    repo_name: "refarch-cloudnative-bluecompute-web"
-    repo_url: "https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web"
-    type: clone
-    has_issues: false
-
-# Pipeline
-pipeline-deploy-webapp:
-  service_id: pipeline
-  parameters:
-    name: "Deploy BlueCompute WebApp"
-    configuration:
-      content: $file(pipeline.yml)
-      env:
-        REPO: "github-repo"
-      execute: false
-    services: ["github-repo"]
-  hidden: [form, description]
-
-# Deployment
-deploy:
-  schema: 
-    $ref: deploy.json
-  service-category: pipeline
-  parameters:
-    deploy-region: "{{region}}"
-    deploy-org: "{{organization}}"
-    deploy-space: "{{space}}"
-    route-domain: "mybluemix.net"
-=======
 name: "bluecompute-web toolchain"
 description: "deploy refarch-cloudnative-bluecompute-web"
 version: 0.1
@@ -89,4 +47,3 @@ deploy:
     route-domain-us: "mybluemix.net"
     route-domain-eu: "eu-gb.mybluemix.net"
     new-relic-lic-key: ""
->>>>>>> 57dfed200732c9fa423853a6fecab090dc64b66d
