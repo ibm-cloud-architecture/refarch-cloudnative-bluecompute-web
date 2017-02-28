@@ -32,7 +32,7 @@ stages:
       
       cat config/default.json | grep -v '^[ ]*//' | \
           ./jq '.Application.local_mode=false' | \
-          ./jq '.Application.ObjectStore.container="bluecompute"' \
+          ./jq '.Application.ObjectStorage.container="bluecompute"' \
           > config/default.json.new
       mv config/default.json.new config/default.json 
       
