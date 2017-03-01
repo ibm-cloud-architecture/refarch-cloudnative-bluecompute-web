@@ -86,7 +86,7 @@ function setGetItemsOptions(req, res) {
       // If already logged in, add token to request
       if (typeof session.oauth2token !== 'undefined') {
 
-        console.log("Render catalog with Token: " + session.oauth2token)
+        console.log("Render catalog with Token: " + session.oauth2token);
         options.headers.Authorization = 'Bearer ' + session.oauth2token;
         fulfill({
           options: options,
