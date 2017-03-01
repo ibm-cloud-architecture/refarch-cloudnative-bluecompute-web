@@ -42,7 +42,7 @@ function init_object_storage() {
   }
   else {
 
-    var credentials = services['Object-Storage'][0]['credentials'];
+    var credentials = services['Object-Storage'][0].credentials;
     console.log("VCAP credential: " + JSON.stringify(credentials));
 
     config = {
