@@ -10,8 +10,8 @@ var session, page_filter;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(/:org)(/:cat)(:api)/(:operation)');
 var _myApp = config.get('Application');
 var _apiServer = config.get('API-Server');
-var _apiServerOrg = ((_apiServer.org == "") || (typeof _apiServer.org == 'undefined')) ? undefined : _apiServer.org;
-var _apiServerCatalog = ((_apiServer.catalog == "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
+var _apiServerOrg = ((_apiServer.org === "") || (typeof _apiServer.org == 'undefined')) ? undefined : _apiServer.org;
+var _apiServerCatalog = ((_apiServer.catalog === "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
 var _apis = config.get('APIs');
 
 
