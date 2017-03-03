@@ -9,12 +9,12 @@ Here is an overview of the project's features:
 - AngularJS SPA
 - Node.js based BFF application to access APIs
 - Authentication and Authorization through OAuth 2.0
-- Integration wiht Bluemix Objec Storage
+- Integration wiht Bluemix Object Storage
 - DevOps toolchain to build/deploy web app
 
 ## Pre-requisites - Object Storage
 
-The web application stores the product images/photos in Cloud storage using Bluemix Object Storage, you need to provision and load the images before run the application. (if you are using Automated devops toolchain to setup the application, it will create the object storage. You can skip this section in that case)
+The web application stores the product images in Cloud storage using Bluemix Object Storage, you need to provision and load the images before run the application. (if you are using Automated devops toolchain to setup the application, it will create the object storage. You can skip this section in that case)
 
 1. [Provision](https://console.ng.bluemix.net/catalog/services/object-storage/?taxonomyNavigation=apps) an instance of Object Storage into your Bluemix space.
    - Specify the name for your service instance.
@@ -26,25 +26,25 @@ The web application stores the product images/photos in Cloud storage using Blue
    - Then click on the View Credentials dropdown next to the credentials. (You may need to create a new credential)
 
    You will need the following:
-    projectId
-    username
-    password
-    domainId
+      * projectId
+      * username
+      * password
+      * domainId
 
     Keep those credential handy as they will be needed when running the web app locally.
 
 3. Create a Object Storage container and Upload the application images into the container
 
-   Bluemix Object Storage uses container as unit of managing content.
+   Bluemix Object Storage uses container as storage unit to organize content.
 
    - Click the "Manage" tab, then click the "Select Action" dropdown, and choose "**Create Container**".
    - Name the Container "**bluecompute**".
-   - From your compute file explore (or Finder in Mac), locate the folder `StoreWebApp/image`. Drag and drop all the images to the Browser Object Storage bluecompute container. (alternative, you can click add file actions to load images).
+   - From your computer file explorer (or Finder in Mac), locate the folder `StoreWebApp/image`. Drag and drop all the images to the Browser Object Storage bluecompute container. (alternative, you can click add file actions to load images).
 
 ## Run the Web application locally
 
 1. Navigate to the web app folder `StoreWebApp` in the git repository.
-2. Edit the config/default.json file to configure the API endpoints. You need to update following fields:
+2. Edit the `config/default.json` file to configure the API endpoints. You need to update following fields:
   - client_id
   - host  
   - org  
@@ -107,7 +107,7 @@ Click the button below will create the automated DevOps open toolchain in your e
 
 [![bluecompute-web-toolchain](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web.git&branch=master)
 
-### Deploy using Bluemix CLI
+### Deploy using Bluemix CLI (manually)
 You need to have Bluemix command line (bx or cf) installed, as well as Node.js runtime in your development environment.
 
 - Configure the application
