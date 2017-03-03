@@ -39,6 +39,10 @@ app.config(['$routeProvider', function($routeProvider) {
        templateUrl : baseUrl + 'login.html',
        controller: 'LoginController'
     })
+    .when('/logout', {
+       template: '',
+       controller: 'LogoutController'
+    })
 		.when('/catalog', {
        templateUrl : baseUrl + 'catalog.html',
        controller: 'CatalogController'

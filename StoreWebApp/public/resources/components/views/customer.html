@@ -1,11 +1,13 @@
 <div class="header">
   <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-    <img style="width:45px;height:45px;float:left;" ng-src="images/common/case_logo.png" class="pure-img"><a class="pure-menu-heading" href="#">IBM Cloud Architecture</a>
+    <img style="width:45px;height:45px;float:left;" ng-src="images/common/case_logo.png" class="pure-img">
+    <a class="pure-menu-heading" ng-href="https://www.ibm.com/devops/method/category/architectures/" target="_blank">IBM Cloud Architecture</a>
     <ul class="pure-menu-list">
       <li class="pure-menu-item"><a class="pure-menu-link" href="#!/">Home</a></li>
       <li class="pure-menu-item"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
       <li ng-show="!loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/login">Log In</a></li>
       <li ng-show="loggedIn" class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/logout">Logout</a></li>
     </ul>
   </div>
 </div>
