@@ -2,7 +2,7 @@ app.controller('ItemController', ['$scope','$routeParams','$location','$route','
 
 	console.log("Entering Inventory Controller")
 	//$scope.baseimURL = "/image/"
-	$scope.loggedIn = UserInfoService.authenticated
+	$scope.loggedIn = UserInfoService.state.authenticated
 	$scope.success = false;
 	$scope.fail = false;
 	$scope.showReview = false;
@@ -41,7 +41,7 @@ app.controller('ItemController', ['$scope','$routeParams','$location','$route','
 												'itemId':$scope.item.id
 											}
 
-			BlueAPIService.buyItems(UserInfoService.accessToken, $scope.payload, function (response) {
+			BlueAPIService.buyItems(UserInfoService.state.accessToken, $scope.payload, function (response) {
 					console.log("Buy Item Result" + response)
 					$scope.result = response.data
 					$scope.success = true;
@@ -60,7 +60,7 @@ app.controller('ItemController', ['$scope','$routeParams','$location','$route','
 												'comment':$scope.comments
 											}
 
-			BlueAPIService.addReviewItem(UserInfoService.accessToken, $routeParams.id, $scope.payload, function (response) {
+			BlueAPIService.addReviewItem(UserInfoService.state.accessToken, $routeParams.id, $scope.payload, function (response) {
 					console.log("Add Review Item Result" + response)
 					$scope.result = response.data
 					$scope.reviewFail = false;

@@ -21,6 +21,12 @@ function bootstrapApp() {
     });
 }
 
+app.run(function($rootScope) {
+  window.onbeforeunload = function(event) {
+    $rootScope.$broadcast('savestate');
+  };
+});
+
 app.config(['$routeProvider', function($routeProvider) {
 
 	console.log("entering Angular config");
