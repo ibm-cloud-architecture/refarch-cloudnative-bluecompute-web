@@ -1,7 +1,7 @@
 app.controller('LoginController', ['$scope','$location','BlueAPIService','UserInfoService', 'CONFIG', function($scope, $location, BlueAPIService, UserInfoService, CONFIG) {
 
 	console.log("Entering Login Controller")
-	$scope.loggedIn = UserInfoService.authenticated
+	$scope.loggedIn = UserInfoService.state.authenticated
 	$scope.loginError = false;
 
 	 $scope.save = function (loginForm) {
@@ -10,8 +10,8 @@ app.controller('LoginController', ['$scope','$location','BlueAPIService','UserIn
 
 		 BlueAPIService.loginUser($scope.payload, function (response) {
 	 			console.log("Login Result" + response)
-				UserInfoService.accessToken = response.data.access_token
-				UserInfoService.authenticated = true;
+				UserInfoService.state.accessToken = response.data.access_token
+				UserInfoService.state.authenticated = true;
 				$location.path('/catalog');
 
 	 		}, function (error){

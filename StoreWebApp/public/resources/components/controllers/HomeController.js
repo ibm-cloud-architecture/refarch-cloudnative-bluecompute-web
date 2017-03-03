@@ -2,6 +2,6 @@ app.controller('HomeController', ['$scope','UserInfoService',function($scope, Us
 
 	console.log("Entering Home Controller")
 
-	$scope.loggedIn = UserInfoService.authenticated
+	$scope.loggedIn = UserInfoService.state.authenticated
 
 }]);
