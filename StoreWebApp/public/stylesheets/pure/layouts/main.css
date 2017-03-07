@@ -29,6 +29,10 @@ label {
   height: auto;
 }
 
+.profileColor {
+  color:black;
+}
+
 /*
  * -- LAYOUT STYLES --
  * These are some useful classes which I will need
@@ -76,9 +80,9 @@ label {
 }
 
 a.pure-button-primary {
-  background: white;
+  background: #3d70b2;;
   /*color: #1f8dd6;*/
-  color: #1D8FEB;
+  color: #white;
   border-radius: 5px;
   font-size: 120%;
 }
@@ -103,10 +107,12 @@ a.pure-button-primary {
   border-bottom: none;
   /* I need a higher z-index here because of the scroll-over effect. */
   z-index: 4;
+  background-color: #152935;
 }
 
 .home-menu .pure-menu-heading {
-  color: #1D8FEB;
+  /*color: #1D8FEB;*/
+  color: white;
   font-weight: 400;
   font-size: 120%;
   text-transform: none;
@@ -120,7 +126,8 @@ a.pure-button-primary {
 
 .home-menu a {
   /*color: #6FBEF3;*/
-  color: #1D8FEB;
+  /*color: #1D8FEB;*/
+  color:white;
 }
 
 .home-menu li a:hover,
@@ -138,7 +145,8 @@ a.pure-button-primary {
 
 .splash-container {
   /*background: #1f8dd6;*/
-  background: #1D8FEB;
+  /*background: #1D8FEB;*/
+  background: white;
   z-index: 1;
   overflow: hidden;
   /* The following styles are required for the "scroll-over" effect */
@@ -167,8 +175,10 @@ a.pure-button-primary {
 .splash-head {
   font-size: 20px;
   font-weight: bold;
-  color: white;
-  border: 3px solid white;
+  color: #3d70b2;
+  border: 3px solid #3d70b2;
+  /*color: white;
+  border: 3px solid white;*/
   padding: 1em 1.6em;
   font-weight: 100;
   border-radius: 5px;
@@ -177,7 +187,8 @@ a.pure-button-primary {
 
 /* This is the subheading that appears on the blue section */
 .splash-subhead {
-  color: white;
+  /*color: white;8*/
+  color: #3d70b2;
   letter-spacing: 0.05em;
   opacity: 0.8;
 }
@@ -298,3 +309,12 @@ a.pure-button-primary {
 .star-style {
   color: #1D8FEB;
 }
+
+.starrr {
+  display: inline-block; }
+  .starrr a {
+    font-size: 16px;
+    padding: 0 1px;
+    cursor: pointer;
+    color: #1D8FEB;
+    text-decoration: none; }

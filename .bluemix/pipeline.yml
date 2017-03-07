@@ -2,7 +2,7 @@
 stages:
 - name: BUILD
   inputs:
-  - url: https://github.com/gangchen03/refarch-cloudnative-bluecompute-web.git
+  - url: https://github.com/jkwong888/refarch-cloudnative-bluecompute-web.git
     type: git
     branch: master
     dir_name: null
@@ -35,14 +35,14 @@ stages:
     type: deployer
     target:
       region_id: ibm:yp:us-south
-      organization: gangchen@us.ibm.com
-      space: cloudnative-dev
-      application: bluecompute-web-gangchen-dev
+      organization: cent@us.ibm.com
+      space: jkwong-dev
+      application: jkwong-refarch-cloudnative-bluecompute-web
     script: |
       #!/bin/bash
       cf create-service Auto-Scaling free cloudnative-autoscale
       cf push "${CF_APP}" -n "${CF_APP}" -d "${APP_DOMAIN}"
-- name: Contract Validation
+- name: TEST
   inputs:
   - type: job
     stage: BUILD
@@ -55,7 +55,7 @@ stages:
     value: cloud
     type: text
   - name: appname
-    value: bluecompute-web-gangchen-dev
+    value: jkwong-refarch-cloudnative-bluecompute-web
     type: text
   - name: domainname
     value: mybluemix.net
@@ -65,7 +65,7 @@ stages:
     type: tester
     script: |-
       #!/bin/bash
-      # invoke tests here
+      set -x
       mkdir tests
       touch tests/TEST-MochaResults.xml
       npm install

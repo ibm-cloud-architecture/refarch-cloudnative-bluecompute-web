@@ -1,7 +1,11 @@
 {
   "Application": {
-    "client_id": "ae4b5e57-0c67-4e39-b4a4-73be4fc3ff55",
-    "client_secret": ""
+    "client_id": "039fc6e9-3644-435d-adf5-bcc108623b82",
+    "client_secret": "",
+    "local_mode":false,
+    "ObjectStorage": {
+        "container": "bluecompute"
+    }
   },
   "API-Server": {
     "protocol": "https",
@@ -10,24 +14,32 @@
     "catalog": "bluecompute"
   },
   "APIs": {
-    "inventory": {
+    "catalog": {
       "base_path": "/api",
       "require": [
           "client_id"
-//        "client_secret",
-//        "oauth"
       ]
     },
-    "financing": {
-      "base_path": "/financing",
+    "order": {
+      "base_path": "/api",
       "require": [
-        "client_id"
+        "client_id",
+        "oauth"
       ]
     },
-    "logistics": {
-      "base_path": "/logistics",
+    "review": {
+      "base_path": "/api",
       "require": [
-        "client_id"
+        "client_id",
+        "oauth"
+      ]
+    },
+    "customer": {
+      "base_path": "/api",
+      "require": [
+        "client_id",
+        "oauth"
+
       ]
     },
     "oauth20": {

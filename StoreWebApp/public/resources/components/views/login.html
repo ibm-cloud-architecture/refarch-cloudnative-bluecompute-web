@@ -1,0 +1,36 @@
+<div class="header">
+  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+    <img style="width:45px;height:45px;float:left;" ng-src="images/common/case_logo.png" class="pure-img">
+    <a class="pure-menu-heading" ng-href="https://www.ibm.com/devops/method/category/architectures/" target="_blank">IBM Cloud Architecture</a>
+    <ul class="pure-menu-list">
+      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/">Home</a></li>
+      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
+      <li ng-show="!loggedIn" class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/login">Log In</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+    </ul>
+  </div>
+</div>
+<div class="content-wrapper">
+  <div ng-show="!loggedIn" class="content is-center" style="margin-top:50px;">
+    <span style="margin-bottom:10px;">Sign in to BlueCompute Store</span><br/>
+    <form name="loginForm" class="pure-form pure-form-aligned">
+      <fieldset>
+        <div class="pure-control-group">
+          <input class="login-input" id="username" ng-model="username" name="username" type="text" placeholder="Username"/>
+        </div>
+        <div class="pure-control-group">
+          <input class="login-input" id="password" ng-model="password" name="password" type="password" placeholder="Password"/>
+        </div>
+        <div class="pure-control-group">
+          <button type="submit"  ng-click="save(loginForm)" class="pure-button pure-button-primary" style="width:300px;">Sign in</button>
+        </div>
+        <div ng-show="loginError" class="content is-center" style="color: red;">
+          * Invalid user information, please sign in again.
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div ng-show="loggedIn" class="content is-center">
+    <h2 class="content-head is-center">Already Logged In</h2>
+  </div>
+</div>

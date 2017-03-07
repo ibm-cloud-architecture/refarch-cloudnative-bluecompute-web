@@ -747,12 +747,12 @@ td, th {
 .pure-menu-link, .pure-menu-heading {
   display: block;
   text-decoration: none;
-  white-space: nowrap
+  /*white-space: nowrap*/
 }
 
 .pure-menu-horizontal {
   width: 100%;
-  white-space: nowrap
+  /*white-space: nowrap*/
 }
 
 .pure-menu-horizontal .pure-menu-list {
@@ -869,7 +869,8 @@ td, th {
 }
 
 .pure-menu-selected .pure-menu-link, .pure-menu-selected .pure-menu-link:visited {
-  color: #000
+  /*color: #000*/
+  color: #7cc7ff;
 }
 
 .pure-table {
