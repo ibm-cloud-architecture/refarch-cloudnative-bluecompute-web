@@ -13,7 +13,7 @@ var pkgcloud = require('pkgcloud');
 var _myApp = config.get('Application');
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
-var containerName=_myApp.ObjectStorage.container, local_mode=_myApp.local_mode, auth=false, storageClient;
+var containerName=_myApp.ObjectStorage.container, local_mode=_myApp.local_mode, auth=false, authSucess=false, storageClient;
 
 init_object_storage();
 
@@ -21,9 +21,9 @@ function init_object_storage() {
   var config = {};
   if(local_mode)
   {
-    var username = "admin_21b66b75c4173e796c897bf16c9e13f361d2b4ff",
+    var username = "admin_ea2777264b5ce34c97eec50e90b8a827c9c08ec8",
         password = "",
-        projectId = "688d49f5f5784aa8a36450c7b36c3ddf",
+        projectId = "acc42f2db0874f1bb797529aabbb5041",
         domainId = "f5cd32c788594b15bff1a093467e4864";
 
 
@@ -59,34 +59,43 @@ function init_object_storage() {
         };
   }
   storageClient = pkgcloud.storage.createClient(config);
+  if(!auth)
+  {
+    storageClient.auth(function(err) {
+        if (err) {
+            console.log("Object Storage Auth error");
+            console.error(err);
+        }
+        else {
+            console.log("Object Storage Auth Succeed");
+            authSucess = true;
+        }
+    });
+    auth = true;
+  }
 }
 
 //Download the file
 router.get('/:fileName', function(req, res){
 
-  if(!auth)
-  {
-    storageClient.auth(function(err) {
-        if (err) {
-            console.error(err);
-        }
-        else {
-            //console.log(storageClient._identity);
-        }
-    });
-    auth = true;
-  }
 
-  storageClient.download({
-    container: containerName,
-    remote: req.params.fileName
-  }).pipe(res);
+    if(authSucess)
+    {
+      //console.log(storageClient._identity);
+      storageClient.download({
+        container: containerName,
+        remote: req.params.fileName
+      }).pipe(res);
+
+    }else {
+      res.status(500).send('Failed to authenticate to Object Storage!')
+    }
 
 
     //res.writeHead(200, {'Content-Type': 'text/html'});
     //res.write();
     //res.end();
-    return;
+
 
 });
 
