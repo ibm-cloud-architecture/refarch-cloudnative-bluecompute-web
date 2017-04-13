@@ -1,5 +1,5 @@
-if (process.env.NEW_RELIC_LICENSE_KEY) { 
-    var newrelic = require('newrelic') 
+if (process.env.NEW_RELIC_LICENSE_KEY) {
+    var newrelic = require('newrelic');
 }
 var express = require('express');
 var path = require('path');
@@ -42,8 +42,8 @@ app.use('/review', review);
 app.use('/image', images);
 app.use('/order', orders);
 
-app.use('/', express.static('public/resources'))
-app.use('/', express.static('public/stylesheets'))
+app.use('/', express.static('public/resources'));
+app.use('/', express.static('public/stylesheets'));
 
 
 //Setup HealthCheck API

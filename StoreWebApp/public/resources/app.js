@@ -21,6 +21,12 @@ function bootstrapApp() {
     });
 }
 
+app.run(function($rootScope) {
+  window.onbeforeunload = function(event) {
+    $rootScope.$broadcast('savestate');
+  };
+});
+
 app.config(['$routeProvider', function($routeProvider) {
 
 	console.log("entering Angular config");
@@ -32,6 +38,10 @@ app.config(['$routeProvider', function($routeProvider) {
     .when('/login', {
        templateUrl : baseUrl + 'login.html',
        controller: 'LoginController'
+    })
+    .when('/logout', {
+       template: '',
+       controller: 'LogoutController'
     })
 		.when('/catalog', {
        templateUrl : baseUrl + 'catalog.html',

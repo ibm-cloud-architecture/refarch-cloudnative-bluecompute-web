@@ -2,9 +2,9 @@ app.controller('CustomerController', ['$scope','$routeParams','$location','UserI
 
 	console.log("Entering Home Controller")
 
-	$scope.loggedIn = UserInfoService.authenticated
+	$scope.loggedIn = UserInfoService.state.authenticated
 
-	BlueAPIService.getCustomerProfile(UserInfoService.accessToken, function (response) {
+	BlueAPIService.getCustomerProfile(UserInfoService.state.accessToken, function (response) {
 		 console.log("Customer Profile Result" + response)
 		 $scope.customerInfo = response.data
 
