@@ -7,11 +7,8 @@ var oauth = require('../server/js/oauth.js');
 var config = require('config');
 
 var session, page_filter;
-var api_url = new UrlPattern('(:protocol)\\://(:host)(/:org)(/:cat)(:api)/(:operation)');
+var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
 var _myApp = config.get('Application');
-var _apiServer = config.get('API-Server');
-var _apiServerOrg = ((_apiServer.org === "") || (typeof _apiServer.org == 'undefined')) ? undefined : _apiServer.org;
-var _apiServerCatalog = ((_apiServer.catalog === "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
 var _apis = config.get('APIs');
 
 
@@ -55,10 +52,8 @@ function setGetItemsOptions(req, res) {
   var query = req.query;
 
   var items_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    protocol: _myApp.protocol,
+    host: _apis.catalog.service_name,
     api: _apis.catalog.base_path,
     operation: "items"
   });
@@ -110,10 +105,8 @@ function setGetItemOptions(req, res) {
   var params = req.params;
 
   var item_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    protocol: _myApp.protocol,
+    host: _apis.catalog.service_name,
     api: _apis.catalog.base_path,
     operation: "items/" + params.id
   });

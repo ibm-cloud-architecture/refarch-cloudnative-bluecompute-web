@@ -1,8 +1,9 @@
 {
   "Application": {
-    "client_id": "039fc6e9-3644-435d-adf5-bcc108623b82",
+    "client_id": "4ff34df6-9b99-4e7b-9d81-82b83f47bb81",
     "client_secret": "",
-    "local_mode":false,
+    "protocol": "https",
+    "local_mode":true,
     "ObjectStorage": {
         "container": "bluecompute"
     }
@@ -15,9 +16,9 @@
   },
   "APIs": {
     "catalog": {
-      "base_path": "/api",
+      "service_name": "us-netflix-zuul-cloudnative-integration.mybluemix.net",
+      "base_path": "/catalog-microservice/micro",
       "require": [
-          "client_id"
       ]
     },
     "order": {

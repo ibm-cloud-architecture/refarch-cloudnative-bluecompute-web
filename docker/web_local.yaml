@@ -1,0 +1,39 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bluecompute-web
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: bluecompute
+        tier: frontend
+        micro: web-bff
+    spec:
+      containers:
+      - name: bluecompute-web
+        image: bluecompute-web:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bluecompute-web
+  labels:
+    app: bluecompute
+    tier: frontend
+    micro: web-bff
+spec:
+  ports:
+  - protocol: TCP
+    port: 8000
+  selector:
+    app: bluecompute
+    tier: frontend
+    micro: web-bff
+  type: NodePort
+...
