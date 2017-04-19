@@ -7,7 +7,7 @@ function get_object_storage_secret {
 set -x
 
 build_number=$1
-image_name="registry.ng.bluemix.net/chrisking/catalog:${build_number}"
+image_name="registry.ng.bluemix.net/chrisking/bluecompute-web:${build_number}"
 token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 cluster_name=$(cat /var/run/secrets/bx-auth-secret/CLUSTER_NAME)
 
@@ -68,12 +68,13 @@ fi
 IP_ADDR=$(kubectl --token=${token} get services | grep bluecompute-web | head -1 | awk '{print $3}')
 PORT=$(kubectl --token=${token} get services | grep bluecompute-web | head -1 | awk '{print $4}' | sed 's/:.*//')
 
-echo "Access the web app at http://$IP_ADDR:$PORT/micro/items"
+echo "Access the web app at http://$IP_ADDR:$PORT"
 
 #clean the previous build image
  	if [[ "${IP_ADDR// }" ]]; then
  		echo "delete images from previous build"
- #		bx cr image-rm registry.ng.bluemix.net/chrisking/micro-auth:${i}
+		previous_build=${build_number}-1
+  	#bx ic rmi registry.ng.bluemix.net/chrisking/micro-auth:${previous_build}
  	fi
 
 cd ../docker
