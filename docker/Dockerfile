@@ -1,6 +1,6 @@
 from node:6
 
-ADD StoreWebApp /StoreWebApp
+ADD ../StoreWebApp /StoreWebApp
 
 WORKDIR /StoreWebApp
 
