@@ -17,8 +17,10 @@ podTemplate(label: 'pod',
                 checkout scm
                 sh """
                 #!/bin/bash
+                cp -ar StoreWebApp docker/StoreWebApp
                 cd docker
                 docker build -t cloudnative/bluecompute-web .
+                rm -r StoreWebApp
                 """
             }
             stage ('Push Docker Image to Registry') {
