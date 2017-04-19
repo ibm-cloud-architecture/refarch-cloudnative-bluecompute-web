@@ -14,6 +14,7 @@ podTemplate(label: 'pod',
     node ('pod') {
         container('slave-container') {
             stage ('Build Docker Image') {
+                checkout scm
                 sh """
                 #!/bin/bash
                 cd docker
@@ -23,7 +24,7 @@ podTemplate(label: 'pod',
             stage ('Push Docker Image to Registry') {
                 sh """
                 #!/bin/bash
-                cd catalog/scripts
+                cd docker
                 ./push_to_docker.sh ${env.BUILD_NUMBER}
                 """
             }
