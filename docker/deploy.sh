@@ -46,14 +46,14 @@ bc_web_service=$(kubectl get services | grep bluecompute-web | head -1 | awk '{p
 # Check if service does not exist
 if [[ -z "${bc_web_service// }" ]]; then
 	# Deploy service
-	echo -e "Deploying Catalog for the first time"
+	echo -e "Deploying web application for the first time"
 
 	# Enter secret and image name into yaml
 	#sed -i.bak s%binding-compose-for-elasticsearch%${object_storage_secret}%g service.yml
-	sed -i.bak s%registry.ng.bluemix.net/chrisking/bluecompute-web:v1%${image_name}%g web.yml
+	sed -i.bak s%registry.ng.bluemix.net/chrisking/bluecompute-web:v1%${image_name}%g web.yaml
 
 	# Do the deployment
-	kubectl --token=${token} create -f web.yml
+	kubectl --token=${token} create -f web.yaml
 
 else
 	# Do rolling update
