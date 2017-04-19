@@ -34,8 +34,8 @@ podTemplate(label: 'pod',
                 sh """
                 #!/bin/bash
                 cd docker
-                #./deploy.sh ${env.BUILD_NUMBER}
-                #"""
+                ./deploy.sh ${env.BUILD_NUMBER}
+                """
             }
         }
     }
