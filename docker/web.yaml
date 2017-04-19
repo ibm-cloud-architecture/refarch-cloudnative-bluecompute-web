@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: bluecompute-web
+  name: bluecompute-web-depoyment
 spec:
   replicas: 2
   template:
@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
       - name: bluecompute-web
-        image: registry.ng.bluemix.net/chrisking/bluecompute-web:jkwong-dev
+        image: registry.ng.bluemix.net/chrisking/bluecompute-web:v1
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
----        
+---
 apiVersion: v1
 kind: Service
 metadata:

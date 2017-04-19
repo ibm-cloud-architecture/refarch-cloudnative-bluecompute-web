@@ -33,7 +33,7 @@ podTemplate(label: 'pod',
             stage ('Deploy to Kubernetes') {
                 sh """
                 #!/bin/bash
-                #cd catalog/scripts
+                cd docker
                 #./deploy.sh ${env.BUILD_NUMBER}
                 #"""
             }
