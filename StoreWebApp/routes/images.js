@@ -19,6 +19,7 @@ var containerName=_myApp.ObjectStorage.container, local_mode=_myApp.local_mode, 
 init_object_storage();
 
 function init_object_storage() {
+  console.log("init object storage");
   var config = {};
   if(local_mode)
   {
@@ -45,7 +46,7 @@ function init_object_storage() {
 
     //var credentials = services['Object-Storage'][0].credentials;
     var credentials = secretEnv;
-    console.log("VCAP credential: " + JSON.stringify(credentials));
+    console.log("Service Binding credential: " + JSON.stringify(credentials));
 
     config = {
           provider: 'openstack',
