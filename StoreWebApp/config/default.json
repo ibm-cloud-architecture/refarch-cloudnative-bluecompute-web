@@ -3,7 +3,7 @@
     "client_id": "4ff34df6-9b99-4e7b-9d81-82b83f47bb81",
     "client_secret": "",
     "protocol": "http",
-    "local_mode":true,
+    "local_mode":false,
     "ObjectStorage": {
         "container": "bluecompute"
     }
