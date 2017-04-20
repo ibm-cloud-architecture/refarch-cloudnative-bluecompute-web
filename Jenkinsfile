@@ -17,17 +17,17 @@ podTemplate(label: 'pod',
                 checkout scm
                 sh """
                 #!/bin/bash
-                #cp -ar StoreWebApp docker/StoreWebApp
-                #cd docker
-                #docker build -t cloudnative/bluecompute-web .
-                #rm -r StoreWebApp
+                cp -ar StoreWebApp docker/StoreWebApp
+                cd docker
+                docker build -t cloudnative/bluecompute-web .
+                rm -r StoreWebApp
                 """
             }
             stage ('Push Docker Image to Registry') {
                 sh """
                 #!/bin/bash
-                #cd docker
-                #./push_to_docker.sh ${env.BUILD_NUMBER}
+                cd docker
+                ./push_to_docker.sh ${env.BUILD_NUMBER}
                 """
             }
             stage ('Deploy to Kubernetes') {

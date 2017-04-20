@@ -22,7 +22,7 @@ spec:
           - name: objectstorage
             valueFrom:
               secretKeyRef:
-                name: binding-compose-for-elasticsearch-cu
+                name: binding-object-storage
                 key: binding
 ---
 apiVersion: v1
