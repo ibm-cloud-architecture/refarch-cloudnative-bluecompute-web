@@ -79,7 +79,8 @@ echo "Access the web app at http://$IP_ADDR:$PORT"
 #clean the previous build image
  	if [[ "${IP_ADDR// }" ]]; then
  		echo "delete images from previous build"
-		previous_build=${build_number}-1
+		bx plugin install container-service -r Bluemix
+		previous_build=$((build_number-1))
   	bx ic rmi registry.ng.bluemix.net/chrisking/micro-auth:${previous_build}
  	fi
 
