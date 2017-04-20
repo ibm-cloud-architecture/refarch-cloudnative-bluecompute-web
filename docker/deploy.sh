@@ -80,7 +80,7 @@ echo "Access the web app at http://$IP_ADDR:$PORT"
  	if [[ "${IP_ADDR// }" ]]; then
  		echo "delete images from previous build"
 		previous_build=$((build_number-1))
-  	bx cr image-rm registry.ng.bluemix.net/chrisking/micro-auth:${previous_build}
+  	bx cr image-rm registry.ng.bluemix.net/chrisking/bluecompute-web:${previous_build}
  	fi
 
 cd ../docker
