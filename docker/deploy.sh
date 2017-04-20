@@ -7,7 +7,8 @@ function get_object_storage_secret {
 set -x
 
 build_number=$1
-image_name="registry.ng.bluemix.net/chrisking/bluecompute-web:${build_number}"
+#image_name="registry.ng.bluemix.net/chrisking/bluecompute-web:${build_number}"
+image_name="registry.ng.bluemix.net/chrisking/bluecompute-web:17"
 token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 cluster_name=$(cat /var/run/secrets/bx-auth-secret/CLUSTER_NAME)
 
