@@ -58,10 +58,12 @@ if [[ -z "${bc_web_service// }" ]]; then
 else
 
 	# Enter secret and image name into yaml
-	sed -i.bak s%binding-object-storage%${object_storage_secret}%g web.yaml
+
 
 	# Do rolling update
 	echo -e "Doing a rolling update on Web app Deployment"
+	echo -e "Object Storage secret is:"
+	# sed -i.bak s%binding-object-storage%${object_storage_secret}%g web.yaml
 	kubectl --token=${token} set image deployment/bluecompute-web-depoyment bluecompute-web=${image_name}
 
 	# Watch the rollout update
