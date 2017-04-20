@@ -14,30 +14,30 @@ cluster_name=$(cat /var/run/secrets/bx-auth-secret/CLUSTER_NAME)
 # Check if elasticsearch secret exists
 object_storage_secret=$(get_object_storage_secret)
 
-if [[ -z "${object_storage_secret// }" ]]; then
-	echo "Object storage secret does not exist. Creating"
-	obstorage_service=$(bx service list | grep "storage" | head -1 | sed -e 's/storage.*//' | sed 's/[[:blank:]]*$//')
-
-	if [[ -z "${elastic_service// }" ]]; then
-		echo "Cannot create secret. No service instance exists for compose-for-elasticsearch."
-		exit 1
-	fi
-
-	echo "Creating secret from ${elastic_service}"
-	bx cs cluster-service-bind $cluster_name default "${elastic_service}"
-
-	if [ $? -ne 0 ]; then
-	  echo "Could not create secret for ${elastic_service} service."
-	  exit 1
-	fi
-
-	object_storage_secret=$(get_object_storage_secret)
-
-	if [[ -z "${object_storage_secret// }" ]]; then
-		echo "Cannot retrieve secret for ${elastic_service} service."
-		exit 1
-	fi
-fi
+# if [[ -z "${object_storage_secret// }" ]]; then
+# 	echo "Object storage secret does not exist. Creating"
+# 	obstorage_service=$(bx service list | grep "storage" | head -1 | sed -e 's/storage.*//' | sed 's/[[:blank:]]*$//')
+#
+# 	if [[ -z "${elastic_service// }" ]]; then
+# 		echo "Cannot create secret. No service instance exists for compose-for-elasticsearch."
+# 		exit 1
+# 	fi
+#
+# 	echo "Creating secret from ${elastic_service}"
+# 	bx cs cluster-service-bind $cluster_name default "${elastic_service}"
+#
+# 	if [ $? -ne 0 ]; then
+# 	  echo "Could not create secret for ${elastic_service} service."
+# 	  exit 1
+# 	fi
+#
+# 	object_storage_secret=$(get_object_storage_secret)
+#
+# 	if [[ -z "${object_storage_secret// }" ]]; then
+# 		echo "Cannot retrieve secret for ${elastic_service} service."
+# 		exit 1
+# 	fi
+# fi
 
 # Delete previous service
 # Do rolling update here
@@ -56,6 +56,10 @@ if [[ -z "${bc_web_service// }" ]]; then
 	kubectl --token=${token} create -f web.yaml
 
 else
+
+	# Enter secret and image name into yaml
+	sed -i.bak s%binding-object-storage%${object_storage_secret}%g web.yaml
+
 	# Do rolling update
 	echo -e "Doing a rolling update on Web app Deployment"
 	kubectl --token=${token} set image deployment/bluecompute-web-depoyment bluecompute-web=${image_name}
