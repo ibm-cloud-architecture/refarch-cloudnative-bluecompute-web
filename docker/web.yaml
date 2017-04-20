@@ -42,5 +42,4 @@ spec:
     app: bluecompute
     tier: frontend
     micro: web-bff
-  type: LoadBalancer
 ...

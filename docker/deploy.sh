@@ -63,8 +63,7 @@ else
 
 	# Do rolling update
 	echo -e "Doing a rolling update on Web app Deployment"
-	echo -e "Object Storage secret is:"
-	# sed -i.bak s%binding-object-storage%${object_storage_secret}%g web.yaml
+
 	kubectl --token=${token} set image deployment/bluecompute-web-depoyment bluecompute-web=${image_name}
 
 	# Watch the rollout update
@@ -81,7 +80,7 @@ echo "Access the web app at http://$IP_ADDR:$PORT"
  	if [[ "${IP_ADDR// }" ]]; then
  		echo "delete images from previous build"
 		previous_build=${build_number}-1
-  	#bx ic rmi registry.ng.bluemix.net/chrisking/micro-auth:${previous_build}
+  	bx ic rmi registry.ng.bluemix.net/chrisking/micro-auth:${previous_build}
  	fi
 
 cd ../docker
