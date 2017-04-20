@@ -12,6 +12,7 @@ var pkgcloud = require('pkgcloud');
 // the document or sample of each service.
 var _myApp = config.get('Application');
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
+var secretEnv = JSON.parse(process.env.objectstorage || "{}");
 
 var containerName=_myApp.ObjectStorage.container, local_mode=_myApp.local_mode, auth=false, authSucess=false, storageClient;
 
@@ -42,7 +43,8 @@ function init_object_storage() {
   }
   else {
 
-    var credentials = services['Object-Storage'][0].credentials;
+    //var credentials = services['Object-Storage'][0].credentials;
+    var credentials = secretEnv;
     console.log("VCAP credential: " + JSON.stringify(credentials));
 
     config = {
