@@ -16,8 +16,8 @@
   },
   "APIs": {
     "catalog": {
-      "service_name": "catalog-service:8081",
-      "base_path": "/micro",
+      "service_name": "us-netflix-zuul-cloudnative-integration.mybluemix.net",
+      "base_path": "/catalog-microservice//micro",
       "require": [
       ]
     },

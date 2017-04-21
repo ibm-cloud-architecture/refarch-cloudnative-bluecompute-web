@@ -58,9 +58,6 @@ if [[ -z "${bc_web_service// }" ]]; then
 
 else
 
-	# Enter secret and image name into yaml
-
-
 	# Do rolling update
 	echo -e "Doing a rolling update on Web app Deployment"
 
