@@ -8,7 +8,9 @@ app.controller('ItemController', ['$scope','$routeParams','$location','$route','
 	$scope.showReview = false;
 	$scope.reviewSuccess = false;
 	$scope.reviewFail = false;
-	$scope.showReviewList = true;
+	// Determine whether to show the SocailReview section at all
+	// For trimmed down version of BlueCompute, we can hide the entire socialReview section
+	$scope.showReviewList = false;
 
 	angular.element('#stars').starrr();
 
