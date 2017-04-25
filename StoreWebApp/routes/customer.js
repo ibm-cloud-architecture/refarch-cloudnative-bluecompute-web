@@ -7,11 +7,8 @@ var oauth = require('../server/js/oauth.js');
 var config = require('config');
 
 var session, page_filter;
-var api_url = new UrlPattern('(:protocol)\\://(:host)(/:org)(/:cat)(:api)/(:operation)');
+var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
 var _myApp = config.get('Application');
-var _apiServer = config.get('API-Server');
-var _apiServerOrg = ((_apiServer.org === "") || (typeof _apiServer.org == 'undefined')) ? undefined : _apiServer.org;
-var _apiServerCatalog = ((_apiServer.catalog === "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
 var _apis = config.get('APIs');
 
 /* GET Catalog listing from API and return JSON */
@@ -35,9 +32,7 @@ function setGetCustomerOptions(req, res) {
 
   var customer_url = api_url.stringify({
     protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    host: _apis.customer.service_name,
     api: _apis.customer.base_path,
     operation: "customer"
   });

@@ -42,6 +42,7 @@
       ]
     },
     "customer": {
+      "service_name": "customer-service:8080",
       "base_path": "/api",
       "require": [
         "client_id",
