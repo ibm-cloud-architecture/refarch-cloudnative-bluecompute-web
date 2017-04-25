@@ -28,22 +28,21 @@
       ]
     },
     "order": {
-      "base_path": "/api",
+      "service_name": "orders-service:8080",
+      "base_path": "/micro",
       "require": [
-        "client_id",
         "oauth"
       ]
     },
     "review": {
       "base_path": "/api",
       "require": [
-        "client_id",
         "oauth"
       ]
     },
     "customer": {
       "service_name": "customer-service:8080",
-      "base_path": "/api",
+      "base_path": "/micro",
       "require": [
         "client_id",
         "oauth"

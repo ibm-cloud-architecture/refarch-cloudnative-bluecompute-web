@@ -9,9 +9,8 @@ var config = require('config');
 var session;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(/:org)(/:cat)(:api)/(:operation)');
 var _myApp = config.get('Application');
-var _apiServer = config.get('API-Server');
-var _apiServerOrg = ((_apiServer.org === "") || (typeof _apiServer.org == 'undefined')) ? undefined : _apiServer.org;
-var _apiServerCatalog = ((_apiServer.catalog === "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
+var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
+var _myApp = config.get('Application');
 var _apis = config.get('APIs');
 
 /* Handle the GET request for obtaining item information and render the page */
@@ -41,10 +40,8 @@ function setGetOrdersOptions(req, res) {
   var params = req.params;
 
   var orders_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    protocol: _myApp.protocol,
+    host: _apis.order.service_name,
     api: _apis.order.base_path,
     operation: "orders"
   });
@@ -96,10 +93,8 @@ function setNewOrderOptions(req, res) {
 
 
   var orders_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    protocol: _myApp.protocol,
+    host: _apis.order.service_name,
     api: _apis.order.base_path,
     operation: "orders"
   });
