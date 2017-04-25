@@ -6,7 +6,7 @@ app.controller('LoginController', ['$scope','$location','BlueAPIService','UserIn
 
 	 $scope.save = function (loginForm) {
 
-		 $scope.payload = 'grant_type=password&scope=blue&username='+$scope.username+'&password='+$scope.password+'&client_id='+CONFIG.Application.client_id
+		 $scope.payload = 'grant_type=password&scope=blue&username='+$scope.username+'&password='+$scope.password
 
 		 BlueAPIService.loginUser($scope.payload, function (response) {
 	 			console.log("Login Result" + response)

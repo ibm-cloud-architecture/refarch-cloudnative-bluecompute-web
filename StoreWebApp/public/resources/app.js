@@ -1,4 +1,4 @@
-var app = angular.module('ibm-cloud-arch', ['ngRoute']);
+var app = angular.module('ibm-cloud-arch', ['ngRoute', 'base64']);
 var baseUrl = '/components/views/';
 
 fetchData().then(bootstrapApp);

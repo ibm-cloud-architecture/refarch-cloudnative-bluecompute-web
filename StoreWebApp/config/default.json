@@ -14,6 +14,12 @@
     "org": "centusibmcom-cloudnative-prod",
     "catalog": "bluecompute"
   },
+  "Auth-Server": {
+    "protocol": "http",
+    "host": "169.48.130.68:8080",
+    "client_id":"bluecomputeweb",
+    "client_secret":"bluecomputewebs3cret"
+  },
   "APIs": {
     "catalog": {
       "service_name": "catalog-service:8081",
