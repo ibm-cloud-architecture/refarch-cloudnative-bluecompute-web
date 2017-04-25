@@ -15,8 +15,8 @@
     "catalog": "bluecompute"
   },
   "Auth-Server": {
-    "protocol": "http",
-    "host": "169.48.130.68:8080",
+    "protocol": "https",
+    "host": "169.48.130.67",
     "client_id":"bluecomputeweb",
     "client_secret":"bluecomputewebs3cret"
   },
