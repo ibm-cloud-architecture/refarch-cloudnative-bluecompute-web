@@ -31,7 +31,7 @@ function setGetCustomerOptions(req, res) {
   var query = req.query;
 
   var customer_url = api_url.stringify({
-    protocol: _apiServer.protocol,
+    protocol: _myApp.protocol,
     host: _apis.customer.service_name,
     api: _apis.customer.base_path,
     operation: "customer"
