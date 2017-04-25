@@ -6,7 +6,7 @@ app.controller('CustomerController', ['$scope','$routeParams','$location','UserI
 
 	BlueAPIService.getCustomerProfile(UserInfoService.state.accessToken, function (response) {
 		 console.log("Customer Profile Result" + response)
-		 $scope.customerInfo = response.data
+		 $scope.customerInfo = response.data[0];
 
 	 }, function (error){
 		 console.log("Customer Profile Error: " + error);
