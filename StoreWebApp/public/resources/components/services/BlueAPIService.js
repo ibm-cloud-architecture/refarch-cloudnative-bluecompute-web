@@ -40,7 +40,7 @@ app.service('BlueAPIService',['$http', 'CONFIG', '$base64', function($http, CONF
 		}
 		else {
 			var basicAuthToken = CONFIG["Auth-Server"].client_id + ":" + CONFIG["Auth-Server"].client_secret;
-			var authToken = 'Basic ' + basicAuthToken;
+			var authToken = 'Basic ' + $base64.encode(basicAuthToken);
 			console.log("BasiAuth of " + basicAuthToken + " 64 encoded token: " + authToken);
 			console.log("with Url parameter: " + JSON.stringify(parameters));
 			$http({
