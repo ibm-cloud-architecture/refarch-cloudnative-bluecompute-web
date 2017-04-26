@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bluecompute-web
+spec:
+  rules:
+  - host: {{ing_host}}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: bluecompute-web
+          servicePort: 80
