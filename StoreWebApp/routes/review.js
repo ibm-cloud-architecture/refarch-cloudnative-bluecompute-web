@@ -3,15 +3,11 @@ var router = express.Router();
 var http = require('request-promise-json');
 var Promise = require('promise');
 var UrlPattern = require('url-pattern');
-var oauth = require('../server/js/oauth.js');
+//var oauth = require('../server/js/oauth.js');
 var config = require('config');
 
 var session;
-var api_url = new UrlPattern('(:protocol)\\://(:host)(/:org)(/:cat)(:api)/(:operation)');
-var _myApp = config.get('Application');
-var _apiServer = config.get('API-Server');
-var _apiServerOrg = ((_apiServer.org === "") || (typeof _apiServer.org == 'undefined')) ? undefined : _apiServer.org;
-var _apiServerCatalog = ((_apiServer.catalog === "") || (typeof _apiServer.catalog == 'undefined')) ? undefined : _apiServer.catalog;
+var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
 var _apis = config.get('APIs');
 
 /* Handle the GET request for obtaining item information and render the page */
@@ -41,10 +37,8 @@ function setGetReviewOptions(req, res) {
   var params = req.params;
 
   var reviews_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    protocol: _apis.protocol,
+    host: _apis.review.service_name,
     api: _apis.review.base_path,
     operation: "reviews/list?itemId=" + params.id
   });
@@ -55,9 +49,6 @@ function setGetReviewOptions(req, res) {
     strictSSL: false,
     headers: {}
   };
-
-  if (_apis.review.require.indexOf("client_id") != -1) getItemReviews_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.review.require.indexOf("client_secret") != -1) getItemReviews_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
 
@@ -84,10 +75,8 @@ function setNewReviewOptions(req, res) {
   if (form_body.comment !== '') reqBody.comment = form_body.comment;
 
   var reviews_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    protocol: _apis.protocol,
+    host: _apis.review.service_name,
     api: _apis.review.base_path,
     operation: "reviews/comment?itemId=" + params.id
   });
@@ -101,7 +90,6 @@ function setNewReviewOptions(req, res) {
     JSON: true
   };
 
-  if (_apis.review.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
@@ -166,10 +154,8 @@ function submitNewReview(function_input) {
 
   //Inject the call to customer here
   var customer_url = api_url.stringify({
-    protocol: _apiServer.protocol,
-    host: _apiServer.host,
-    org: _apiServerOrg,
-    cat: _apiServerCatalog,
+    protocol: _apis.protocol,
+    host: _apis.review.service_name,
     api: _apis.customer.base_path,
     operation: "customer"
   });

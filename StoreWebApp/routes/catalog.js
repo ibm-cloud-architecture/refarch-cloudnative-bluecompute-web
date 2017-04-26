@@ -3,12 +3,11 @@ var router = express.Router();
 var http = require('request-promise-json');
 var Promise = require('promise');
 var UrlPattern = require('url-pattern');
-var oauth = require('../server/js/oauth.js');
+//var oauth = require('../server/js/oauth.js');
 var config = require('config');
 
 var session, page_filter;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
-var _myApp = config.get('Application');
 var _apis = config.get('APIs');
 
 
@@ -52,7 +51,7 @@ function setGetItemsOptions(req, res) {
   var query = req.query;
 
   var items_url = api_url.stringify({
-    protocol: _myApp.protocol,
+    protocol: _apis.protocol,
     host: _apis.catalog.service_name,
     api: _apis.catalog.base_path,
     operation: "items"
@@ -65,9 +64,6 @@ function setGetItemsOptions(req, res) {
     strictSSL: false,
     headers: {}
   };
-
-  if (_apis.catalog.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.catalog.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   // Apply the query filter, if one is present
   //if (typeof query.filter !== 'undefined') options.url += '?filter=' + JSON.stringify(query.filter);
@@ -105,7 +101,7 @@ function setGetItemOptions(req, res) {
   var params = req.params;
 
   var item_url = api_url.stringify({
-    protocol: _myApp.protocol,
+    protocol: _apis.protocol,
     host: _apis.catalog.service_name,
     api: _apis.catalog.base_path,
     operation: "items/" + params.id
@@ -117,9 +113,6 @@ function setGetItemOptions(req, res) {
     strictSSL: false,
     headers: {}
   };
-
-  if (_apis.catalog.require.indexOf("client_id") != -1) getItem_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.catalog.require.indexOf("client_secret") != -1) getItem_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
 

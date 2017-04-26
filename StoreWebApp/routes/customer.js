@@ -3,12 +3,11 @@ var router = express.Router();
 var http = require('request-promise-json');
 var Promise = require('promise');
 var UrlPattern = require('url-pattern');
-var oauth = require('../server/js/oauth.js');
+//var oauth = require('../server/js/oauth.js');
 var config = require('config');
 
 var session, page_filter;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
-var _myApp = config.get('Application');
 var _apis = config.get('APIs');
 
 /* GET Catalog listing from API and return JSON */
@@ -31,7 +30,7 @@ function setGetCustomerOptions(req, res) {
   var query = req.query;
 
   var customer_url = api_url.stringify({
-    protocol: _myApp.protocol,
+    protocol: _apis.protocol,
     host: _apis.customer.service_name,
     api: _apis.customer.base_path,
     operation: "customer"
@@ -45,8 +44,7 @@ function setGetCustomerOptions(req, res) {
     headers: {}
   };
 
-  if (_apis.customer.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  //if (_apis.customer.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
+  //if (_apis.customer.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _apis.client_secret;
 
   return new Promise(function (fulfill) {
 

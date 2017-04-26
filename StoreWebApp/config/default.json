@@ -1,18 +1,5 @@
 {
   "Application": {
-    "client_id": "4ff34df6-9b99-4e7b-9d81-82b83f47bb81",
-    "client_secret": "",
-    "protocol": "http",
-    "local_mode":false,
-    "ObjectStorage": {
-        "container": "bluecompute"
-    }
-  },
-  "API-Server": {
-    "protocol": "https",
-    "host": "api.us.apiconnect.ibmcloud.com",
-    "org": "centusibmcom-cloudnative-prod",
-    "catalog": "bluecompute"
   },
   "Auth-Server": {
     "protocol": "https",
@@ -21,6 +8,7 @@
     "client_secret":"bluecomputewebs3cret"
   },
   "APIs": {
+    "protocol": "http",
     "catalog": {
       "service_name": "catalog-service:8081",
       "base_path": "/micro",

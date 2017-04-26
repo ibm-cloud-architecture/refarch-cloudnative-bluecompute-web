@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var Promise = require('promise');
-var oauth = require('../server/js/oauth.js');
+//var oauth = require('../server/js/oauth.js');
 
 var session;
 
-/* GET request for login screen 
+/* GET request for login screen
 router.get('/', function (req, res) {
   session = req.session;
 

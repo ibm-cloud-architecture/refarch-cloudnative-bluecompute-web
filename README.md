@@ -1,45 +1,18 @@
 # BlueCompute Web Application by IBM Cloud
 
 *This project is part of the 'IBM Cloud Native Reference Architecture' suite, available at
-https://github.com/ibm-cloud-architecture/refarch-cloudnative*
+https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes*
 
-The BlueCompute Web application is built to demonstrate how to access the Omnichannel APIs hosted on IBM Cloud. The application provides the basic function to allow user to browse the Catalog items, make an Order and submit review comments. The Web application is built with AngularJS in Web 2.0 Single Page App style. It uses a Node.js backend to host the static content and implement the BFF (Backend for Frontend) pattern.
+The sample Web application is built to demonstrate how to access the Omnichannel APIs hosted on IBM Cloud. The application provides the basic function to allow user to browse the Catalog items, make an Order and review profile. The Web application is built with AngularJS in Web 2.0 Single Page App style. It uses a Node.js backend to host the static content and implement the BFF (Backend for Frontend) pattern.
 
 Here is an overview of the project's features:
 - AngularJS SPA
 - Node.js based BFF application to access APIs
 - Authentication and Authorization through OAuth 2.0
-- Integration wiht Bluemix Object Storage
 - DevOps toolchain to build/deploy web app
+- Distributed as Docker container and deployed to Kubernetes cluster on Bluemix
 
-## Pre-requisites - Object Storage
-
-The web application stores the product images in Cloud storage using Bluemix Object Storage, you need to provision and load the images before run the application. (if you are using Automated devops toolchain to setup the application, it will create the object storage. You can skip this section in that case)
-
-1. [Provision](https://console.ng.bluemix.net/catalog/services/object-storage/?taxonomyNavigation=apps) an instance of Object Storage into your Bluemix space.
-   - Specify the name for your service instance.
-   - Choose the Free plan
-   - Click the Create button.
-
-2. Now obtain the Object Storage service credentials.
-   - Click on Service Credentials tab.
-   - Then click on the View Credentials dropdown next to the credentials. (You may need to create a new credential)
-
-   You will need the following:
-      * projectId
-      * username
-      * password
-      * domainId
-
-    Keep those credential handy as they will be needed when running the web app locally.
-
-3. Create a Object Storage container and Upload the application images into the container
-
-   Bluemix Object Storage uses container as storage unit to organize content.
-
-   - Click the "Manage" tab, then click the "Select Action" dropdown, and choose "**Create Container**".
-   - Name the Container "**bluecompute**".
-   - From your computer file explorer (or Finder in Mac), locate the folder `StoreWebApp/image`. Drag and drop all the images to the Browser Object Storage bluecompute container. (alternative, you can click add file actions to load images).
+You need to have your local development environment properly configured with all the tools installed, for example, Docker and Kubernetes command line tool. Please reference [this instruction](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int#step-1-environment-setup) to set up your local development environment.
 
 ## Run the Web application locally
 

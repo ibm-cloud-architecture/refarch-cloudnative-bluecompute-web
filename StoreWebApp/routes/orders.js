@@ -3,14 +3,11 @@ var router = express.Router();
 var http = require('request-promise-json');
 var Promise = require('promise');
 var UrlPattern = require('url-pattern');
-var oauth = require('../server/js/oauth.js');
+//var oauth = require('../server/js/oauth.js');
 var config = require('config');
 
 var session;
-var api_url = new UrlPattern('(:protocol)\\://(:host)(/:org)(/:cat)(:api)/(:operation)');
-var _myApp = config.get('Application');
 var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
-var _myApp = config.get('Application');
 var _apis = config.get('APIs');
 
 /* Handle the GET request for obtaining item information and render the page */
@@ -40,7 +37,7 @@ function setGetOrdersOptions(req, res) {
   var params = req.params;
 
   var orders_url = api_url.stringify({
-    protocol: _myApp.protocol,
+    protocol: _apis.protocol,
     host: _apis.order.service_name,
     api: _apis.order.base_path,
     operation: "orders"
@@ -52,9 +49,6 @@ function setGetOrdersOptions(req, res) {
     strictSSL: false,
     headers: {}
   };
-
-  if (_apis.order.require.indexOf("client_id") != -1) getOrders_options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-  if (_apis.order.require.indexOf("client_secret") != -1) getOrders_options.headers["X-IBM-Client-Secret"] = _myApp.client_secret;
 
   return new Promise(function (fulfill) {
 
@@ -93,7 +87,7 @@ function setNewOrderOptions(req, res) {
 
 
   var orders_url = api_url.stringify({
-    protocol: _myApp.protocol,
+    protocol: _apis.protocol,
     host: _apis.order.service_name,
     api: _apis.order.base_path,
     operation: "orders"
@@ -107,10 +101,6 @@ function setNewOrderOptions(req, res) {
     body: reqBody,
     JSON: true
   };
-
-  // Add APIC Client ID to the header
-  if (_apis.order.require.indexOf("client_id") != -1) options.headers["X-IBM-Client-Id"] = _myApp.client_id;
-
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
