@@ -11,6 +11,7 @@ image_name="registry.ng.bluemix.net/chrisking/bluecompute-web:${build_number}"
 #image_name="registry.ng.bluemix.net/chrisking/bluecompute-web:17"
 token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 cluster_name=$(cat /var/run/secrets/bx-auth-secret/CLUSTER_NAME)
+ing_host=$(bx cs cluster-get ${cluster_name}|grep 'Ingress host:'|awk '{print $NF}')
 
 # Check if elasticsearch secret exists
 object_storage_secret=$(get_object_storage_secret)
@@ -55,6 +56,8 @@ if [[ -z "${bc_web_service// }" ]]; then
 
 	# Do the deployment
 	kubectl --token=${token} create -f web.yaml
+  sed "s/{{ing_host}}/$ing_host/g" ing.yaml
+  kubectl create -f ing.yaml
 
 else
 
