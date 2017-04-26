@@ -7,6 +7,10 @@ spec:
   - host: {{ing_host}}
     http:
       paths:
+      - path: /oauth/token
+        backend:
+          serviceName: auth-service
+          servicePort: 8080
       - path: /
         backend:
           serviceName: bluecompute-web
