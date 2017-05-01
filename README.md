@@ -14,7 +14,7 @@ Here is an overview of the project's features:
 
 You need to have your local development environment properly configured with all the tools installed, for example, Docker and Kubernetes command line tool. Please reference [this instruction](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int#step-1-environment-setup) to set up your local development environment.
 
-## Run the Web application locally
+## Run and test the Web application locally
 
 1. Navigate to the web app folder `StoreWebApp` in the git repository.
 2. Edit the `config/default.json` file to configure the API endpoints. You need to update following fields:

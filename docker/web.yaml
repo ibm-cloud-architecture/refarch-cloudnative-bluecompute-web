@@ -18,12 +18,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
-        env:
-          - name: objectstorage
-            valueFrom:
-              secretKeyRef:
-                name: binding-object-storage
-                key: binding
 ---
 apiVersion: v1
 kind: Service
