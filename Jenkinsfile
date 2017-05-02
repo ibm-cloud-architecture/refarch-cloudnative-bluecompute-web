@@ -8,7 +8,10 @@ podTemplate(label: 'pod',
             image: 'fabiogomezdiaz/bc-jenkins-slave:v10',
             alwaysPullImage: true,
             ttyEnabled: true,
-            command: 'cat'
+            command: 'cat',
+            envVars: [
+              containerEnvVar(key: 'docker_registry_namespace', value: 'chrisking')
+            ]
     )]) {
 
     node ('pod') {
@@ -27,7 +30,7 @@ podTemplate(label: 'pod',
                 sh """
                 #!/bin/bash
                 cd docker
-                ./push_to_docker.sh ${env.BUILD_NUMBER}
+                ./push_to_docker.sh ${env.BUILD_NUMBER} ${env.docker_registry_namespace}
                 """
             }
             stage ('Deploy to Kubernetes') {
