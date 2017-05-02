@@ -10,7 +10,8 @@ podTemplate(label: 'pod',
             ttyEnabled: true,
             command: 'cat',
             envVars: [
-              containerEnvVar(key: 'DOCKER_NAMESPACE', value: 'chrisking')
+              containerEnvVar(key:'DOCKER_NAMESPACE', value:'chrisking'),
+              containerEnvVar(key: 'POSTGRES_USER', value: 'runner')
             ]
     )]) {
 
