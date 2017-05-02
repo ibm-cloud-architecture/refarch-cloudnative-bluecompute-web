@@ -30,14 +30,16 @@ podTemplate(label: 'pod',
                 sh """
                 #!/bin/bash
                 cd docker
-                ./push_to_docker.sh ${env.BUILD_NUMBER} ${env.docker_registry_namespace}
+                echo "Show the variable"
+                echo ${env.docker_registry_namespace}
+                #./push_to_docker.sh ${env.BUILD_NUMBER} ${env.docker_registry_namespace}
                 """
             }
             stage ('Deploy to Kubernetes') {
                 sh """
                 #!/bin/bash
-                cd docker
-                ./deploy.sh ${env.BUILD_NUMBER}
+                #cd docker
+                #./deploy.sh ${env.BUILD_NUMBER}
                 """
             }
         }
