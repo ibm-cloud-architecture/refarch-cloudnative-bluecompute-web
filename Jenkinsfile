@@ -32,7 +32,7 @@ podTemplate(label: 'pod',
                 #!/bin/bash
                 cd docker
                 echo "Show the variable"
-                #echo ${env.BMX_DOCKER_NAMESPACE}
+                echo ${env.BMX_DOCKER_NAMESPACE}
                 #./push_to_docker.sh ${env.BUILD_NUMBER} ${env.docker_registry_namespace}
                 """
             }
