@@ -31,7 +31,7 @@ podTemplate(label: 'pod',
                 #!/bin/bash
                 cd docker
                 echo "Show the variable"
-                echo ${docker_registry_namespace}
+                echo $docker_registry_namespace
                 #./push_to_docker.sh ${env.BUILD_NUMBER} ${env.docker_registry_namespace}
                 """
             }
