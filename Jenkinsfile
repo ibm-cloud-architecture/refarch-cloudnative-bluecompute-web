@@ -10,7 +10,7 @@ podTemplate(label: 'pod',
             ttyEnabled: true,
             command: 'cat',
             envVars: [
-              containerEnvVar(key:'DOCKER_NAMESPACE', value:'chrisking'),
+              containerEnvVar(key:'BMX_DOCKER_NAMESPACE', value:'chrisking'),
               containerEnvVar(key: 'POSTGRES_USER', value: 'runner')
             ]
     )]) {
@@ -32,7 +32,7 @@ podTemplate(label: 'pod',
                 #!/bin/bash
                 cd docker
                 echo "Show the variable"
-                echo $DOCKER_NAMESPACE
+                echo $BMX_DOCKER_NAMESPACE
                 #./push_to_docker.sh ${env.BUILD_NUMBER} ${env.docker_registry_namespace}
                 """
             }
