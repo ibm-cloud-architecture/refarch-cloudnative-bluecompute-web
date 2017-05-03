@@ -26,12 +26,12 @@ if [[ -z "${bc_web_service// }" ]]; then
 	echo -e "Deploying web application for the first time"
 
 	# Enter secret and image name into yaml
-	sed -i.bak s%binding-object-storage%${object_storage_secret}%g web.yaml
+	#sed -i.bak s%binding-object-storage%${object_storage_secret}%g web.yaml
 	sed -i.bak s%registry.ng.bluemix.net/chrisking/bluecompute-web:v1%${image_name}%g web.yaml
 
 	# Do the deployment
 	kubectl --token=${token} create -f web.yaml
-  sed "s/{{ing_host}}/$ing_host/g" ing.yaml
+  sed -i "s/{{ing_host}}/$ing_host/g" ing.yaml
   kubectl create -f ing.yaml
 
 else

@@ -10,8 +10,7 @@ podTemplate(label: 'pod',
             ttyEnabled: true,
             command: 'cat',
             envVars: [
-              containerEnvVar(key: 'BMX_DOCKER_NAMESPACE', value:'chrisking'),
-              containerEnvVar(key: 'POSTGRES_USER', value: 'runner')
+              containerEnvVar(key: 'BMX_DOCKER_NAMESPACE', value:'chrisking')
             ]
     )]) {
 
@@ -21,26 +20,24 @@ podTemplate(label: 'pod',
                 checkout scm
                 sh """
                 #!/bin/bash
-                #cp -ar StoreWebApp docker/StoreWebApp
-                #cd docker
-                #docker build -t cloudnative/bluecompute-web .
-                #rm -r StoreWebApp
+                cp -ar StoreWebApp docker/StoreWebApp
+                cd docker
+                docker build -t cloudnative/bluecompute-web .
+                rm -r StoreWebApp
                 """
             }
             stage ('Push Docker Image to Registry') {
                 sh """
                 #!/bin/bash
                 cd docker
-                echo "Show the variable"
-                echo ${env.BMX_DOCKER_NAMESPACE}
-                #./push_to_docker.sh ${env.BUILD_NUMBER} ${env.docker_registry_namespace}
+                ./push_to_docker.sh ${env.BUILD_NUMBER}
                 """
             }
             stage ('Deploy to Kubernetes') {
                 sh """
                 #!/bin/bash
-                #cd docker
-                #./deploy.sh ${env.BUILD_NUMBER}
+                cd docker
+                ./deploy.sh ${env.BUILD_NUMBER}
                 """
             }
         }

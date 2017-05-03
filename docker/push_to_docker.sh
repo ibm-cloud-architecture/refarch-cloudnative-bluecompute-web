@@ -19,9 +19,7 @@ bx login -a api.ng.bluemix.net -u $cf_email -p $cf_password -c $cf_account -o $c
 bx cs init
 bx cr login
 
-echo "Push to registry ${docker_namespace}"
-
-docker tag cloudnative/bluecompute-web registry.ng.bluemix.net/${docker_namespace}/bluecompute-web:${build_number}
+docker tag cloudnative/bluecompute-web registry.ng.bluemix.net/chrisking/bluecompute-web:${build_number}
 docker push registry.ng.bluemix.net/chrisking/bluecompute-web:${build_number}
 
 set +x
