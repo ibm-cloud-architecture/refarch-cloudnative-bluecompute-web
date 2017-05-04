@@ -39,8 +39,6 @@ You need to have your local development environment properly configured with all
   You wouldn't be able to validate the rest of the functions without deploying other Micservices locally.
 
 
-Feel free to play around and explore the Web application.
-
 ## Deploy the application to Bluemix Kubernetes cluster:
 
 You can deploy the web application to your Bluemix Kubernetes cluster as a Chart, or using the automated CI/CD or manually if you would like to get familiar with the detail. Make sure you have your environment configured based on the [setup your environment guide](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int#step-1-environment-setup).
@@ -89,4 +87,6 @@ Navigate to any of the item detail page, now you should see "Buy" and "Add revie
 
 ![BlueCompute Buy](static/imgs/bluecompute_web_buy.png?raw=true)
 
+
+Feel free to play around and explore the Web application.
 **NOTE:** the review function is not supported in this version of the BlueCompute.
