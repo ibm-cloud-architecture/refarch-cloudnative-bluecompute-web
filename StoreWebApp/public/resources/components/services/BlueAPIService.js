@@ -72,7 +72,8 @@ app.service('BlueAPIService',['$http', 'CONFIG', '$base64', function($http, CONF
 				invokeService(restUrl, requestType, null, successCallback, errorCallback);
 			},
 			loginUser : function(parameters, successCallback, errorCallback) {
-				var restUrl = CONFIG["Auth-Server"].protocol + '://' + CONFIG["Auth-Server"].host + '/oauth/token'
+				//var restUrl = CONFIG["Auth-Server"].protocol + '://' + CONFIG["Auth-Server"].host + '/oauth/token'
+				var restUrl = '/oauth/token'
 				var requestType = 'POST';
 				invokeService(restUrl, requestType, parameters, successCallback, errorCallback);
 			},

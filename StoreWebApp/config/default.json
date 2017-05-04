@@ -2,8 +2,6 @@
   "Application": {
   },
   "Auth-Server": {
-    "protocol": "http",
-    "host": "kyanite-int.us-south.containers.mybluemix.net",
     "client_id":"bluecomputeweb",
     "client_secret":"bluecomputewebs3cret"
   },
