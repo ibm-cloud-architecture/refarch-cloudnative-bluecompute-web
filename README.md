@@ -17,28 +17,8 @@ You need to have your local development environment properly configured with all
 ## Run and test the Web application locally
 
 1. Navigate to the web app folder `StoreWebApp` in the git repository.
-2. Edit the `config/default.json` file to configure the API endpoints. You need to update following fields:
-  - client_id
-  - host  
-  - org  
-  - catalog  
 
-  You can get these information from your API Connect management console. Click on the "BlueCompute" catalog, then navigate to **Settings -> Endpoints** tab. You will find the API Base URL. It is in the format of **https://[host]/[org]/[catalog]**. Catalog should always be "bluecompute" in this case.
-
-  You need to make sure the setting `local_mode` is set as `true` when testing locally.
-
-  ![Web App Configuration](static/imgs/bluecompute_config.png?raw=true)
-
-3. Edit the file `StoreWebApp/routes/images.js`, under `function init_object_storage()`, replace the local_mode credential with the Oject Storage credential you just created, for example
-
-  ```
-     var username = "admin_xxxx",
-        password = "xxx",
-        projectId = "xxx",
-        domainId = "xxx";
-  ```
-
-4. Run the Web application
+2. Run the Web application
 
   The application uses [Bower](https://bower.io/) to manage the dependencies for Web front end library like AngularJS. It uses several other npm libraries such as Express.js. You need to install all the dependencies first:
 
@@ -48,7 +28,7 @@ You need to have your local development environment properly configured with all
 
    This will start the Node.js application on your local environment and open a browser with app homepage.
 
-5. Validate the application.
+3. Validate the application.
 
    The application is lunched in a browser at:
 
@@ -56,62 +36,57 @@ You need to have your local development environment properly configured with all
 
   ![BlueCompute List](static/imgs/bluecompute_web_home.png?raw=true)
 
-  Click the "Browse Item Catalog" will load the list of items:
+  You wouldn't be able to validate the rest of the functions without deploying other Micservices locally.
 
-  ![BlueCompute Detail](static/imgs/bluemix_25.png?raw=true)
-
-  Click on one of the items will bring you to the detail page.
-
-  Click "login" and enter "foo" as username and "bar" as password. This should log you in.
-
-  Navigate to any of the item detail page, now you should see "Buy" and "Add review" buttons, as well as "Profile" menu item. Try to Buy some items and Add reviews.
-
-  ![BlueCompute Buy](static/imgs/bluecompute_web_buy.png?raw=true)
 
 Feel free to play around and explore the Web application.
 
-## Deploy the application to Bluemix hosting:
+## Deploy the application to Bluemix Kubernetes cluster:
 
-You can deploy the application to your Bluemix environment using the automated DevOps open toolchain or manually if you would like to get familiar with how to operate in Bluemix.
+You can deploy the web application to your Bluemix Kubernetes cluster as a Chart, or using the automated CI/CD or manually if you would like to get familiar with the detail. Make sure you have your environment configured based on the [setup your environment guide](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int#step-1-environment-setup).
 
-### Deploy using Bluemix DevOps Continuous Delivery Toolchain
+You need to have your Kubernetes cluster provisioned in Bluemix. If you haven't done so, please follow [instruction here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int#step-2-provision-a-kubernetes-cluster-on-ibm-bluemix-container-service). Then, point your local `kubectl` cli to the target Kubernetes cluster. For example:
 
-Click the button below will create the automated DevOps open toolchain in your environment and kick off the deployment.
+```
+  $ export KUBECONFIG=/Users/{yourusername}/.bluemix/plugins/cs-cli/clusters/my_cluster/{yourcluster}.yml
+```
 
-[![bluecompute-web-toolchain](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web.git&branch=master)
+### Install as a Kubernetes Chart
 
-### Deploy using Bluemix CLI (manually)
-You need to have Bluemix command line (bx or cf) installed, as well as Node.js runtime in your development environment.
+We have packaged BlueCompute web application as a Kubernetes chart, you can simply install it as a Kubernetes chart into your cluster.
 
-- Configure the application
+From the git repository root folder, issue following command:
 
-  You need to change the `config\default.json` configuration to inform application is running in Bluemix by change the setting  `local_mode` to `false` before deployment.
+    `$ cd docker`  
+    `helm install `      **TO-DO update the official chart location**
 
-  You need to change the Cloud Foundry application route for your own web application hostname. Edit the `StoreWebApp/manefest.yml` file to update the name and host fields:
+### Deploy BlueCompute using the CI/CD pipeline
 
-  ```yml
-  applications:
-  - path: .
-    memory: 256M
-    instances: 1
-    domain: mybluemix.net
-    name: bluecompute-web-app
-    host: bluecompute-web-app
-    disk_quota: 1024M
-  ```
+As part of the overall Bluemix CI/CD pipeline, you can build and deploy the BlueCompute web application using the Jenkins based pipeline. It will build the docker image, push to Bluemix docker registry, then deploy the application to your Kubernetes cluster.
 
-  Replace the `bluecompute-web-app` with your own application host name for example: `bluecompute-web-app-firstname-lastname-date`.
+You need to have the BlueCompute Jenkins based DevOps toolchains and pipeline setup, please follow this [setup instruction]() **TO-DO update the devops github location**
 
-- Deploy the application:
 
-  `$ cd StoreWebApp`  
-  `$ cf login`  
-  `$ cf push`   
 
-Replace the {your_app_host_name} with your unique application name on Bluemix.
+## Validate the deployment
 
-- Validate the application:
 
 Once the application is deployed successfully to Bluemix, you can browse your Web app at:
 
-[http://bluecompute-web-app.mybluemix.net/](http://bluecompute-web-app.mybluemix.net)
+[http://{your_kube_cluster_name}.containers.mybluemix.net](http://{your_kube_cluster_name}.containers.mybluemix.net)
+
+Replace the {your_kube_cluster_name} with your actual Kubernetes cluster name.
+
+Click the "Browse Item Catalog" will load the list of items:
+
+![BlueCompute Detail](static/imgs/bluemix_25.png?raw=true)
+
+Click on one of the items will bring you to the detail page.
+
+Click "login" and enter "foo" as username and "bar" as password. This should log you in.
+
+Navigate to any of the item detail page, now you should see "Buy" and "Add review" buttons, as well as "Profile" menu item. Try to Buy some items.
+
+![BlueCompute Buy](static/imgs/bluecompute_web_buy.png?raw=true)
+
+**NOTE:** the review function is not supported in this version of the BlueCompute.
