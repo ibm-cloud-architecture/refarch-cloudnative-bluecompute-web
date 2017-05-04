@@ -21,6 +21,7 @@ sed -i.bak s%${string_to_replace}%${BUILD_NUMBER}%g values.yaml
 string_to_replace=$(yaml read values.yaml image.repository)
 sed -i.bak s%${string_to_replace}%${image_name}%g values.yaml
 
+cd ../..
 
 # Install/Upgrade Chart
 
@@ -31,5 +32,5 @@ if [[ -z "${release// }" ]]; then
     helm install chart/bc_web
 else
     echo "Upgrading web application chart release"
-    helm upgrade ${release} bc_web
+    helm upgrade ${release} chart/bc_web
 fi
