@@ -9,9 +9,9 @@ REGISTRY_NAMESPACE=$3
 helm init
 
 # Edit chart values using yaml (NEED TO INSTALL YAML) - Call image chart deployer
-cd ../chart/bc_web
+cd chart/bc_web
 
-image_name="${BX_REGISTRY}/${BX_NAMESPACE}/bluecompute-web"
+image_name="${REGISTRY_NAME}/${REGISTRY_NAMESPACE}/bluecompute-web"
 
 # Replace tag
 string_to_replace=$(yaml read values.yaml image.tag)
