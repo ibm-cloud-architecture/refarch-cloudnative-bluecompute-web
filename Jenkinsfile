@@ -11,6 +11,7 @@ podTemplate(label: 'pod',
     node ('pod') {
 
         stage('Distribute Docker Image') {
+            checkout scm
             container('docker') {
                 stage ('Build Docker Image') {
                     sh """
