@@ -23,13 +23,12 @@ sed -i.bak s%${string_to_replace}%${image_name}%g values.yaml
 
 
 # Install/Upgrade Chart
-cd ..
 
 release=$(helm list | grep bluecompute-web | awk '{print $1}' | head -1)
 
 if [[ -z "${release// }" ]]; then
     echo "Installing Web application chart for the first time"
-    helm install bc_web
+    helm install chart/bc_web
 else
     echo "Upgrading web application chart release"
     helm upgrade ${release} bc_web
