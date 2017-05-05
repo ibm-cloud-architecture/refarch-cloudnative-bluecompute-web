@@ -9,7 +9,7 @@ REGISTRY_NAMESPACE=$3
 helm init
 
 # Edit chart values using yaml (NEED TO INSTALL YAML) - Call image chart deployer
-cd chart/bc_web
+cd chart/bluecompute-web
 
 image_name="${REGISTRY_NAME}/${REGISTRY_NAMESPACE}/bluecompute-web"
 
@@ -29,8 +29,8 @@ release=$(helm list | grep bluecompute-web | awk '{print $1}' | head -1)
 
 if [[ -z "${release// }" ]]; then
     echo "Installing Web application chart for the first time"
-    helm install chart/bc_web
+    helm install chart/bluecompute-web
 else
     echo "Upgrading web application chart release"
-    helm upgrade ${release} chart/bc_web
+    helm upgrade ${release} chart/bluecompute-web
 fi
