@@ -2,18 +2,15 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 2
-
 image:
   repository: ibmcase/bluecompute-web
   tag: latest
   pullPolicy: Always
-
 service:
   name: bluecompute-web
-  type: ClusterIP
+  type: NodePort
   externalPort: 80
   internalPort: 8000
-
 resources:
   limits:
     cpu: 100m
