@@ -56,7 +56,16 @@ We have packaged BlueCompute web application as a Kubernetes chart, you can simp
 From the git repository root folder, issue following command:
 
     `$ cd docker`  
-    `helm install `      **TO-DO update the official chart location**
+
+#### Lite cluster
+If you provisioned a free Lite cluster on bluemix, install the web app free edition:
+
+    `helm install chart/bluecompute-web-ce`   
+
+#### Paid cluster
+If you provisioned a paid cluster on bluemix, install the web app free edition:
+
+    `helm install chart/bluecompute-web`   
 
 ### Deploy BlueCompute using the CI/CD pipeline
 
