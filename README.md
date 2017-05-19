@@ -71,8 +71,16 @@ If you provisioned a paid cluster on bluemix, install the web app free edition:
 
 As part of the overall Bluemix CI/CD pipeline, you can build and deploy the BlueCompute web application using the Jenkins based pipeline. It will build the docker image, push to Bluemix docker registry, then deploy the application to your Kubernetes cluster.
 
-You need to have the BlueCompute Jenkins based DevOps toolchains and pipeline setup, please follow this [setup instruction]() **TO-DO update the devops github location**
+You need to have the BlueCompute Jenkins based DevOps toolchains and pipeline configured, please follow this [setup instruction](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes).  
 
+You can follow the [Create and Run a Sample CI/CD Pipeline](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes#create-and-run-a-sample-cicd-pipeline) instruction to setup the Pipeline for BlueCompute web app. Following is summary of steps:
+
+1. Log into your Jenkins UI. From home page, click "New Item" from Left navigation menu.  
+2. Name the new item `bluecompute-web`, then choose the "Pipeline" type. Click "Ok".  
+3. In Pipeline configuration page, Chose "Pipeline script from SCM" from the definition drop down box. the select "**Git**" as SCM type. and Enter the git repository URL as `https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web`. Lastly, in the Script Path field, enter `Jenkinsfile`. Click Save.
+4. You Pipeline should look like following. You are ready to run your pipeline.
+
+![BlueCompute Web CI/CD](static/imgs/bluecompute_web_pipeline.png?raw=true)  
 
 
 ## Validate the deployment
@@ -90,7 +98,7 @@ Click the "Browse Item Catalog" will load the list of items:
 
 Click on one of the items will bring you to the detail page.
 
-Click "login" and enter "foo" as username and "bar" as password. This should log you in.
+Click "login" and enter "user" as username and "passw0rd" as password. This should log you in.
 
 Navigate to any of the item detail page, now you should see "Buy" and "Add review" buttons, as well as "Profile" menu item. Try to Buy some items.
 
