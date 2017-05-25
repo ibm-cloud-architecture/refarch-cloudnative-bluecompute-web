@@ -9,7 +9,7 @@ metadata:
     tier: frontend
 spec:
   rules:
-  - host:
+  - host: {{ .Values.ingCtlHost | quote }}
     http:
       paths:
       - path: /
