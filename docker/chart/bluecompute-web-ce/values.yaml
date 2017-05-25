@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: ibmcase/bluecompute-web
-  tag: latest
+  tag: ce-1.2.0
   pullPolicy: IfNotPresent
 service:
   name: bluecompute-web

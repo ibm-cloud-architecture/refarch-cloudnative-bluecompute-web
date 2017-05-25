@@ -15,6 +15,7 @@ var review = require('./routes/review');
 var customer = require('./routes/customer');
 //var images = require('./routes/images');
 var orders = require('./routes/orders');
+var auth = require('./routes/auth');
 
 var app = express();
 
@@ -38,7 +39,7 @@ app.use('/', index);
 app.use('/catalog', catalog);
 app.use('/customer', customer);
 app.use('/review', review);
-//app.use('/login', login);
+app.use('/oauth', auth);
 //app.use('/image', images);
 app.use('/order', orders);
 

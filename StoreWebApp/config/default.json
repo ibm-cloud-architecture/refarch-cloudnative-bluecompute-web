@@ -36,7 +36,8 @@
       ]
     },
     "oauth20": {
-      "base_path": "/oauth20",
+      "service_name": "auth-service:8080",
+      "base_path": "/oauth",
       "paths": {
         "authz": "/authorize",
         "token": "/token"
@@ -45,7 +46,7 @@
         "password"
       ],
       "scopes": [
-        "inventory"
+        "bluecompute"
       ],
       "redirect_url": "http://localhost"
     }
