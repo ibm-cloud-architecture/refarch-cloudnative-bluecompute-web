@@ -4,8 +4,8 @@
 replicaCount: 1
 image:
   repository: ibmcase/bluecompute-web
-  tag: ce-1.2.0
-  pullPolicy: IfNotPresent
+  tag: latest
+  pullPolicy: Always
 service:
   name: bluecompute-web
   type: NodePort
