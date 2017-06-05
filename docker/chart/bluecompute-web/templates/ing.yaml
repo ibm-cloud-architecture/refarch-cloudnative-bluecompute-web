@@ -4,9 +4,11 @@ metadata:
   name: bluecompute-web
   labels:
     app: bluecompute
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     micro: web-bff
     tier: frontend
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
   rules:
   - host: {{ .Values.ingCtlHost | quote }}

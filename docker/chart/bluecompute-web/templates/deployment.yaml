@@ -4,18 +4,22 @@ metadata:
   name: bluecompute-web-deployment
   labels:
     app: bluecompute
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    tier: frontend
     micro: web-bff
+    tier: frontend
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
         app: bluecompute
-        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-        tier: frontend
         micro: web-bff
+        tier: frontend
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     spec:
       containers:
       - name: {{ .Chart.Name }}
