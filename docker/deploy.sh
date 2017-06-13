@@ -9,7 +9,7 @@ REGISTRY_NAMESPACE=$3
 helm init
 
 # Edit chart values using yaml (NEED TO INSTALL YAML) - Call image chart deployer
-cd chart/bluecompute-web
+cd chart/web
 
 image_name="${REGISTRY_NAME}/${REGISTRY_NAMESPACE}/bluecompute-web"
 
@@ -21,16 +21,15 @@ sed -i.bak s%${string_to_replace}%${BUILD_NUMBER}%g values.yaml
 string_to_replace=$(yaml read values.yaml image.repository)
 sed -i.bak s%${string_to_replace}%${image_name}%g values.yaml
 
-cd ../..
-
 # Install/Upgrade Chart
-
-release=$(helm list | grep bluecompute-web | awk '{print $1}' | head -1)
+release=$(helm list | grep web | awk '{print $1}' | head -1)
 
 if [[ -z "${release// }" ]]; then
     echo "Installing Web application chart for the first time"
-    helm install chart/bluecompute-web
+	time helm install --name web . --debug --timeout 600
 else
     echo "Upgrading web application chart release"
-    helm upgrade ${release} chart/bluecompute-web
+    time helm upgrade ${release} . --debug --timeout 600
 fi
+
+cd ../..

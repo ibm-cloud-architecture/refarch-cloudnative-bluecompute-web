@@ -49,6 +49,7 @@ podTemplate(label: 'pod',
                     #!/bin/bash
                     BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
                     BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
+
                     cd docker
                     ./deploy.sh ${env.BUILD_NUMBER} \${BX_REGISTRY} \$BX_NAMESPACE
                     """

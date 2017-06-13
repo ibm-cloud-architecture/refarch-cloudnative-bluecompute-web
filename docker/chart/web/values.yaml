@@ -7,6 +7,8 @@ image:
   repository: ibmcase/bluecompute-web
   tag: latest
   pullPolicy: Always
+  usePullSecret: false
+  pullSecretName: registry-token
 
 service:
   name: bluecompute-web
