@@ -1,5 +1,7 @@
 {
   "Application": {
+    "cluster_name": "",
+    "region": ""
   },
   "Auth-Server": {
     "client_id":"bluecomputeweb",

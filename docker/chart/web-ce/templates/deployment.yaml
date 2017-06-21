@@ -25,3 +25,8 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
+        env:
+        - name: cluster_name
+          value: {{ .Values.cluster_name }}
+        - name: region
+          value: {{ .Values.region }}

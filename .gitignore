@@ -39,3 +39,6 @@ bower_components
 
 # Mac
 .DS_Store
+
+# Ignore docker/StoreWebApp/
+docker/StoreWebApp
