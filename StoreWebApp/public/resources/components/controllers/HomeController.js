@@ -1,4 +1,4 @@
-app.controller('HomeController', ['$scope','UserInfoService',function($scope, UserInfoService, CONFIG) {
+app.controller('HomeController', ['$scope', 'UserInfoService', 'CONFIG', function($scope, UserInfoService, CONFIG) {
 
 	console.log("Entering Home Controller")
 
