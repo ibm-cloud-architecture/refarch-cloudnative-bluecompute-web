@@ -72,7 +72,7 @@ $ kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="External
 $ kubectl get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}'
 ```
 
-Now, open a new browser window and paste the URL (http://<ip>:<port>). If successful, you should see web page that looks like the following:
+Now, open a new browser window and paste the URL (http://ip:port). If successful, you should see web page that looks like the following:
 
 ![BlueCompute List](static/bluecompute_stsa.png?raw=true)
 
