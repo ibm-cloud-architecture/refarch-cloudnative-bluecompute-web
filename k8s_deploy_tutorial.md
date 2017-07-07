@@ -26,11 +26,11 @@ a). Make changes to application code.
 b). Build a new Docker image with new code changes.  
 c). Push the new Docker image to a Docker registry.  
 d). Deploy the new Docker image by updating the Kubernetes Deployment by doing the following:  
-    * `kubectl set image deployment/<deployment-name> <container-name>=<image-name>:<tag>`  
-        * `<deployment-name>` is the deployment name in the `web.yaml` file.  
-        * `<container-name>` is the container name in the `web.yaml` file.  
-        * `<image-name>` is the name of the new Docker image that was pushed to the Docker registry.  
-        * `<tag>` is the tag of the new Docker image that was pushed to the Docker registry.  
+  * `kubectl set image deployment/<deployment-name> <container-name>=<image-name>:<tag>`  
+     * `<deployment-name>` is the deployment name in the `web.yaml` file.  
+     * `<container-name>` is the container name in the `web.yaml` file.  
+     * `<image-name>` is the name of the new Docker image that was pushed to the Docker registry.  
+     * `<tag>` is the tag of the new Docker image that was pushed to the Docker registry.  
 
 To avoid spending too much time building docker images in this tutorial, we created and pushed a pre-built Docker image to the `ibmcase` registry in Docker Hub. You can check out the `stsa` image in Docker Hub [here](https://hub.docker.com/r/ibmcase/bluecompute-web/tags/).
 
