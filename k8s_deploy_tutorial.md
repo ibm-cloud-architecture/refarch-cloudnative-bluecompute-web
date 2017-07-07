@@ -36,7 +36,7 @@ To avoid spending too much time building docker images in this tutorial, we crea
 
 Kubernetes defines its components and deployment through sets of yaml files. In this case, the web application deployment and services are defined in the `web.yaml` file. Take a minute to quickly review this file if you can.
 
-####1. Update Docker image
+#### 1. Update Docker image
 Now let's update the Web app docker image as follows:
 
 `$ kubectl set image deployment/bluecompute-web-deployment web-ce=ibmcase/bluecompute-web:stsa`
@@ -45,7 +45,7 @@ If successful, you should see the following output:
 
 `deployment "bluecompute-web-deployment" image updated`
 
-####2. Validate Deployment History
+#### 2. Validate Deployment History
 Let's validate that the new deployment registered in the Kubernetes deployment history, which means that we can perform a deployment version rollback if needed:
 
 ```
@@ -58,7 +58,7 @@ REVISION    CHANGE-CAUSE
 
 You should see more than one entry in the revisions table above, which means that the new deployment revision registered successfully.
 
-####3. Validate the Web App
+#### 3. Validate the Web App
 Now that we updated the deployment's image and replicas, let's open the web application in a web browser and validate that the new code is running. You can use the web app url from the step 5, or copy and paste the following 3 lines into your terminal:
 
 ```
@@ -73,9 +73,9 @@ Now, open a new browser window and paste the URL. If successful, you should see 
 
 You have successfully updated the Bluecompute Web App Deployment!
 
-###Step 3: Scale Up Deployment Replicas
+### Step 3: Scale Up Deployment Replicas
 
-####1. Check existing deployment replicas
+#### 1. Check existing deployment replicas
 Now that we updated the deployment to a new Docker image, let's try to scale up the number of pod replicas (Pods are the runtime unit in Kubernetes, it contains one or more Docker containers) in the deployment. Before doing so, let's check how many replicas the deployment currently has with the following command:
 
 ```
@@ -86,7 +86,7 @@ bluecompute-web-deployment   1         1         1            1           50m
 
 Notice under the `CURRENT` column that the deployment currently has `1` replica.
 
-####2. Update the number of replicas in deployment
+#### 2. Update the number of replicas in deployment
 Now, let's scale it up to `2` replicas with the following command:
 
 ```
@@ -96,7 +96,7 @@ deployment "bluecompute-web-deployment" scaled
 
 If successful, you should see an output similar to the above.
 
-####3. Validate the new number of replicas in deployment
+#### 3. Validate the new number of replicas in deployment
 Now let's validate that the deployment has `2` replicas with the following command:
 
 ```
@@ -107,15 +107,15 @@ bluecompute-web-deployment   2         2         2            2           54m
 
 Notice under the `CURRENT` column that the deployment now has `2` replicas, which means that the new replica was created successfully!
 
-####4. Validate the Web App
+#### 4. Validate the Web App
 From the web browser you have the web app running, refresh the page, you should see your application still running.
 You have successfully scaled up the Bluecompute Web App Deployment!
 
 
-###Step 4: Rollback changes
+### Step 4: Rollback changes
 Now let's rollback the web application deployment to it's original conditions.
 
-####1. Scale down number of replicas in deployment
+#### 1. Scale down number of replicas in deployment
 Now, let's scale it down to `1` replica with the following command:
 
 ```
@@ -125,7 +125,7 @@ deployment "bluecompute-web-deployment" scaled
 
 If successful, you should see an output similar to the above.
 
-####2. Validate the number of replicas in deployment
+#### 2. Validate the number of replicas in deployment
 Now let's validate that the deployment has `1` replica with the following command:
 
 ```
@@ -136,7 +136,7 @@ bluecompute-web-deployment   1         1         1            1           1h
 
 Notice under the `CURRENT` column that the deployment now has `1` replicas, which means that we scalled down the replica number successfully!
 
-####3. Rollback deployment
+#### 3. Rollback deployment
 Now let's rollback the Web App deployment to the original image with the following command:
 ```
 $ kubectl rollout undo deployment/bluecompute-web-deployment
@@ -145,7 +145,7 @@ deployment "bluecompute-web-deployment" rolled back
 
 If successful, you should see an output similar to above.
 
-####4. Validate the Web App Rollback Changes
+#### 4. Validate the Web App Rollback Changes
 From the web browser you have the web app running, refresh the page, you should see your application still running. you should see web page that looks like the following:
 
 ![BlueCompute List](static/bluecompute_stsa_original.png?raw=true)
