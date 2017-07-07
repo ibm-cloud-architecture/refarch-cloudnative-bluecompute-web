@@ -12,7 +12,9 @@ In this section you will learn how to update the Web App your just deployed in s
 
 ```
 $ cd ../refarch-cloudnative-bluecompute-web
-$ git checkout stsa
+$ git checkout -b stsa
+$ git branch -u origin/stsa stsa
+$ git pull
 ```
 
 2. Open the `StoreWebApp/public/resources/components/views/home.html` in your code editor to see the new changes.
@@ -41,7 +43,7 @@ Now let's update the Web app docker image as follows:
 
 `$ kubectl set image deployment/bluecompute-web-deployment web-ce=ibmcase/bluecompute-web:stsa`
 
-The web-ce parameter is the Container name defined in the web.yaml file. 
+The web-ce parameter is the Container name defined in the web.yaml file.
 If successful, you should see the following output:
 
 `deployment "bluecompute-web-deployment" image updated`
@@ -60,15 +62,17 @@ REVISION    CHANGE-CAUSE
 You should see more than one entry in the revisions table above, which means that the new deployment revision registered successfully.
 
 #### 3. Validate the Web App
-Now that we updated the deployment's image and replicas, let's open the web application in a web browser and validate that the new code is running. You can use the web app url from the step 5, or copy and paste the following 3 lines into your terminal:
+Now that we updated the deployment's image and replicas, let's open the web application in a web browser and validate that the new code is running. You can use the web app url from the tutorial Task 5 (step 4), or execute the following 2 commands to get the web application IP address and port:
 
 ```
-nodeip=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}'); \
-port=$(kubectl get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}'); \
-echo "http://${nodeip}:${port}"
+# Get node IP
+$ kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}'
+
+# Get Web Port
+$ kubectl get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}'
 ```
 
-Now, open a new browser window and paste the URL. If successful, you should see web page that looks like the following:
+Now, open a new browser window and paste the URL (http://<ip>:<port>). If successful, you should see web page that looks like the following:
 
 ![BlueCompute List](static/bluecompute_stsa.png?raw=true)
 
