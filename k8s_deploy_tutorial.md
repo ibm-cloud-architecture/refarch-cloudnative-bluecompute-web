@@ -41,6 +41,7 @@ Now let's update the Web app docker image as follows:
 
 `$ kubectl set image deployment/bluecompute-web-deployment web-ce=ibmcase/bluecompute-web:stsa`
 
+The web-ce parameter is the Container name defined in the web.yaml file. 
 If successful, you should see the following output:
 
 `deployment "bluecompute-web-deployment" image updated`

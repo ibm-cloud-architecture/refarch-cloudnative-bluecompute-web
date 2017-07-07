@@ -13,7 +13,7 @@ spec:
         micro: web-bff
     spec:
       containers:
-      - name: bluecompute-web
+      - name: web-ce
         image: ibmcase/bluecompute-web:latest
         imagePullPolicy: Always
         ports:
