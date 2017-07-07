@@ -2,7 +2,7 @@
 
 
 ### Introduction
-In this section you will learn how to update the Web App your just deployed in step 5 and scale this component in your Kubernetes cluster. The web application is managed as a Kubernetes Deployment component. You will get to see the deployment's history, and also how to rollback the deployment to a previously version/release.
+In this section you will learn how to update the Web App your just deployed in step 5 and scale this component in your Kubernetes cluster. The web application is managed as a Kubernetes Deployment component. You will get to see the deployment's history, and also how to rollback the deployment to a previous version.
 
 ### Pre-Requisites
 * Complete up to [Step 5](https://cloudcontent.mybluemix.net/devops/method/tutorials/kubernetes?task=5) of the Kubernetes Tutorial.
