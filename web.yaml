@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: bluecompute-web-depoyment
+  name: bluecompute-web-deployment
 spec:
   replicas: 2
   template:
