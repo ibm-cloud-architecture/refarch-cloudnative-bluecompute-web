@@ -13,8 +13,7 @@ In this section you will learn how to update the Web App your just deployed in s
 ```
 $ cd ../refarch-cloudnative-bluecompute-web
 $ git checkout -b stsa
-$ git branch -u origin/stsa stsa
-$ git pull
+$ git pull origin stsa
 ```
 
 2. Open the `StoreWebApp/public/resources/components/views/home.html` in your code editor to see the new changes.
