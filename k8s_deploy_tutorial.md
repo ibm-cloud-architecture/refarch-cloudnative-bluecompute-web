@@ -85,7 +85,7 @@ Pods Status:    1 Running / 0 Waiting / 0 Succeeded / 0 Failed
 No volumes.
 No events.
 ```
-#### 3. Validate the Web App
+#### 4. Validate the Web App
 Now that we updated the deployment's image and replicas, let's open the web application in a web browser and validate that the new code is running. You can use the web app url from the tutorial Task 5 (step 4), or execute the following 2 commands to get the web application IP address and port:
 
 ```
