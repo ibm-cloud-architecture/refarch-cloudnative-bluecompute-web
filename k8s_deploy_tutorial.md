@@ -37,29 +37,54 @@ To avoid spending too much time building docker images in this tutorial, we crea
 
 Kubernetes defines its components and deployment through sets of yaml files. In this case, the web application deployment and services are defined in the `web.yaml` file. Take a minute to quickly review this file if you can.
 
-#### 1. Update Docker image
+#### 1. Confirm KUBECONFIG is set
+Ensure your terminal/command window has kubectl setup to configure *cloudnativedev* cluster.
+
+```
+$ kubectl config current-context
+cloudnativedev
+```
+
+If above command did not return your cluster name, then set the kube configuration by running `export KUBECONFIG=...` command.
+
+Get the correct export command from the output of `bx cs cluster-config cloudnative` and run it in your terminal/command window. A sample export command will look like `export KUBECONFIG=/Users/ibm/.bluemix/plugins/container-service/clusters/cloudnativedev/kube-config-prod-mel01-cloudnativedev.yml`.
+
+Run `kubectl config current-context` again to confirm kubectl is now set to manage your cloudnativedev cluster.
+
+For detailed instructions to configure kubectl, refer to [Task 7 Steps 1 through 4 from the tutorial](https://www.ibm.com/devops/method/tutorials/kubernetes?task=7/).
+
+#### 2. Update Docker image
 Now let's update the Web app docker image as follows:
 
-`$ kubectl set image deployment/bluecompute-web-deployment web-ce=ibmcase/bluecompute-web:stsa`
-
-The web-ce parameter is the Container name defined in the web.yaml file.
-If successful, you should see the following output:
-
-`deployment "bluecompute-web-deployment" image updated`
-
-#### 2. Validate Deployment History
-Let's validate that the new deployment registered in the Kubernetes deployment history, which means that we can perform a deployment version rollback if needed:
-
 ```
-$ kubectl rollout history deployment/bluecompute-web-deployment
-deployments "bluecompute-web-deployment"
-REVISION    CHANGE-CAUSE
-1       <none>
-2       <none>
+$ kubectl set image deployment/bluecompute-web-deployment web-ce=ibmcase/bluecompute-web:stsa
 ```
 
-You should see more than one entry in the revisions table above, which means that the new deployment revision registered successfully.
+The *web-ce* parameter is the Container name defined in the web.yaml file.
 
+#### 3. Validate Deployment History
+Let's validate that the new deployment completed successfully.
+
+Run the following command, and from the output verify the **Image** name and tag of the *Running* pods match to what was set (**ibmcase/bluecompute-web:stsa**) in previous step.
+
+```
+$ kubectl describe rs bluecompute-web-deployment
+
+Name:           bluecompute-web-deployment-3031554331
+Namespace:      default
+Image(s):       ibmcase/bluecompute-web:stsa
+Selector:       app=bluecompute,chart=web-0.1.0,micro=web-bff,pod-template-hash=3031554331,release=web,tier=frontend
+Labels:   app=bluecompute
+          chart=web-0.1.0
+          micro=web-bff
+          pod-template-hash=3031554331
+          release=web
+          tier=frontend
+Replicas:       1 current / 1 desired
+Pods Status:    1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+No volumes.
+No events.
+```
 #### 3. Validate the Web App
 Now that we updated the deployment's image and replicas, let's open the web application in a web browser and validate that the new code is running. You can use the web app url from the tutorial Task 5 (step 4), or execute the following 2 commands to get the web application IP address and port:
 
