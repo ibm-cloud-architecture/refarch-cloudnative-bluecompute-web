@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: bluecompute-web-deployment
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
   labels:
     app: bluecompute
     micro: web-bff
     tier: frontend
     release: {{.Release.Name | quote }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
@@ -17,15 +17,16 @@ spec:
         micro: web-bff
         tier: frontend
         release: {{.Release.Name | quote }}
-        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
-      {{if eq .Values.image.usePullSecret true}}
-      imagePullSecrets:
-        - name: "{{ .Values.image.pullSecretName }}"
-      {{end}}
+        env:
+        - name: cluster_name
+          value: {{ template "clusterName" . }}
+        - name: region
+          value: {{ template "region" . }}

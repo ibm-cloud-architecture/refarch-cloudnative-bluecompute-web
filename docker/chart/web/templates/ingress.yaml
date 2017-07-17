@@ -1,3 +1,4 @@
+{{- if .Values.ingress.hostname -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -11,10 +12,11 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
   rules:
-  - host: {{ .Values.ingCtlHost | quote }}
+  - host: {{ .Values.ingress.hostname | quote }}
     http:
       paths:
       - path: /
         backend:
           serviceName: bluecompute-web
           servicePort: 80
+{{- end -}}
