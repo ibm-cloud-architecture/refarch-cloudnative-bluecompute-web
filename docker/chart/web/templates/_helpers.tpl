@@ -14,3 +14,23 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "clusterName" -}}
+  {{- if .Values.clusterName -}}
+    {{ .Values.clusterName }}
+  {{- else if .Values.global.bluemix.clusterName -}}
+    {{ .Values.global.bluemix.clusterName }}
+  {{- else -}}
+    {{- printf "??" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "region" -}}
+  {{- if .Values.region -}}
+    {{ .Values.region }}
+  {{- else if .Values.global.bluemix.target.endpoint -}}
+    {{ (split "." .Values.global.bluemix.target.endpoint)._1 }}
+  {{- else -}}
+    {{- printf "??" -}}
+  {{- end -}}
+{{- end -}}
