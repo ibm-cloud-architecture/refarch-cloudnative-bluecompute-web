@@ -91,6 +91,12 @@ app.service('BlueAPIService',['$http', 'CONFIG', '$base64', function($http, CONF
 				var restUrl = 'customer/';
 				var requestType = 'GET_AUTH';
 				invokeService(restUrl, requestType, null, successCallback, errorCallback, access_token);
+			},
+			getCustomerOrders : function(access_token, successCallback, errorCallback) {
+				var restUrl = 'order/';
+				var requestType = 'GET_AUTH';
+				invokeService(restUrl, requestType, null, successCallback, errorCallback, access_token);
 			}
+
 		}
 }]);
