@@ -11,27 +11,52 @@
     </ul>
   </div>
 </div>
-<div class="content-wrapper" style="left:50px;">
-  <div class="content">
-    <h2 class="section-heading">Please review your profile</a></h2>
-  </div>
-
-  <div class="content">
-    <div class="content">
-          <img style="border-radius: 50%" ng-src="{{customerInfo.image || 'images/common/ibmprofile.jpg'}}" class="pure-img">
+<div class="content-wrapper" style="top: 62px;">
+  <div class="pure-g">
+    <div class="pure-u-1-5">
+      <div class="pure-u-1">
+        <h2 class="section-heading">Please review your profile</a></h2>
+      </div>
+    
+      <div class="pure-u-1">
+        <div class="content" style="padding-top:20px;">
+              <img style="border-radius: 50%" ng-src="{{customerInfo.image || 'images/common/ibmprofile.jpg'}}" class="pure-img">
+        </div>
+        <div class="content" style="padding-top:20px;">
+            <span class="profileColor">First Name: </span><span class="profileColor">{{customerInfo.firstName || 'N/A'}}</span>
+        </div>
+        <div class="content">
+            <span class="profileColor">Last Name: </span><span class="profileColor">{{customerInfo.lastName || 'N/A'}}</span>
+        </div>
+        <div class="content">
+            <span class="profileColor">Email: </span><span class="profileColor">{{customerInfo.email || 'N/A'}}</span>
+        </div>
+        <div class="content">
+            <span class="profileColor">Username: </span><span class="profileColor">{{customerInfo.username || 'N/A'}}</span>
+        </div>
+      </div>
     </div>
-    <div class="content" style="padding-top:20px;">
-        <span class="profileColor">First Name: </span><span class="profileColor">{{customerInfo.firstName || 'N/A'}}</span>
+    <div class="pure-u-4-5">
+      <div class="pure-u-1">
+        <h2 class="section-heading">Order History</a></h2>
+      </div>
+ 
+      <table class="pure-table pure-table-bordered">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Item</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="order in ordersInfo">
+             <td>{{ order.date | date: "yyyy/MM/dd HH:mm:ss" }}</td>
+             <td><a href="#!/item/{{order.itemId}}" class="pure-menu-link">{{ order.itemName}}</a></td>
+             <td>{{ order.count }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="content">
-        <span class="profileColor">Last Name: </span><span class="profileColor">{{customerInfo.lastName || 'N/A'}}</span>
-    </div>
-    <div class="content">
-        <span class="profileColor">Email: </span><span class="profileColor">{{customerInfo.email || 'N/A'}}</span>
-    </div>
-    <div class="content">
-        <span class="profileColor">Username: </span><span class="profileColor">{{customerInfo.username || 'N/A'}}</span>
-    </div>
-
   </div>
 </div>
