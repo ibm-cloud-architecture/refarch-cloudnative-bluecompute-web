@@ -11,6 +11,8 @@ service:
   type: NodePort
   externalPort: 80
   internalPort: 8000
+ingress:
+  hostname:
 resources:
   limits:
     cpu: 100m
@@ -19,4 +21,4 @@ resources:
     cpu: 100m
     memory: 128Mi
 region: 
-cluster_name:
+clusterName:

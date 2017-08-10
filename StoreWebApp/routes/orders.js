@@ -54,25 +54,19 @@ function setGetOrdersOptions(req, res) {
 
     // Get OAuth Access Token, if needed
     if (_apis.order.require.indexOf("oauth") != -1) {
-
       // If already logged in, add token to request
-      if (typeof session.oauth2token !== 'undefined') {
-        getOrders_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        getOrders_options.headers.Authorization = 'Bearer ' + session.oauth2token;
-        fulfill({
-          options: getOrders_options,
-          res: res
-        });
-      } else {
-        // Otherwise redirect to login page
-        res.redirect('/login');
-      }
-
+      getOrders_options.headers.Authorization = req.headers.authorization;
+      fulfill({
+        options: getOrders_options,
+        res: res
+      });
     }
-    else fulfill({
-      options: getOrders_options,
-      res: res
-    });
+    else {
+        fulfill({
+            options: getOrders_options,
+            res: res
+        });
+    }
   });
 
 }
