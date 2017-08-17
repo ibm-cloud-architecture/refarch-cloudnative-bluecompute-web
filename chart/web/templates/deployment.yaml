@@ -16,8 +16,6 @@ spec:
         app: bluecompute
         micro: web-bff
         tier: frontend
-        release: {{.Release.Name | quote }}
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
