@@ -22,3 +22,20 @@ resources:
     memory: 128Mi
 region: 
 clusterName:
+services:
+  auth: 
+    host: 
+    port: 
+  catalog:
+    host: 
+    port: 
+  customer:
+    host: 
+    port: 
+  orders:
+    host: 
+    port: 
+  reviews:
+    host:
+    port:
+
