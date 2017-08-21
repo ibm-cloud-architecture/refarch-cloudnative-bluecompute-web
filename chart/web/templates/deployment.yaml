@@ -16,8 +16,6 @@ spec:
         app: bluecompute
         micro: web-bff
         tier: frontend
-        release: {{.Release.Name | quote }}
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
@@ -25,8 +23,16 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
-        env:
-        - name: cluster_name
-          value: {{ template "clusterName" . }}
-        - name: region
-          value: {{ template "region" . }}
+          protocol: TCP
+        volumeMounts:
+        - name: config-volume
+          mountPath: /StoreWebApp/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ .Release.Name }}-{{ .Chart.Name }}-config
+          items:
+          - key: checks
+            path: checks
+          - key: default.json
+            path: default.json

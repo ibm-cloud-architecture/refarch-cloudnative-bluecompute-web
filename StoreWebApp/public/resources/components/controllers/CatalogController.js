@@ -1,7 +1,7 @@
 app.controller('CatalogController', ['$scope','BlueAPIService','UserInfoService',function($scope, BlueAPIService, UserInfoService) {
 
 	console.log("Entering Catalog Controller")
-	$scope.baseURL = "/images/items/"
+	$scope.baseURL = "images/items/"
 	$scope.loggedIn = UserInfoService.state.authenticated
 
 	BlueAPIService.getCatalog(function (response) {

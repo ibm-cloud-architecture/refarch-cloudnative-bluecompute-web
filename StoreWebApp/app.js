@@ -45,6 +45,7 @@ app.use('/order', orders);
 
 app.use('/', express.static('public/resources'));
 app.use('/', express.static('public/stylesheets'));
+app.use('/', express.static('public/javascripts'));
 
 
 //Setup HealthCheck API

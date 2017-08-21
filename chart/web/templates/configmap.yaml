@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: bluecompute
+    micro: web-bff
+    tier: frontend
+    release: {{.Release.Name | quote }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-config
+  namespace: {{ .Release.Namespace }}
+data:
+  checks: "# Check the main website, including text content\r\n/\tIBM Cloud Architecture\r\n\r\n#Check
+    the Inventory page\r\n/catalog/ Dayton Meat Chopper\r\n\r\n# Check for stylesheets
+    and for text content in stylesheets\r\n/stylesheets/font-awesome/font-awesome.css
+    \   @font-face\r\n\r\n\r\n# Check a sub-domain\r\n#//some-subdomain.some-site.com/reviews
+    Review Data\r\n\r\n# Check HTTP access, and for text content\r\n# http://localhost:8000\tBlueCompute
+    Store!\r\n# http://localhost:8000/inventory/\tDayton Meat Chopper\r\n"
+  default.json: |
+    {
+      "Application": {
+        "cluster_name": "{{ template "clusterName" . }}",
+        "region": "{{ template "region" . }}"
+      },
+      "Auth-Server": {
+        "client_id":"bluecomputeweb",
+        "client_secret":"bluecomputewebs3cret"
+      },
+      "APIs": {
+        "protocol": "http",
+        "catalog": {
+          "service_name": "{{ template "catalogHost" . }}:{{ template "catalogPort" . }}",
+          "base_path": "/micro",
+          "require": [
+          ]
+        },
+        "order": {
+          "service_name": "{{ template "ordersHost" . }}:{{ template "ordersPort" . }}",
+          "base_path": "/micro",
+          "require": [
+            "oauth"
+          ]
+        },
+        "review": {
+          "base_path": "/api",
+          "require": [
+            "oauth"
+          ]
+        },
+        "customer": {
+          "service_name": "{{ template "customerHost" . }}:{{ template "customerPort" . }}",
+          "base_path": "/micro",
+          "require": [
+            "client_id",
+            "oauth"
+
+          ]
+        },
+        "oauth20": {
+          "service_name": "{{ template "authHost" . }}:{{ template "authPort" . }}",
+          "base_path": "/oauth",
+          "paths": {
+            "authz": "/authorize",
+            "token": "/token"
+          },
+          "grant_types": [
+            "password"
+          ],
+          "scopes": [
+            "bluecompute"
+          ],
+          "redirect_url": "http://localhost"
+        }
+      }
+    }
+
