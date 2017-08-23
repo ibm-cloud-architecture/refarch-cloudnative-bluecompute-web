@@ -13,6 +13,7 @@ service:
   internalPort: 8000
 ingress:
   hostname:
+  path: /
 resources:
   limits:
     cpu: 100m

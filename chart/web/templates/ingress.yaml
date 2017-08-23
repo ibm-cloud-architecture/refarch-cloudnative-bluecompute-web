@@ -13,7 +13,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: {{ .Values.ingress.path }} 
         backend:
           serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
           servicePort: 80
