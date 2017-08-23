@@ -1,4 +1,4 @@
-podTemplate(label: 'pod',
+podTemplate(label: 'cicd',
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
               secretVolume(secretName: 'bluemix-api-key', mountPath: '/var/run/secrets/bluemix-api-key'),
               configMapVolume(configMapName: 'bluemix-target', mountPath: '/var/run/configs/bluemix-target')],
@@ -8,7 +8,7 @@ podTemplate(label: 'pod',
             containerTemplate(name: 'kubectl', image: 'ibmcase/kubectl:latest', alwaysPullImage: true, ttyEnabled: true, command: 'cat')
     ]) {
 
-    node ('pod') {
+    node ('cicd') {
 
         stage('Distribute Docker Image') {
             checkout scm
