@@ -6,8 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
-        document.write('<base href="' + document.location + '/" />');
-      </script>
+        var baseUrl = document.location.href;
+        if (baseUrl.indexOf("/", baseUrl.length - 1) == -1) {
+            baseUrl = baseUrl + "/";
+        }
+        document.write('<base href="' + baseUrl + '" />');
+    </script>
 
 <link rel="stylesheet" href="pure/pure-min.css" />
 <link rel="stylesheet" href="pure/grids-responsive-min.css" />
