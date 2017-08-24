@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     ingress.kubernetes.io/rewrite-target: /
-    ingress.bluemix.net/rewrite-path: "serviceName={{ .Release.Name }}-{{ .Chart.name }} rewrite=/"
+    ingress.bluemix.net/rewrite-path: "serviceName={{ .Release.Name }}-{{ .Chart.Name }} rewrite=/"
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   labels:
     app: bluecompute
