@@ -16,28 +16,28 @@ podTemplate(label: 'mypod',
                 stage('Build Image') {
                     sh """
                     #!/bin/bash
-                    DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                    DOCKER_REGISTRY=`cat /var/run/configs/docker-config/registry`
+                    NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                    REGISTRY=`cat /var/run/configs/docker-config/registry`
 
                     cp -ar StoreWebApp docker/StoreWebApp
                     cd docker
-                    docker build -t \${DOCKER_REGISTRY}/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
+                    docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                     rm -r StoreWebApp
                     """
                 }
                 stage('Push Image to Private Repository') {
                     sh """
                     #!/bin/bash
-                    DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                    DOCKER_REGISTRY=`cat /var/run/configs/docker-config/registry`
+                    NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                    REGISTRY=`cat /var/run/configs/docker-config/registry`
 
                     set +x
                     DOCKER_USER=`cat /var/run/secrets/docker/username`
                     DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
-                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${DOCKER_REGISTRY}
+                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
                     set -x
 
-                    docker push \${DOCKER_REGISTRY}/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
+                    docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                     """
                 }
             }
@@ -45,9 +45,9 @@ podTemplate(label: 'mypod',
                 stage('Deploy new Docker image') {
                     sh """
                     #!/bin/bash
-                    DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                    DOCKER_REGISTRY=`cat /var/run/configs/docker-config/registry`
-                    DEPLOYMENT=`kubectl get deployments bluecompute-web`
+                    NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                    REGISTRY=`cat /var/run/configs/docker-config/registry`
+                    DEPLOYMENT=`kubectl get deployments bluecompute-ce-web`
 
                     if [ -z \${DEPLOYMENT} ]; then
                         # No deployment to update
@@ -55,8 +55,8 @@ podTemplate(label: 'mypod',
                         exit 1
                     else
                         # Update Deployment
-                        kubectl set image deployment/bluecompute-web web=\${DOCKER_REGISTRY}/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
-                        kubectl rollout status deployment/bluecompute-web
+                        kubectl set image deployment/\${NAMESPACE}-bluecompute-ce-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                        kubectl rollout status deployment/\${NAMESPACE}-bluecompute-ce-web
                     fi
                     """
                 }
