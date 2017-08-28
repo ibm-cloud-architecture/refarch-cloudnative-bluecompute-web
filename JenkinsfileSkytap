@@ -17,10 +17,11 @@ podTemplate(label: 'mypod',
                     sh """
                     #!/bin/bash
                     DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                    DOCKER_REGISTRY=`cat /var/run/configs/docker-config/registry`
 
                     cp -ar StoreWebApp docker/StoreWebApp
                     cd docker
-                    docker build -t \${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
+                    docker build -t \${DOCKER_REGISTRY}/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
                     rm -r StoreWebApp
                     """
                 }
@@ -28,11 +29,12 @@ podTemplate(label: 'mypod',
                     sh """
                     #!/bin/bash
                     DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                    DOCKER_REGISTRY=`cat /var/run/configs/docker-config/registry`
                     DOCKER_USER=`cat /var/run/secrets/docker/username`
                     DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
 
-                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} master.cfc:8500
-                    docker push master.cfc:8500/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
+                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${DOCKER_REGISTRY}
+                    docker push \${DOCKER_REGISTRY}/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
                     """
                 }
             }
