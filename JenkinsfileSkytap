@@ -45,6 +45,7 @@ podTemplate(label: 'mypod',
                 stage('Deploy new Docker image') {
                     sh """
                     #!/bin/bash
+                    set +e
                     NAMESPACE=`cat /var/run/configs/docker-config/namespace`
                     REGISTRY=`cat /var/run/configs/docker-config/registry`
                     DEPLOYMENT=`kubectl get deployments \${NAMESPACE}-bluecompute-ce-web`
