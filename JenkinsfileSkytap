@@ -51,7 +51,7 @@ podTemplate(label: 'mypod',
 
                     kubectl get deployments \${NAMESPACE}-bluecompute-ce-web
 
-                    if [ -z \${$?} ]; then
+                    if [ -z \${?} ]; then
                         # Update Deployment
                         kubectl set image deployment/\${NAMESPACE}-bluecompute-ce-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                         kubectl rollout status deployment/\${NAMESPACE}-bluecompute-ce-web
