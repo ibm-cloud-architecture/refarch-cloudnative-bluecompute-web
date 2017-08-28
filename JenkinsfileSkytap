@@ -10,60 +10,57 @@ podTemplate(label: 'mypod',
   ]) {
 
     node('mypod') {
-        stage('Get a Maven project') {
-            checkout scm
-            container('docker') {
-                stage('Build Image') {
-                    sh """
-                    #!/bin/bash
-                    NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                    REGISTRY=`cat /var/run/configs/docker-config/registry`
+        checkout scm
+        container('docker') {
+            stage('Build Docker Image') {
+                sh """
+                #!/bin/bash
+                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                REGISTRY=`cat /var/run/configs/docker-config/registry`
 
-                    cp -ar StoreWebApp docker/StoreWebApp
-                    cd docker
-                    docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
-                    rm -r StoreWebApp
-                    """
-                }
-                stage('Push Image to Private Repository') {
-                    sh """
-                    #!/bin/bash
-                    NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                    REGISTRY=`cat /var/run/configs/docker-config/registry`
-
-                    set +x
-                    DOCKER_USER=`cat /var/run/secrets/docker/username`
-                    DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
-                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
-                    set -x
-
-                    docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                    """
-                }
+                cp -ar StoreWebApp docker/StoreWebApp
+                cd docker
+                docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
+                rm -r StoreWebApp
+                """
             }
-            container('kubectl') {
-                stage('Deploy new Docker image') {
-                    sh """
-                    #!/bin/bash
-                    set +e
-                    NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                    REGISTRY=`cat /var/run/configs/docker-config/registry`
+            stage('Push Docker Image to Private Repository') {
+                sh """
+                #!/bin/bash
+                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                REGISTRY=`cat /var/run/configs/docker-config/registry`
 
-                    kubectl get deployments \${NAMESPACE}-bluecompute-ce-web
+                set +x
+                DOCKER_USER=`cat /var/run/secrets/docker/username`
+                DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
+                docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
+                set -x
 
-                    if [ -z \${?} ]; then
-                        # Update Deployment
-                        kubectl set image deployment/\${NAMESPACE}-bluecompute-ce-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                        kubectl rollout status deployment/\${NAMESPACE}-bluecompute-ce-web
-                    else
-                        # No deployment to update
-                        echo 'No deployment to update'
-                        exit 1
-                    fi
-                    """
-                }
+                docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                """
             }
         }
+        container('kubectl') {
+            stage('Deploy new Docker Image') {
+                sh """
+                #!/bin/bash
+                set +e
+                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                REGISTRY=`cat /var/run/configs/docker-config/registry`
 
+                kubectl get deployments \${NAMESPACE}-bluecompute-ce-web
+
+                if [ \${?} -eq "0" ]; then
+                    # Update Deployment
+                    kubectl set image deployment/\${NAMESPACE}-bluecompute-ce-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                    kubectl rollout status deployment/\${NAMESPACE}-bluecompute-ce-web
+                else
+                    # No deployment to update
+                    echo 'No deployment to update'
+                    exit 1
+                fi
+                """
+            }
+        }
     }
 }
