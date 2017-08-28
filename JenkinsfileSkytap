@@ -1,0 +1,50 @@
+podTemplate(label: 'mypod',
+    volumes: [
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+        secretVolume(secretName: 'docker', mountPath: '/var/run/secrets/docker-config'),
+        configMapVolume(configMapName: 'docker-config', mountPath: '/var/run/configs/docker-config')
+    ],
+    containers: [
+        containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')
+  ]) {
+
+    node('mypod') {
+        stage('Get a Maven project') {
+            checkout scm
+            container('docker') {
+                stage('Build Image') {
+                    sh """
+                    #!/bin/bash
+                    DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+
+                    cp -ar StoreWebApp docker/StoreWebApp
+                    cd docker
+                    docker build -t \${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
+                    rm -r StoreWebApp
+                    """
+                }
+                stage('Push Image to Private Repository') {
+                    sh """
+                    #!/bin/bash
+                    DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                    DOCKER_USER=`cat /var/run/secrets/docker/username`
+                    DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
+
+                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} master.cfc:8500
+                    docker push \${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
+                    """
+                }
+            }
+            container('kubectl') {
+                stage('Deploy new Docker image') {
+                    sh """
+                    #!/bin/bash
+                    kubectl get nodes
+                    """
+                }
+            }
+        }
+
+    }
+}
