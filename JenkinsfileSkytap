@@ -30,10 +30,13 @@ podTemplate(label: 'mypod',
                     #!/bin/bash
                     DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
                     DOCKER_REGISTRY=`cat /var/run/configs/docker-config/registry`
+
+                    set +x
                     DOCKER_USER=`cat /var/run/secrets/docker/username`
                     DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
-
                     docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${DOCKER_REGISTRY}
+                    set -x
+
                     docker push \${DOCKER_REGISTRY}/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
                     """
                 }
@@ -42,7 +45,19 @@ podTemplate(label: 'mypod',
                 stage('Deploy new Docker image') {
                     sh """
                     #!/bin/bash
-                    kubectl get nodes
+                    DOCKER_NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                    DOCKER_REGISTRY=`cat /var/run/configs/docker-config/registry`
+                    DEPLOYMENT=`kubectl get deployments bluecompute-web`
+
+                    if [ -z \${DEPLOYMENT} ]; then
+                        # No deployment to update
+                        echo 'No deployment to update'
+                        exit 1
+                    else
+                        # Update Deployment
+                        kubectl set image deployment/bluecompute-web web=\${DOCKER_REGISTRY}/\${DOCKER_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
+                        kubectl rollout status deployment/bluecompute-web
+                    fi
                     """
                 }
             }
