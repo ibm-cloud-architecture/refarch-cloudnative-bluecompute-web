@@ -47,7 +47,7 @@ podTemplate(label: 'mypod',
                     #!/bin/bash
                     NAMESPACE=`cat /var/run/configs/docker-config/namespace`
                     REGISTRY=`cat /var/run/configs/docker-config/registry`
-                    DEPLOYMENT=`kubectl get deployments bluecompute-ce-web`
+                    DEPLOYMENT=`kubectl get deployments \${NAMESPACE}-bluecompute-ce-web`
 
                     if [ -z \${DEPLOYMENT} ]; then
                         # No deployment to update
