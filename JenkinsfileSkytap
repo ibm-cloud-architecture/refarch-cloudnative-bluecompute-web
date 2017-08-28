@@ -48,16 +48,17 @@ podTemplate(label: 'mypod',
                     set +e
                     NAMESPACE=`cat /var/run/configs/docker-config/namespace`
                     REGISTRY=`cat /var/run/configs/docker-config/registry`
-                    DEPLOYMENT=`kubectl get deployments \${NAMESPACE}-bluecompute-ce-web`
 
-                    if [ -z \${DEPLOYMENT} ]; then
-                        # No deployment to update
-                        echo 'No deployment to update'
-                        exit 1
-                    else
+                    kubectl get deployments \${NAMESPACE}-bluecompute-ce-web
+
+                    if [ -z \${$?} ]; then
                         # Update Deployment
                         kubectl set image deployment/\${NAMESPACE}-bluecompute-ce-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                         kubectl rollout status deployment/\${NAMESPACE}-bluecompute-ce-web
+                    else
+                        # No deployment to update
+                        echo 'No deployment to update'
+                        exit 1
                     fi
                     """
                 }
