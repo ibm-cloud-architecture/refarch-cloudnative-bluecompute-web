@@ -32,6 +32,7 @@ podTemplate(label: 'mypod',
 
                 mkdir ~/.docker
                 cp /var/run/secrets/docker/.dockercfg ~/.docker/config.json
+                cat ~/.docker/config.json
 
                 #set +x
                 #DOCKER_USER=`cat /var/run/secrets/docker/username`
