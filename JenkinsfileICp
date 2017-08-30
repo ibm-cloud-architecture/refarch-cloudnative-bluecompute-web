@@ -22,6 +22,8 @@ podTemplate(label: 'mypod',
                 cd docker
                 docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 rm -r StoreWebApp
+
+                ls ~/.docker
                 """
             }
             stage('Push Docker Image to Private Repository') {
@@ -36,6 +38,7 @@ podTemplate(label: 'mypod',
                 docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
                 set -x
 
+                cat ~/.docker/config.json
                 docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 """
             }
