@@ -1,8 +1,8 @@
 podTemplate(label: 'mypod',
     volumes: [
         hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-        secretVolume(secretName: 'docker-account', mountPath: '/var/run/secrets/docker'),
-        configMapVolume(configMapName: 'docker-repository', mountPath: '/var/run/configs/docker-config')
+        secretVolume(secretName: 'registry-account', mountPath: '/var/run/secrets/registry-account'),
+        configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
     ],
     containers: [
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
@@ -15,8 +15,8 @@ podTemplate(label: 'mypod',
             stage('Build Docker Image') {
                 sh """
                 #!/bin/bash
-                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                REGISTRY=`cat /var/run/configs/docker-config/registry`
+                NAMESPACE=`cat /var/run/configs/registry-config/namespace`
+                REGISTRY=`cat /var/run/configs/registry-config/registry`
 
                 cp -ar StoreWebApp docker/StoreWebApp
                 cd docker
@@ -36,12 +36,12 @@ podTemplate(label: 'mypod',
             stage('Push Docker Image to Private Repository') {
                 sh """
                 #!/bin/bash
-                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                REGISTRY=`cat /var/run/configs/docker-config/registry`
+                NAMESPACE=`cat /var/run/configs/registry-config/namespace`
+                REGISTRY=`cat /var/run/configs/registry-config/registry`
 
                 set +x
-                DOCKER_USER=`cat /var/run/secrets/docker/username`
-                DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
+                DOCKER_USER=`cat /var/run/secrets/registry-account/username`
+                DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
 
                 if [ \${REGISTRY} -eq "dockerhub" ]; then
                     # Docker Hub
@@ -67,8 +67,8 @@ podTemplate(label: 'mypod',
                 sh """
                 #!/bin/bash
                 set +e
-                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
-                REGISTRY=`cat /var/run/configs/docker-config/registry`
+                NAMESPACE=`cat /var/run/configs/registry-config/namespace`
+                REGISTRY=`cat /var/run/configs/registry-config/registry`
 
                 kubectl get deployments \${NAMESPACE}-bluecompute-ce-web
 
