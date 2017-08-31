@@ -35,7 +35,7 @@ podTemplate(label: 'mypod',
                 rm -r StoreWebApp
                 """
             }
-            stage('Push Docker Image to Private Repository') {
+            stage('Push Docker Image to Registry') {
                 sh """
                 #!/bin/bash
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
