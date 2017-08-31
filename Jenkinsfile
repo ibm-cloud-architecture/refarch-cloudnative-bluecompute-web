@@ -78,15 +78,23 @@ podTemplate(label: 'mypod',
 
                 kubectl get deployments bluecompute-web
 
-                if [ \${?} -eq "0" ]; then
-                    # Update Deployment
-                    kubectl set image deployment/bluecompute-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                    kubectl rollout status deployment/bluecompute-web
-                else
+                if [ \${?} -ne "0" ]; then
                     # No deployment to update
                     echo 'No deployment to update'
                     exit 1
+
+                elif [ "\${REGISTRY}" == "dockerhub" ]; then
+                    # Update Deployment Docker Hub
+                    echo 'Pulling image from Docker Hub'
+                    kubectl set image deployment/bluecompute-web web=\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                
+                else
+                    # Update Deployment Private Repository
+                    echo 'Pulling image from Private Registry'
+                    kubectl set image deployment/bluecompute-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 fi
+
+                kubectl rollout status deployment/bluecompute-web
                 """
             }
         }
