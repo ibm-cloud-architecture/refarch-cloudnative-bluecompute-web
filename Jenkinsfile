@@ -21,16 +21,6 @@ podTemplate(label: 'mypod',
                 cp -ar StoreWebApp docker/StoreWebApp
                 cd docker
 
-                if [ "\${REGISTRY}" == "dockerhub" ]; then
-                    # Docker Hub
-                    echo 'Building against Docker Hub'
-                    docker build -t \${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
-                else
-                    # Private Repository
-                    echo 'Building against Private Registry'
-                    docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
-                fi
-
                 docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 rm -r StoreWebApp
                 """
@@ -44,27 +34,10 @@ podTemplate(label: 'mypod',
                 set +x
                 DOCKER_USER=`cat /var/run/secrets/registry-account/username`
                 DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
-
-                if [ "\${REGISTRY}" == "dockerhub" ]; then
-                    # Docker Hub
-                    echo 'Login into Docker Hub'
-                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD}
-                else
-                    # Private Repository
-                    echo 'Login into Private Registry'
-                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
-                fi
+                docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
                 set -x
 
-                if [ "\${REGISTRY}" == "dockerhub" ]; then
-                    # Docker Hub
-                    echo 'Pushing to Docker Hub'
-                    docker push \${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                else
-                    # Private Repository
-                    echo 'Pushing to Private Registry'
-                    docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                fi
+                docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 """
             }
         }
@@ -82,18 +55,10 @@ podTemplate(label: 'mypod',
                     # No deployment to update
                     echo 'No deployment to update'
                     exit 1
-
-                elif [ "\${REGISTRY}" == "dockerhub" ]; then
-                    # Update Deployment Docker Hub
-                    echo 'Pulling image from Docker Hub'
-                    kubectl set image deployment/bluecompute-web web=\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                
-                else
-                    # Update Deployment Private Repository
-                    echo 'Pulling image from Private Registry'
-                    kubectl set image deployment/bluecompute-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 fi
 
+                # Update Deployment
+                kubectl set image deployment/bluecompute-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 kubectl rollout status deployment/bluecompute-web
                 """
             }
