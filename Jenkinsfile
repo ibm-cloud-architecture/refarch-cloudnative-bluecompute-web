@@ -1,71 +1,87 @@
-podTemplate(label: 'pod',
-    volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-              secretVolume(secretName: 'bluemix-api-key', mountPath: '/var/run/secrets/bluemix-api-key'),
-              configMapVolume(configMapName: 'bluemix-target', mountPath: '/var/run/configs/bluemix-target')],
+podTemplate(label: 'mypod',
+    volumes: [
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+        secretVolume(secretName: 'docker-account', mountPath: '/var/run/secrets/docker'),
+        configMapVolume(configMapName: 'docker-repository', mountPath: '/var/run/configs/docker-config')
+    ],
     containers: [
-            containerTemplate(name: 'docker', image: 'ibmcase/bluemix-image-deploy:latest', alwaysPullImage: true, ttyEnabled: true),
-            containerTemplate(name: 'helm', image: 'ibmcase/helm:latest', alwaysPullImage: true, ttyEnabled: true, command: 'cat'),
-            containerTemplate(name: 'kubectl', image: 'ibmcase/kubectl:latest', alwaysPullImage: true, ttyEnabled: true, command: 'cat')
-    ]) {
+        containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')
+  ]) {
 
-    node ('pod') {
+    node('mypod') {
+        checkout scm
+        container('docker') {
+            stage('Build Docker Image') {
+                sh """
+                #!/bin/bash
+                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                REGISTRY=`cat /var/run/configs/docker-config/registry`
 
-        stage('Distribute Docker Image') {
-            checkout scm
-            container('docker') {
-                stage ('Build Docker Image') {
-                    sh """
-                    #!/bin/bash
-                    BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
-                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
-                    cp -ar StoreWebApp docker/StoreWebApp
-                    cd docker
-                    docker build -t \${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
-                    rm -r StoreWebApp
-                    """
-                }
-                stage ('Push Docker Image to Registry') {
-                    sh """
-                    #!/bin/bash
-                    export BLUEMIX_API_KEY=`cat /var/run/secrets/bluemix-api-key/api-key`
-                    BX_SPACE=`cat /var/run/configs/bluemix-target/bluemix-space`
-                    BX_API_ENDPOINT=`cat /var/run/configs/bluemix-target/bluemix-api-endpoint`
-                    BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
-                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
+                cp -ar StoreWebApp docker/StoreWebApp
+                cd docker
 
-                    bx login -a \${BX_API_ENDPOINT} -s \${BX_SPACE}
-                    # initialize docker using container registry secret
-                    bx cr login
-                    docker push \${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
-                    """
-                }
+                if [ \${REGISTRY} -eq "dockerhub" ]; then
+                    # Docker Hub
+                    docker build -t \${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
+                else
+                    # Private Repository
+                    docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
+                fi
+
+                docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
+                rm -r StoreWebApp
+                """
+            }
+            stage('Push Docker Image to Private Repository') {
+                sh """
+                #!/bin/bash
+                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                REGISTRY=`cat /var/run/configs/docker-config/registry`
+
+                set +x
+                DOCKER_USER=`cat /var/run/secrets/docker/username`
+                DOCKER_PASSWORD=`cat /var/run/secrets/docker/password`
+
+                if [ \${REGISTRY} -eq "dockerhub" ]; then
+                    # Docker Hub
+                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD}
+                else
+                    # Private Repository
+                    docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
+                fi
+                set -x
+
+                if [ \${REGISTRY} -eq "dockerhub" ]; then
+                    # Docker Hub
+                    docker push \${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                else
+                    # Private Repository
+                    docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                fi
+                """
             }
         }
+        container('kubectl') {
+            stage('Deploy new Docker Image') {
+                sh """
+                #!/bin/bash
+                set +e
+                NAMESPACE=`cat /var/run/configs/docker-config/namespace`
+                REGISTRY=`cat /var/run/configs/docker-config/registry`
 
-        stage('Chart') {
-            container('helm') {
-                stage ('Install Web application Chart') {
-                    sh """
-                    #!/bin/bash
-                    BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
-                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
+                kubectl get deployments \${NAMESPACE}-bluecompute-ce-web
 
-                    cd docker
-                    ./deploy.sh ${env.BUILD_NUMBER} \${BX_REGISTRY} \$BX_NAMESPACE
-                    """
-                }
-            }
-        }
-
-        stage('Cleanup') {
-            container('kubectl') {
-                stage ('Cleanup Helm Install Jobs') {
-                    sh """
-                    #!/bin/bash
-                    cd docker
-                    ./kubecleanup.sh
-                    """
-                }
+                if [ \${?} -eq "0" ]; then
+                    # Update Deployment
+                    kubectl set image deployment/\${NAMESPACE}-bluecompute-ce-web web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                    kubectl rollout status deployment/\${NAMESPACE}-bluecompute-ce-web
+                else
+                    # No deployment to update
+                    echo 'No deployment to update'
+                    exit 1
+                fi
+                """
             }
         }
     }
