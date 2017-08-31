@@ -21,11 +21,13 @@ podTemplate(label: 'mypod',
                 cp -ar StoreWebApp docker/StoreWebApp
                 cd docker
 
-                if [ \${REGISTRY} -eq "dockerhub" ]; then
+                if [ "\${REGISTRY}" == "dockerhub" ]; then
                     # Docker Hub
+                    echo 'Building against Docker Hub'
                     docker build -t \${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 else
                     # Private Repository
+                    echo 'Building against Private Registry'
                     docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 fi
 
@@ -43,20 +45,24 @@ podTemplate(label: 'mypod',
                 DOCKER_USER=`cat /var/run/secrets/registry-account/username`
                 DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
 
-                if [ \${REGISTRY} -eq "dockerhub" ]; then
+                if [ "\${REGISTRY}" == "dockerhub" ]; then
                     # Docker Hub
+                    echo 'Login into Docker Hub'
                     docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD}
                 else
                     # Private Repository
+                    echo 'Login into Private Registry'
                     docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
                 fi
                 set -x
 
-                if [ \${REGISTRY} -eq "dockerhub" ]; then
+                if [ "\${REGISTRY}" == "dockerhub" ]; then
                     # Docker Hub
+                    echo 'Pushing to Docker Hub'
                     docker push \${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 else
                     # Private Repository
+                    echo 'Pushing to Private Registry'
                     docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 fi
                 """
