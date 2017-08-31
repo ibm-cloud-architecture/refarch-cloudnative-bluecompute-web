@@ -76,7 +76,7 @@ podTemplate(label: 'mypod',
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
 
-                kubectl get deployments default-bluecompute-ce-web
+                kubectl get deployments bluecompute-web
 
                 if [ \${?} -eq "0" ]; then
                     # Update Deployment
