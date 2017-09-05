@@ -18,9 +18,6 @@ podTemplate(label: 'mypod',
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
 
-                cp -ar StoreWebApp docker/StoreWebApp
-                cd docker
-
                 docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 rm -r StoreWebApp
                 """

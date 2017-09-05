@@ -17,9 +17,8 @@ podTemplate(label: 'pod',
                     sh """
                     #!/bin/bash
                     BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
-                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
-                    cp -ar StoreWebApp docker/StoreWebApp
-                    cd docker
+                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace
+
                     docker build -t \${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
                     rm -r StoreWebApp
                     """
