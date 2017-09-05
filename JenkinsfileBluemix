@@ -20,7 +20,6 @@ podTemplate(label: 'pod',
                     BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
 
                     docker build -t \${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
-                    rm -r StoreWebApp
                     """
                 }
                 stage ('Push Docker Image to Registry') {

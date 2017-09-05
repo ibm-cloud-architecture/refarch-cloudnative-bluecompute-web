@@ -19,7 +19,6 @@ podTemplate(label: 'mypod',
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
 
                 docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
-                rm -r StoreWebApp
                 """
             }
             stage('Push Docker Image to Registry') {
