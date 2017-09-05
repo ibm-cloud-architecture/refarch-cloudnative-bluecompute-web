@@ -42,30 +42,26 @@ podTemplate(label: 'pod',
             }
         }
 
-        stage('Chart') {
-            container('helm') {
-                stage ('Install Web application Chart') {
-                    sh """
-                    #!/bin/bash
-                    BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
-                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
+        container('kubectl') {
+            stage('Deploy new Docker Image') {
+                sh """
+                #!/bin/bash
+                set +e
+                BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
+                BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
 
-                    cd docker
-                    ./deploy.sh ${env.BUILD_NUMBER} \${BX_REGISTRY} \$BX_NAMESPACE
-                    """
-                }
-            }
-        }
+                kubectl get deployments bluecompute-web
 
-        stage('Cleanup') {
-            container('kubectl') {
-                stage ('Cleanup Helm Install Jobs') {
-                    sh """
-                    #!/bin/bash
-                    cd docker
-                    ./kubecleanup.sh
-                    """
-                }
+                if [ \${?} -ne "0" ]; then
+                    # No deployment to update
+                    echo 'No deployment to update'
+                    exit 1
+                fi
+
+                # Update Deployment
+                kubectl set image deployment/bluecompute-web web=\${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
+                kubectl rollout status deployment/bluecompute-web
+                """
             }
         }
     }
