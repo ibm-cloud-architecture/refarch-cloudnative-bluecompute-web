@@ -25,15 +25,16 @@ podTemplate(label: 'pod',
                 stage ('Push Docker Image to Registry') {
                     sh """
                     #!/bin/bash
-                    export BLUEMIX_API_KEY=`cat /var/run/secrets/bluemix-api-key/api-key`
-                    BX_SPACE=`cat /var/run/configs/bluemix-target/bluemix-space`
-                    BX_API_ENDPOINT=`cat /var/run/configs/bluemix-target/bluemix-api-endpoint`
+                    #export BLUEMIX_API_KEY=`cat /var/run/secrets/bluemix-api-key/api-key`
+                    #BX_SPACE=`cat /var/run/configs/bluemix-target/bluemix-space`
+                    #BX_API_ENDPOINT=`cat /var/run/configs/bluemix-target/bluemix-api-endpoint`
                     BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
                     BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
 
-                    bx login -a \${BX_API_ENDPOINT} -s \${BX_SPACE}
+                    # bx login -a \${BX_API_ENDPOINT} -s \${BX_SPACE}
                     # initialize docker using container registry secret
-                    bx cr login
+                    #bx cr login
+
                     docker push \${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
                     """
                 }
