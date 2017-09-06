@@ -34,9 +34,6 @@ podTemplate(label: 'pod',
 
                     bx login -a \${BX_API_ENDPOINT} -o \${BX_ORG} -s \${BX_SPACE}
 
-                    # Install container-registry plugin
-                    bx plugin install container-registry -r Bluemix
-
                     # initialize docker using container registry secret
                     bx cr login
 
