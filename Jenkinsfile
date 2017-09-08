@@ -44,7 +44,7 @@ podTemplate(label: 'mypod',
                 set +e
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
-                DEPLOYMENT=`kubectl get deployments | grep bluecompute | grep web | awk '{print $1}'`
+                DEPLOYMENT=`kubectl get deployments | grep bluecompute | grep web | awk \'{print $1}\'`
 
                 kubectl get deployments \${DEPLOYMENT}
 
