@@ -16,6 +16,11 @@ spec:
     protocol: TCP
     port: {{ .Values.service.externalPort }}
     targetPort: {{ .Values.service.internalPort }}
+{{ if eq .Values.service.type "NodePort" }}
+{{ if .Values.service.nodeport.port }}
+    nodePort: {{ .Values.service.nodeport.port }}
+{{ end }}
+{{ end }}
   selector:
     app: bluecompute
     micro: web-bff

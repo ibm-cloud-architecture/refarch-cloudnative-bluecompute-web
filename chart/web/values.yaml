@@ -11,6 +11,8 @@ service:
   type: NodePort
   externalPort: 80
   internalPort: 8000
+  nodeport:
+    port: 
 ingress:
   hostname:
   path: /
@@ -40,3 +42,13 @@ services:
     host:
     port:
 
+global:
+  bluemix:
+    apiKey:
+
+    target:
+      endpoint: 
+      org:
+      space:
+    
+    clusterName:
