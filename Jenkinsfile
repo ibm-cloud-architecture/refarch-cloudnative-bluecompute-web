@@ -1,5 +1,6 @@
 podTemplate(label: 'mypod',
     volumes: [
+        hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
         hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
         secretVolume(secretName: 'registry-account', mountPath: '/var/run/secrets/registry-account'),
         configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
