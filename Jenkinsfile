@@ -56,7 +56,7 @@ podTemplate(label: 'mypod',
                 fi
 
                 # Update Deployment
-                kubectl set image ${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                kubectl set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
                 kubectl rollout status \${DEPLOYMENT}
                 """
             }
