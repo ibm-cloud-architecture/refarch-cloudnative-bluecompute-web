@@ -37,7 +37,7 @@ function setGetReviewOptions(req, res) {
   var params = req.params;
 
   var reviews_url = api_url.stringify({
-    protocol: _apis.protocol,
+    protocol: _apis.review.protocol,
     host: _apis.review.service_name,
     api: _apis.review.base_path,
     operation: "reviews/list?itemId=" + params.id
@@ -75,7 +75,7 @@ function setNewReviewOptions(req, res) {
   if (form_body.comment !== '') reqBody.comment = form_body.comment;
 
   var reviews_url = api_url.stringify({
-    protocol: _apis.protocol,
+    protocol: _apis.review.protocol,
     host: _apis.review.service_name,
     api: _apis.review.base_path,
     operation: "reviews/comment?itemId=" + params.id
@@ -154,7 +154,7 @@ function submitNewReview(function_input) {
 
   //Inject the call to customer here
   var customer_url = api_url.stringify({
-    protocol: _apis.protocol,
+    protocol: _apis.review.protocol,
     host: _apis.review.service_name,
     api: _apis.customer.base_path,
     operation: "customer"

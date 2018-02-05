@@ -38,7 +38,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- define "catalogHost" -}}
   {{- if .Values.services.catalog.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.catalog.host }}
+    {{- printf "%s" .Values.services.catalog.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-catalog" .Release.Name -}}
@@ -46,19 +46,28 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "catalogPort" -}}
-  {{- if .Values.services.catalog.host -}}
+  {{- if .Values.services.catalog.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.catalog.port }}
+    {{- $port := default .Values.services.catalog.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
     {{- printf "8081" -}}
   {{- end -}}
 {{- end -}}
 
+{{- define "catalogProtocol" -}}
+  {{- if .Values.services.catalog.protocol -}}
+    {{- printf "%s" .Values.services.catalog.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
 {{- define "authHost" -}}
   {{- if .Values.services.auth.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.auth.host }}
+    {{- printf "%s" .Values.services.auth.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-auth" .Release.Name -}}
@@ -66,19 +75,28 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "authPort" -}}
-  {{- if .Values.services.auth.host -}}
+  {{- if .Values.services.auth.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.auth.port }}
+    {{- $port := default .Values.services.auth.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
     {{- printf "8080" -}}
   {{- end -}}
 {{- end -}}
 
+{{- define "authProtocol" -}}
+  {{- if .Values.services.auth.protocol -}}
+    {{- printf "%s" .Values.services.auth.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
 {{- define "customerHost" -}}
   {{- if .Values.services.customer.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.customer.host }}
+    {{- printf "%s" .Values.services.customer.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-customer" .Release.Name -}}
@@ -86,19 +104,28 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "customerPort" -}}
-  {{- if .Values.services.customer.host -}}
+  {{- if .Values.services.customer.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.customer.port }}
+    {{- $port := default .Values.services.customer.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
     {{- printf "8080" -}}
   {{- end -}}
 {{- end -}}
 
+{{- define "customerProtocol" -}}
+  {{- if .Values.services.customer.protocol -}}
+    {{- printf "%s" .Values.services.customer.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
 {{- define "ordersHost" -}}
   {{- if .Values.services.orders.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.orders.host }}
+    {{- printf "%s" .Values.services.orders.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-orders" .Release.Name -}}
@@ -106,19 +133,28 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "ordersPort" -}}
-  {{- if .Values.services.orders.host -}}
+  {{- if .Values.services.orders.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.orders.port }}
+    {{- $port := default .Values.services.orders.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
     {{- printf "8080" -}}
   {{- end -}}
 {{- end -}}
 
+{{- define "ordersProtocol" -}}
+  {{- if .Values.services.orders.protocol -}}
+    {{- printf "%s" .Values.services.orders.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
 {{- define "reviewsHost" -}}
   {{- if .Values.services.reviews.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.reviews.host }}
+    {{- printf "%s" .Values.services.reviews.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-reviews" .Release.Name -}}
@@ -126,12 +162,20 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "reviewsPort" -}}
-  {{- if .Values.services.reviews.host -}}
+  {{- if .Values.services.reviews.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.reviews.port }}
+    {{- $port := default .Values.services.reviews.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
     {{- printf "8080" -}}
   {{- end -}}
 {{- end -}}
 
+{{- define "reviewsProtocol" -}}
+  {{- if .Values.services.reviews.protocol -}}
+    {{- printf "%s" .Values.services.reviews.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}

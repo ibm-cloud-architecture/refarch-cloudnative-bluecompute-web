@@ -37,7 +37,7 @@ function setOAuthOptions(req, res) {
 
 
   var oauth_url = api_url.stringify({
-    protocol: _apis.protocol,
+    protocol: _apis.oauth20.protocol,
     host: _apis.oauth20.service_name,
     api: _apis.oauth20.base_path,
     operation: "token"

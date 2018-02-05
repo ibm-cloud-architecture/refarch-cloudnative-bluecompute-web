@@ -26,19 +26,24 @@ resources:
 region: 
 clusterName:
 services:
-  auth: 
-    host: 
-    port: 
+  auth:
+    protocol:
+    host:
+    port:
   catalog:
-    host: 
-    port: 
+    protocol:
+    host:
+    port:
   customer:
-    host: 
-    port: 
+    protocol:
+    host:
+    port:
   orders:
-    host: 
-    port: 
+    protocol:
+    host:
+    port:
   reviews:
+    protocol:
     host:
     port:
 
