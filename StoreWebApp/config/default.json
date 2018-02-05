@@ -8,14 +8,15 @@
     "client_secret":"bluecomputewebs3cret"
   },
   "APIs": {
-    "protocol": "http",
     "catalog": {
+      "protocol": "http",
       "service_name": "catalog-service:8081",
       "base_path": "/micro",
       "require": [
       ]
     },
-    "order": {
+    "orders": {
+      "protocol": "http",
       "service_name": "orders-service:8080",
       "base_path": "/micro",
       "require": [
@@ -23,12 +24,14 @@
       ]
     },
     "review": {
+      "protocol": "http",
       "base_path": "/api",
       "require": [
         "oauth"
       ]
     },
     "customer": {
+      "protocol": "http",
       "service_name": "customer-service:8080",
       "base_path": "/micro",
       "require": [
@@ -38,6 +41,7 @@
       ]
     },
     "oauth20": {
+      "protocol": "http",
       "service_name": "auth-service:8080",
       "base_path": "/oauth",
       "paths": {

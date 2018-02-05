@@ -37,9 +37,9 @@ function setGetOrdersOptions(req, res) {
   var params = req.params;
 
   var orders_url = api_url.stringify({
-    protocol: _apis.protocol,
-    host: _apis.order.service_name,
-    api: _apis.order.base_path,
+    protocol: _apis.orders.protocol,
+    host: _apis.orders.service_name,
+    api: _apis.orders.base_path,
     operation: "orders"
   });
 
@@ -53,7 +53,7 @@ function setGetOrdersOptions(req, res) {
   return new Promise(function (fulfill) {
 
     // Get OAuth Access Token, if needed
-    if (_apis.order.require.indexOf("oauth") != -1) {
+    if (_apis.orders.require.indexOf("oauth") != -1) {
       // If already logged in, add token to request
       getOrders_options.headers.Authorization = req.headers.authorization;
       fulfill({
@@ -81,9 +81,9 @@ function setNewOrderOptions(req, res) {
 
 
   var orders_url = api_url.stringify({
-    protocol: _apis.protocol,
-    host: _apis.order.service_name,
-    api: _apis.order.base_path,
+    protocol: _apis.orders.protocol,
+    host: _apis.orders.service_name,
+    api: _apis.orders.base_path,
     operation: "orders"
   });
 
@@ -98,7 +98,7 @@ function setNewOrderOptions(req, res) {
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed
-    if (_apis.order.require.indexOf("oauth") != -1) {
+    if (_apis.orders.require.indexOf("oauth") != -1) {
         // Add OAuth access token to the header
         options.headers.Authorization = req.headers.authorization;
         fulfill({
