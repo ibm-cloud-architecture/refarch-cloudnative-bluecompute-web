@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+    ingress.bluemix.net/rewrite-path: "serviceName={{ .Release.Name }}-{{ .Chart.Name }} rewrite=/"
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  labels:
+    app: bluecompute
+    micro: web-bff
+    tier: frontend
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: {{ .Values.ingress.path }} 
+        backend:
+          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
+          servicePort: 80
+{{- if .Values.ingress.hostname }}
+    host: {{ .Values.ingress.hostname | quote }}
+{{- end -}}

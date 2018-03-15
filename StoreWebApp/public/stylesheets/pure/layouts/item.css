@@ -1,0 +1,127 @@
+/*
+ * -- CONTENT STYLES --
+ * This represents the content area (everything below the blue section)
+ */
+ /*
+.content-wrapper {
+  top: 62px;
+}
+*/
+.item-content {
+  padding: 2em;
+}
+
+.section-heading {
+  color: #000000;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/*
+ * -- PRODUCT INFO STYLES --
+ * This represents the item info boxes
+ */
+.item-top-boxes {
+  margin-bottom: 20px;
+}
+
+.item-info-box {
+  margin-left: 20px;
+}
+
+.item-name-box {
+  text-transform: capitalize;
+}
+
+.item-star-box {
+
+}
+
+.item-price-box {
+
+}
+
+.get-financing-box {
+
+}
+
+.get-financing-link {
+  color: #1D8FEB;
+  text-decoration: none;
+}
+
+.get-financing-link,
+.get-financing-link:hover,
+.get-financing-link:focus,
+.get-financing-link:visited {
+  color: #129FEA;
+  text-decoration: none;
+}
+
+.item-description-box {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+/*
+ * -- CALCULATE SHIPPING STYLES --
+ * This represents the calculate shipping section
+ */
+.calc-form-item {
+  padding-left: 50px;
+}
+
+.zip-input {
+  border: 2px solid #ddd;
+  box-shadow: none;
+  font-size: 100%;
+  margin: 0 0 15px 0 !important;
+  width: 130px !important;
+  padding: .5em .6em;
+  display: inline-block;
+  border-radius: 4px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+/*
+ * -- REVIEW SECTION STYLES --
+ * This represents the item reviews
+ */
+.review-section {
+  padding-right: 4em;
+}
+
+.reviewer-name {
+  color: black;
+}
+
+.review-content {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding: 1em;
+  border: 1px solid #777;
+}
+
+.review-comment {
+  font-style: italic;
+}
+
+.leave-review-section {
+
+}
+
+.leave-review-rating {
+  height: 54px;
+  text-align: left;
+}
+
+.leave-review-rating-label {
+  width: 3em !important;
+  color: #777;
+  font-weight: normal !important;
+}
+
+.leave-review-button {
+  text-align: right;
+}

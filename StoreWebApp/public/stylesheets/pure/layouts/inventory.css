@@ -1,0 +1,48 @@
+/*
+ * -- CONTENT STYLES --
+ * This represents the content area (everything below the blue section)
+ */
+ /*
+.content-wrapper {
+  top: 62px;
+}*/
+
+/*
+ * -- item BOX STYLES --
+ * This represents the item boxes
+ */
+.item-box {
+  margin: 1em;
+  border: 1px solid #777;
+}
+
+.item-link {
+  padding: 0;
+}
+
+.item-img {
+  padding: 0;
+  margin: 0;
+}
+
+.item-section {
+  padding: 1em;
+}
+
+.item-rating {
+  text-align: right;
+}
+
+/*
+ * -- SORT BAR STYLES --
+ * This represents the sort bar
+ */
+.sort-bar {
+  text-align: right;
+  padding: 1em 2em 0 2em;
+}
+
+.sort-label {
+  color: #777;
+  font-weight: normal !important;
+}

@@ -1,0 +1,69 @@
+podTemplate(label: 'pod',
+    volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+              secretVolume(secretName: 'bluemix-api-key', mountPath: '/var/run/secrets/bluemix-api-key'),
+              configMapVolume(configMapName: 'bluemix-target', mountPath: '/var/run/configs/bluemix-target')],
+    containers: [
+            containerTemplate(name: 'docker', image: 'ibmcase/bluemix-image-deploy:latest', alwaysPullImage: true, ttyEnabled: true),
+            containerTemplate(name: 'helm', image: 'ibmcase/helm:latest', alwaysPullImage: true, ttyEnabled: true, command: 'cat'),
+            containerTemplate(name: 'kubectl', image: 'ibmcase/kubectl:latest', alwaysPullImage: true, ttyEnabled: true, command: 'cat')
+    ]) {
+
+    node ('pod') {
+
+        stage('Distribute Docker Image') {
+            checkout scm
+            container('docker') {
+                stage ('Build Docker Image') {
+                    sh """
+                    #!/bin/bash
+                    BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
+                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
+
+                    docker build -t \${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER} .
+                    """
+                }
+                stage ('Push Docker Image to Registry') {
+                    sh """
+                    #!/bin/bash
+                    export BLUEMIX_API_KEY=`cat /var/run/secrets/bluemix-api-key/api-key`
+                    BX_ORG=`cat /var/run/configs/bluemix-target/bluemix-org`
+                    BX_SPACE=`cat /var/run/configs/bluemix-target/bluemix-space`
+                    BX_API_ENDPOINT=`cat /var/run/configs/bluemix-target/bluemix-api-endpoint`
+                    BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
+                    BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
+
+                    bx login -a \${BX_API_ENDPOINT} -o \${BX_ORG} -s \${BX_SPACE}
+
+                    # initialize docker using container registry secret
+                    bx cr login
+
+                    docker push \${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
+                    """
+                }
+            }
+        }
+
+        container('kubectl') {
+            stage('Deploy new Docker Image') {
+                sh """
+                #!/bin/bash
+                set +e
+                BX_REGISTRY=`cat /var/run/configs/bluemix-target/bluemix-registry`
+                BX_NAMESPACE=`cat /var/run/configs/bluemix-target/bluemix-registry-namespace`
+
+                kubectl get deployments bluecompute-web
+
+                if [ \${?} -ne "0" ]; then
+                    # No deployment to update
+                    echo 'No deployment to update'
+                    exit 1
+                fi
+
+                # Update Deployment
+                kubectl set image deployment/bluecompute-web web=\${BX_REGISTRY}/\${BX_NAMESPACE}/bluecompute-web:${env.BUILD_NUMBER}
+                kubectl rollout status deployment/bluecompute-web
+                """
+            }
+        }
+    }
+}

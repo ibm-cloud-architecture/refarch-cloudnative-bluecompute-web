@@ -1,0 +1,54 @@
+# Default values for bluecompute-web.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: ibmcase/bluecompute-web
+  tag: latest
+  pullPolicy: Always
+service:
+  name: bluecompute-web
+  type: NodePort
+  externalPort: 80
+  internalPort: 8000
+  nodeport:
+    port: 
+ingress:
+  hostname:
+  path: /
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+region: 
+clusterName:
+services:
+  auth: 
+    host: 
+    port: 
+  catalog:
+    host: 
+    port: 
+  customer:
+    host: 
+    port: 
+  orders:
+    host: 
+    port: 
+  reviews:
+    host:
+    port:
+
+global:
+  bluemix:
+    apiKey:
+
+    target:
+      endpoint: 
+      org:
+      space:
+    
+    clusterName:

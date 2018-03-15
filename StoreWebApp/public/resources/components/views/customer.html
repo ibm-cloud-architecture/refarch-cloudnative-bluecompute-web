@@ -1,0 +1,62 @@
+<div class="header">
+  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+    <img style="width:45px;height:45px;float:left;" ng-src="images/common/case_logo.png" class="pure-img">
+    <a class="pure-menu-heading" ng-href="https://www.ibm.com/devops/method/category/architectures/" target="_blank">IBM Cloud Architecture</a>
+    <ul class="pure-menu-list">
+      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/">Home</a></li>
+      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
+      <li ng-show="!loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/login">Log In</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/logout">Logout</a></li>
+    </ul>
+  </div>
+</div>
+<div class="content-wrapper" style="top: 62px;">
+  <div class="pure-g">
+    <div class="pure-u-1-5">
+      <div class="pure-u-1">
+        <h2 class="section-heading">Please review your profile</a></h2>
+      </div>
+
+      <div class="pure-u-1">
+        <div class="content" style="padding-top:20px;">
+              <img style="border-radius: 50%" ng-src="{{customerInfo.image || 'images/common/ibmprofile.jpg'}}" class="pure-img">
+        </div>
+        <div class="content" style="padding-top:20px;">
+            <span class="profileColor">First Name: </span><span class="profileColor">{{customerInfo.firstName || 'N/A'}}</span>
+        </div>
+        <div class="content">
+            <span class="profileColor">Last Name: </span><span class="profileColor">{{customerInfo.lastName || 'N/A'}}</span>
+        </div>
+        <div class="content">
+            <span class="profileColor">Email: </span><span class="profileColor">{{customerInfo.email || 'N/A'}}</span>
+        </div>
+        <div class="content">
+            <span class="profileColor">Username: </span><span class="profileColor">{{customerInfo.username || 'N/A'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="pure-u-4-5">
+      <div class="pure-u-1">
+        <h2 class="section-heading">Order History</a></h2>
+      </div>
+
+      <table class="pure-table pure-table-bordered">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Item</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="order in ordersInfo">
+             <td>{{ order.date | date: "yyyy-MM-dd HH:mm:ss" }}</td>
+             <td><a href="#!/item/{{order.itemId}}" class="pure-menu-link">{{ order.itemName}}</a></td>
+             <td>{{ order.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

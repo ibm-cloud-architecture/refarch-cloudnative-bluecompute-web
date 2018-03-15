@@ -1,0 +1,17 @@
+/*
+ * -- CONTENT STYLES --
+ * This represents the content area (everything below the blue section)
+ */
+.content-wrapper {
+  top: 62px;
+}
+
+.login-input,
+.login-button {
+  width: 300px !important;
+}
+
+.pure-form-aligned .pure-controls {
+  margin: 0;
+}
+
