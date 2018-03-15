@@ -126,7 +126,7 @@ function sendApiReq(function_input) {
   return new Promise(function (fulfill, reject) {
     http.request(options)
       .then(function (result) {
-        //console.log("Order call succeeded with result: " + JSON.stringify(result));
+        console.log("Order call succeeded with result: " + JSON.stringify(result));
         fulfill({
           data: result,
           res: res
