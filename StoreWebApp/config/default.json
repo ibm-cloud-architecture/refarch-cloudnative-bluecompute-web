@@ -30,13 +30,15 @@
       ]
     },
     "customer": {
-      "service_name": "customer-service:8080",
-      "base_path": "/micro",
-      "require": [
-        "client_id",
-        "oauth"
-
-      ]
+        "service_name": "localhost:9443/oidc/endpoint",
+        "base_path": "/OP",
+        "paths": {
+          "userinfo": "/userinfo"
+        },
+        "require": [
+          "oauth"
+        ],
+        "redirect_url": "http://localhost"
     },
     "oauth20": {
       "service_name": "localhost:9443/oidc/endpoint",
@@ -49,7 +51,7 @@
         "password"
       ],
       "scopes": [
-        "bluecompute"
+        "openid"
       ],
       "redirect_url": "http://localhost"
     }

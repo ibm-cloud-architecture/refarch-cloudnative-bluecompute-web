@@ -14,7 +14,6 @@ var _authServer = config.get('Auth-Server');
 /* Handle the POST request for creating a new item review */
 router.post('/token', function (req, res) {
   session = req.session;
-
   setOAuthOptions(req, res)
     .then(getOauthToken)
     .then(sendResponse)
@@ -46,7 +45,6 @@ function setOAuthOptions(req, res) {
   var basicAuthToken = _authServer.client_id + ":" + _authServer.client_secret;
   var buffer = new Buffer(basicAuthToken);
   var basicToken = 'Basic ' + buffer.toString('base64');
-
   var options = {
     method: 'POST',
     url: oauth_url,
