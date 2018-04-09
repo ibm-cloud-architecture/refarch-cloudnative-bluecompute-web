@@ -33,7 +33,7 @@ function setCustomerOptions(req, res) {
     host: _apis.customer.service_name,
     api: _apis.customer.base_path,
     operation: "userinfo"
-  })
+  });
 
   var basicAuthToken = _authServer.client_id + ":" + _authServer.client_secret;
   var buffer = new Buffer(basicAuthToken);

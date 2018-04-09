@@ -91,7 +91,7 @@ router.get('/:fileName', function(req, res){
       }).pipe(res);
 
     }else {
-      res.status(500).send('Failed to authenticate to Object Storage!')
+      res.status(500).send('Failed to authenticate to Object Storage!');
     }
 
 
