@@ -44,9 +44,9 @@ podTemplate(label: 'mypod',
                 set +e
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
-                DEPLOYMENT=`kubectl get deployments | grep bluecompute | grep web | awk '{print \$1}'`
+                DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
 
-                kubectl get deployments \${DEPLOYMENT}
+                kubectl --namespace=\${NAMESPACE} get \${DEPLOYMENT}
 
                 if [ \${?} -ne "0" ]; then
                     # No deployment to update
@@ -55,8 +55,8 @@ podTemplate(label: 'mypod',
                 fi
 
                 # Update Deployment
-                kubectl set image deployment/\${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                kubectl rollout status deployment/\${DEPLOYMENT}
+                kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
                 """
             }
         }
