@@ -29,8 +29,19 @@
         "oauth"
       ]
     },
+    "customerService": {
+      "service_name": "localhost:9443/customer",
+      "base_path": "/rest",
+      "paths": {
+        "customer": "/customer"
+      },
+      "require": [
+          "oauth"
+      ],
+      "redirect_url": "http://localhost"
+    },
     "customer": {
-        "service_name": "localhost:9443/oidc/endpoint",
+        "service_name": "localhost:9444/oidc/endpoint",
         "base_path": "/OP",
         "paths": {
           "userinfo": "/userinfo"
@@ -41,7 +52,7 @@
         "redirect_url": "http://localhost"
     },
     "oauth20": {
-      "service_name": "localhost:9443/oidc/endpoint",
+      "service_name": "localhost:9444/oidc/endpoint",
       "base_path": "/OP",
       "paths": {
         "authz": "/authorize",

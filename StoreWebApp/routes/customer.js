@@ -23,6 +23,58 @@ router.get('/userinfo', function (req, res) {
 
 });
 
+router.get('/rest', function (req, res) {
+  session = req.session;
+  setCustomerOptionsFromCustomerMicroService(req, res)
+    .then(sendApiReq)
+    .then(sendResponse)
+    .catch(renderErrorPage)
+    .done();
+
+});
+
+function setCustomerOptionsFromCustomerMicroService(req, res) {
+  var form_body = req.body;
+  //console.log("Browser request data:\n" + JSON.stringify(form_body));
+  console.log("Form data:\n" + JSON.stringify(form_body));
+
+  var customer_url = api_url.stringify({
+    protocols: _apis.protocols,
+    host: _apis.customerService.service_name,
+    api: _apis.customerService.base_path,
+    operation: "customer"
+  });
+
+  var basicAuthToken = _authServer.client_id + ":" + _authServer.client_secret;
+  var buffer = new Buffer(basicAuthToken);
+  var basicToken = 'Basic ' + buffer.toString('base64');
+
+  var getCustomer_options = {
+    method: 'GET',
+    url: customer_url,
+    strictSSL: false,
+    headers: {},
+  };
+  return new Promise(function (fulfill) {
+    // Get OAuth Access Token, if needed
+    if (_apis.customerService.require.indexOf("oauth") != -1) {
+      // If already logged in, add token to request
+      getCustomer_options.headers.Authorization = req.headers.authorization;
+      fulfill({
+        options: getCustomer_options,
+        res: res
+      });
+    }
+    else {
+        fulfill({
+            options: getCustomer_options,
+            res: res
+        });
+    }
+  });
+
+}
+
 function setCustomerOptions(req, res) {
   var form_body = req.body;
   //console.log("Browser request data:\n" + JSON.stringify(form_body));
