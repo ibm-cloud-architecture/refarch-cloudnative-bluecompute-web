@@ -62,6 +62,8 @@
         "password"
       ],
       "scopes": [
+        "admin",
+        "blue",
         "openid"
       ],
       "redirect_url": "http://localhost"
