@@ -3,16 +3,16 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: ibmcase/bluecompute-web
-  tag: latest
-  pullPolicy: Always
+  repository: bc-web
+  tag: v1.0.0
+  pullPolicy: IfNotPresent
 service:
   name: bluecompute-web
   type: NodePort
   externalPort: 80
   internalPort: 8000
   nodeport:
-    port: 
+    port:
 ingress:
   hostname:
   path: /
@@ -23,21 +23,21 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
-region: 
+region:
 clusterName:
 services:
-  auth: 
-    host: 
-    port: 
+  auth:
+    host:
+    port:
   catalog:
-    host: 
-    port: 
+    host:
+    port:
   customer:
-    host: 
-    port: 
+    host:
+    port:
   orders:
-    host: 
-    port: 
+    host:
+    port:
   reviews:
     host:
     port:
@@ -47,8 +47,8 @@ global:
     apiKey:
 
     target:
-      endpoint: 
+      endpoint:
       org:
       space:
-    
+
     clusterName:
