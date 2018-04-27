@@ -41,7 +41,7 @@
       "redirect_url": "http://localhost"
     },
     "customer": {
-        "service_name": "localhost:9444/oidc/endpoint",
+        "service_name": "auth-service:9443/oidc/endpoint",
         "base_path": "/OP",
         "paths": {
           "userinfo": "/userinfo"

@@ -48,14 +48,27 @@ data:
             "oauth"
           ]
         },
-        "customer": {
-          "service_name": "customer-service:8080",
-          "base_path": "/micro",
+        "customerService": {
+          "service_name": "customer-service:9443/customer",
+          "base_path": "/rest",
+          "paths": {
+            "customer": "/customer"
+          },
           "require": [
-            "client_id",
-            "oauth"
-
-          ]
+              "oauth"
+          ],
+          "redirect_url": "http://localhost"
+        },
+        "customer": {
+            "service_name": "auth-service:9443/oidc/endpoint",
+            "base_path": "/OP",
+            "paths": {
+              "userinfo": "/userinfo"
+            },
+            "require": [
+              "oauth"
+            ],
+            "redirect_url": "http://localhost"
         },
         "oauth20": {
           "protocol": "https",
