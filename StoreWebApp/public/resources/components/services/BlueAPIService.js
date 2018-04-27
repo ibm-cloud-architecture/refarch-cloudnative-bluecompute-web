@@ -41,7 +41,7 @@ app.service('BlueAPIService',['$http', 'CONFIG', '$base64', function($http, CONF
 		else {
 			var basicAuthToken = CONFIG["Auth-Server"].client_id + ":" + CONFIG["Auth-Server"].client_secret;
 			var authToken = 'Basic ' + $base64.encode(basicAuthToken);
-			console.log("BasiAuth of " + basicAuthToken + " 64 encoded token: " + authToken);
+			console.log("BasicAuth of " + basicAuthToken + " 64 encoded token: " + authToken);
 			console.log("with Url parameter: " + JSON.stringify(parameters));
 			$http({
 					headers: {
@@ -88,10 +88,15 @@ app.service('BlueAPIService',['$http', 'CONFIG', '$base64', function($http, CONF
 				invokeService(restUrl, requestType, parameters, successCallback, errorCallback, access_token);
 			},
 			getCustomerProfile : function(access_token, successCallback, errorCallback) {
-				var restUrl = 'customer/';
+				var restUrl = 'customer/userinfo';
 				var requestType = 'GET_AUTH';
 				invokeService(restUrl, requestType, null, successCallback, errorCallback, access_token);
 			},
+            getCustomerProfileWithMicroService : function(access_token, successCallback, errorCallback) {
+                var restUrl = 'customer/rest';
+                var requestType = 'GET_AUTH';
+                invokeService(restUrl, requestType, null, successCallback, errorCallback, access_token);
+            },
 			getCustomerOrders : function(access_token, successCallback, errorCallback) {
 				var restUrl = 'order/';
 				var requestType = 'GET_AUTH';
