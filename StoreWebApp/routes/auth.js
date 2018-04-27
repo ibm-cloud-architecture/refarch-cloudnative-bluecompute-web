@@ -6,7 +6,7 @@ var UrlPattern = require('url-pattern');
 var config = require('config');
 
 var session;
-var api_url = new UrlPattern('(:protocols)\\://(:host)(:api)/(:operation)');
+var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
 var _apis = config.get('APIs');
 var _authServer = config.get('Auth-Server');
 
@@ -36,7 +36,7 @@ function setOAuthOptions(req, res) {
 
 
   var oauth_url = api_url.stringify({
-    protocols: _apis.protocols,
+    protocol: _apis.oauth20.protocol,
     host: _apis.oauth20.service_name,
     api: _apis.oauth20.base_path,
     operation: "token"
