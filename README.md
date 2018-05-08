@@ -1,118 +1,174 @@
 # BlueCompute Web Application by IBM Cloud
 
+## Web Service
+
 *This project is part of the 'IBM Cloud Native Reference Architecture' suite, available at
 https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes*
 
-The sample Web application is built to demonstrate how to access the Omnichannel APIs hosted on IBM Cloud. The application provides the basic function to allow user to browse the Catalog items, make an Order and review profile. The Web application is built with AngularJS in Web 2.0 Single Page App style. It uses a Node.js backend to host the static content and implement the BFF (Backend for Frontend) pattern.
+1. [Introduction](#introduction)
+2. [How it works](#how-it-works)
+3. [Running the app and stopping it](#running-the-app-and-stopping-it)
+    1. [Pre-requisites](#pre-requisites)
+    2. [Locally in Minikube](#locally-in-minikube)
+    3. [Remotely in ICP](#remotely-in-icp)
+4. [References](#references)
+
+### Introduction
+
+The sample Web application is built to demonstrate how to access the Omnichannel APIs hosted on IBM Cloud . The application provides the basic function to allow user to browse the Catalog items, make an Order and check the profile. The Web application is built with AngularJS in Web 2.0 Single Page App style. It uses a Node.js backend to host the static content and implement the BFF (Backend for Frontend) pattern.
 
 Here is an overview of the project's features:
 - AngularJS SPA
 - Node.js based BFF application to access APIs
-- Authentication and Authorization through OAuth 2.0
-- DevOps toolchain to build/deploy web app
-- Distributed as Docker container and deployed to Kubernetes cluster on Bluemix
+- Authentication and Authorization through Open ID Connect.
+- Distributed as Docker container and deployed to Kubernetes cluster.
 
-You need to have your local development environment properly configured with all the tools installed, for example, Docker and Kubernetes command line tool. Please reference [this instruction](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int#step-1-environment-setup) to set up your local development environment.
+### How it works
 
-## Run and test the Web application locally
+Web Microservice serves 'IBM Cloud Native Reference Architecture' suite, available at https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes, Microservice-based reference application. Though it is a part of a bigger application, Web service is itself an application that serves as User Interface for BlueCompute.
 
-1. Navigate to the web app folder `StoreWebApp` in the git repository.
+### Running the app and stopping it
 
-2. Run the Web application
+#### Pre-requisites
 
-  The application uses [Bower](https://bower.io/) to manage the dependencies for Web front end library like AngularJS. It uses several other npm libraries such as Express.js. You need to install all the dependencies first:
+To run the Inventory microservice, please complete the [Building the app](#building-the-app) section before proceeding to any of the following steps.
 
-   `$ cd StoreWebApp`  
-   `$ npm install`  
-   `$ npm start`    
+1. Locally in Minikube
 
-This will start the Node.js application on your local environment and open a browser with app homepage.
+To run the Web application locally on your laptop on a Kubernetes-based environment such as Minikube (which is meant to be a small development environment) we first need to get few tools installed:
 
-## Run and test the Web application locally on Docker
+- [Kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
+- [Helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
 
-To run the application in docker, we first need to define a Docker file.
+Finally, we must create a Kubernetes Cluster. As already said before, we are going to use Minikube:
 
-#### Docker file
+- [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) - Create a single node virtual cluster on your workstation. Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-minikube/) to get Minikube installed on your workstation.
 
-We are using Docker to containerize the application. With Docker, you can pack, ship, and run applications on a portable, lightweight container that can run anywhere virtually.
+We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page for getting more familiar with Minikube. We can learn there interesting things such as reusing our Docker daemon, getting the Minikube's ip or opening the Minikube's dashboard for GUI interaction with out Kubernetes Cluster.
+
+2. Remotely in ICP
+
+[IBM Cloud Private Cluster](https://www.ibm.com/cloud/private)
+
+Create a Kubernetes cluster in an on-premise datacenter. The community edition (IBM Cloud private-ce) is free of charge.
+Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html) to install IBM Cloud private-ce.
+
+[Helm](https://github.com/kubernetes/helm) (Kubernetes package manager)
+
+Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
+If using IBM Cloud Private version 2.1.0.2 or newer, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html) to install helm.
+
+### Locally in Minikube
+
+#### Setting up your environment
+
+1. Start your minikube. Run the below command.
+
+`minikube start`
+
+You will see output similar to this.
 
 ```
-FROM node:6
+Setting up certs...
+Connecting to cluster...
+Setting up kubeconfig...
+Starting cluster components...
+Kubectl is now configured to use the cluster.
+```
+2. To install Tiller which is a server side component of Helm, initialize helm. Run the below command.
 
-ADD StoreWebApp /StoreWebApp
+`helm init`
 
-WORKDIR /StoreWebApp
+If it is successful, you will see the below output.
 
-ADD https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 /usr/local/bin/jq
-RUN chmod a+x /usr/local/bin/jq
+```
+$HELM_HOME has been configured at /Users/user@ibm.com/.helm.
 
-RUN npm install
-RUN npm -g install bower
-RUN bower --allow-root install --force
+Tiller (the helm server side component) has been installed into your Kubernetes Cluster.
+Happy Helming!
+```
+3. Check if your tiller is available. Run the below command.
 
-COPY startup.sh startup.sh
+`kubectl get deployment tiller-deploy --namespace kube-system`
 
-ENTRYPOINT ["./startup.sh"]
+If it available, you can see the availability as below.
+
+```
+NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+tiller-deploy   1         1         1            1           1m
 ```
 
-#### Running the application locally in a docker container
+4. Verify your helm before proceeding like below.
+
+`helm version`
+
+You will see the below output.
+
+```
+Client: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a9194a76161d29b4c", GitTreeState:"clean"}
+Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b8dab6c2d45be6", GitTreeState:"clean"}
+```
+
+#### Running the application on Minikube
 
 1. Build the docker image.
 
-`docker build -t web:microprofile .`
+Before building the docker image, set the docker environment.
 
-Once this is done, you will see something similar to the below messages.
-```
-Successfully built ed2b22cda95b
-Successfully tagged web:microprofile
-```
-You can see the docker images by using this command.
+- Run the below command.
 
-`docker images`
+`minikube docker-env`
+
+You will see the output similar to this.
 
 ```
-REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
-web                                             microprofile        ed2b22cda95b        24 minutes ago      771MB
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="/Users/user@ibm.com/.minikube/certs"
+export DOCKER_API_VERSION="1.23"
+# Run this command to configure your shell:
+# eval $(minikube docker-env)
 ```
-2. Run the docker image.
+- For configuring your shell, run the below command.
 
-`docker run -p 8000:8000 -d --name web -t --link inventory:inventory --link elasticsearch:elasticsearch --link mysql:mysql --link rabbitmq:rabbitmq --link catalog:catalog --link auth:auth --link order:order web:microprofile`
+`eval $(minikube docker-env)`
 
-When it is done, you can verify it using the below command.
+- Now run the docker build.
 
-`docker ps`
+`docker build -t inventory:v1.0.0 .`
+
+If it is a success, you will see the below output.
+
+```
+Successfully built fg1c34hab80d
+Successfully tagged bc-web-mp:v1.0.0
+```
+
+2. Run the helm chart as below.
+
+Before running the helm chart in minikube, access [values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/blob/microprofile/chart/web/values.yaml) and replace the repository with the below.
+
+`repository: bc-web-mp`
+
+Then run the helm chart 
+
+`helm install --name=web chart/web`
+
+You will see message like below.
+
+```
+==> v1beta1/Deployment
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                          AGE
+bluecompute-web            NodePort    10.109.121.244   <none>        80:30628/TCP                     38m
+```
+Please wait till your deployment is ready. To verify run the below command and you should see the availability.
+
+`kubectl get deployments`
 
 You will see something like below.
 
 ```
-CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                                                                             NAMES
-cfca55fa3b17        web:microprofile                    "./startup.sh"           20 minutes ago      Up 20 minutes       0.0.0.0:8000->8000/tcp                                                            web
-cf5fa61acfb5        orders:microprofile                 "/opt/ibm/wlp/bin/se…"   27 minutes ago      Up 27 minutes       0.0.0.0:9380->9080/tcp, 0.0.0.0:8443->9443/tcp                                    order
-c5625f800e47        auth:microprofile                   "/opt/ibm/docker/doc…"   30 minutes ago      Up 30 minutes       0.0.0.0:9580->9080/tcp, 0.0.0.0:7443->9443/tcp                                    auth
-7f50df9b03a3        catalog:microprofile                "/opt/ibm/wlp/bin/se…"   2 hours ago         Up 2 hours          9443/tcp, 0.0.0.0:9280->9080/tcp                                                  catalog
-e1fe5ab7cfbc        ibmcase/bluecompute-elasticsearch   "/run.sh"                2 hours ago         Up 2 hours          0.0.0.0:9200->9200/tcp, 9300/tcp                                                  elasticsearch
-3149cb57629f        inventory:microprofile              "/opt/ibm/wlp/bin/se…"   2 hours ago         Up 2 hours          9443/tcp, 0.0.0.0:9180->9080/tcp                                                  inventory
-526f5c1e6cb2        rabbitmq                            "docker-entrypoint.s…"   2 hours ago         Up 2 hours          4369/tcp, 0.0.0.0:5672->5672/tcp, 5671/tcp, 25672/tcp, 0.0.0.0:15672->15672/tcp   rabbitmq
-b87156ca98e5        mysql                               "docker-entrypoint.s…"   2 hours ago         Up 2 hours          0.0.0.0:9041->3306/tcp                                                            mysql
+==> v1beta1/Deployment
+NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+bluecompute-web                             1         1         1            1           9m
 ```
-
-4. Access the application at http://localhost:8000/ 
-
-5. Once you are done accessing the application, you can come out of the process. 
-
-6. You can also remove the container if desired. This can be done in the following way.
-
-`docker ps`
-
-```
-CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS                              NAMES
-cfca55fa3b17        web:microprofile             "./startup.sh"           20 minutes ago      Up 20 minutes       0.0.0.0:8000->8000/tcp 
-```
-
-Grab the container id.
-
-- Do `docker stop <CONTAINER ID>`
-In this case it will be, `docker stop cfca55fa3b17`
-- Do `docker rm <CONTAINER ID>`
-In this case it will be, `docker rm cfca55fa3b17`
-
