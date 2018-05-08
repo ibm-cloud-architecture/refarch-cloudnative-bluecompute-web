@@ -370,6 +370,12 @@ You can access the service from dashboard.
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/webicp_service.png">
 </p>
 
+You can access the application by clicking on http link.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
+</p>
+
 ### References
 1. [IBM Cloud Private](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/kc_welcome_containers.html)
 2. [IBM Cloud Private Installation](https://github.com/ibm-cloud-architecture/refarch-privatecloud)
