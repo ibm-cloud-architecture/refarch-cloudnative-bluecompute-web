@@ -31,7 +31,7 @@ Web Microservice serves 'IBM Cloud Native Reference Architecture' suite, availab
 
 #### Pre-requisites
 
-To run the Inventory microservice, please complete the [Building the app](#building-the-app) section before proceeding to any of the following steps.
+To run the Web microservice, please complete the [Building the app](#building-the-app) section before proceeding to any of the following steps.
 
 1. Locally in Minikube
 
@@ -135,7 +135,7 @@ export DOCKER_API_VERSION="1.23"
 
 - Now run the docker build.
 
-`docker build -t inventory:v1.0.0 .`
+`docker build -t bc-web-mp:v1.0.0 .`
 
 If it is a success, you will see the below output.
 
@@ -172,3 +172,206 @@ You will see something like below.
 NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 bluecompute-web                             1         1         1            1           9m
 ```
+
+3. You can access the application at `http://<MinikubeIP>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>`. To get the access url.
+
+- To get the IP, Run this command.
+
+`minikube ip`
+
+You will see something like below.
+
+```
+192.168.99.100
+```
+
+- To get the port, run this command.
+
+`kubectl get service bluecompute-web`
+
+You will see something like below.
+
+```
+NAME              TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+bluecompute-web   NodePort   10.109.28.66   <none>        80:30272/TCP   2m
+```
+
+In the above case, the access url will be http://192.168.99.100:30272/.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
+</p>
+
+### Remotely in ICP
+
+[IBM Cloud Private](https://www.ibm.com/cloud/private)
+
+IBM Private Cloud has all the advantages of public cloud but is dedicated to single organization. You can have your own security requirements and customize the environment as well. Basically it has tight security and gives you more control along with scalability and easy to deploy options. You can run it externally or behind the firewall of your organization.
+
+Basically this is an on-premise platform.
+
+Includes docker container manager
+Kubernetes based container orchestrator
+Graphical user interface
+You can find the detailed installation instructions for IBM Cloud Private [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html)
+
+#### Pushing the image to Private Registry
+
+1. Now run the docker build.
+
+`docker build -t bc-web-mp:v1.0.0 .`
+
+If it is a success, you will see the below output.
+
+```
+Successfully built fg1c34hab80d
+Successfully tagged bc-web-mp:v1.0.0
+```
+
+2. Tag the image to your private registry.
+
+`docker tag bc-web-mp:v1.0.0 <Your ICP registry>/bc-web-mp:v1.0.0`
+
+3. Push the image to your private registry.
+
+`docker push <Your ICP registry>/bc-web-mp:v1.0.0`
+
+You should see something like below.
+
+```
+v1.0.0: digest: sha256:3ddf30790ce5511f7592211df6d66c370fe22e2b7f561336fde48651551ab663 size: 3873
+```
+
+#### Running the application on ICP
+
+1. Your [IBM Cloud Private Cluster](https://www.ibm.com/cloud/private) should be up and running.
+
+2. Log in to the IBM Cloud Private. 
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/icp_dashboard.png">
+</p>
+
+3. Go to `admin > Configure Client`.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/client_config.png">
+</p>
+
+4. Grab the kubectl configuration commands.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/kube_cmds.png">
+</p>
+
+5. Run those commands in your terminal.
+
+6. If successful, you should see something like below.
+
+```
+Switched to context "xxx-cluster.icp-context".
+```
+7. Run the below command.
+
+`helm init --client-only`
+
+You will see the below
+
+```
+$HELM_HOME has been configured at /Users/user@ibm.com/.helm.
+Not installing Tiller due to 'client-only' flag having been set
+Happy Helming!
+```
+
+8. Verify the helm version
+
+`helm version --tls`
+
+You will see something like below.
+
+```
+Client: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca57d3972bcad3351801", GitTreeState:"dirty"}
+Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca57d3972bcad3351801", GitTreeState:"dirty"}
+```
+9. Before running the helm chart in minikube, access [values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/blob/microprofile/inventory/chart/inventory/values.yaml) and replace the repository with the your IBM Cloud Private .
+
+`repository: <Your IBM Cloud Private Docker registry>`
+
+Then run the helm chart 
+
+`helm install --name=web chart/web --tls`
+
+You will see message like below.
+
+```
+==> v1beta1/Deployment
+NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+bluecompute-web                             1         1         1            0           2s
+```
+Please wait till your deployment is ready. To verify run the below command and you should see the availability.
+
+`kubectl get deployments`
+
+You will see something like below.
+
+```
+==> v1beta1/Deployment
+NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+bluecompute-web                             1         1         1            1           1m      
+```
+**NOTE**: If you are using a version of ICP older than 2.1.0.2, you don't need to add the --tls at the end of the helm command.
+
+10. You can access the application at `http://<YourClusterIP>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>`. To get the access url, do the following.
+
+- To get the IP, Run this command.
+
+`kubectl cluster-info`
+
+You will see something like below.
+
+```
+Kubernetes master is running at https://172.16.40.4:8001
+catalog-ui is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/catalog-ui/proxy
+Heapster is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/heapster/proxy
+icp-management-ingress is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/icp-management-ingress/proxy
+image-manager is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/image-manager/proxy
+KubeDNS is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/kube-dns/proxy
+platform-ui is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/platform-ui/proxy
+```
+
+Grab the Kubernetes master ip and in this case, `<YourClusterIP>` will be `172.16.40.4`.
+
+- To get the port, run this command.
+
+- To get the port, run this command.
+
+`kubectl get service bluecompute-web`
+
+You will see something like below.
+
+```
+NAME              TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+bluecompute-web   NodePort   10.109.28.66   <none>        80:30272/TCP   2m
+```
+In the above case, the access url will be http://172.16.40.4:30272/.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
+</p>
+
+or
+
+You can access the service from dashboard.
+
+- **Menu > Network Access > Services**
+- Find the service in the list and click on it.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/webicp_service.png">
+</p>
+
+### References
+1. [IBM Cloud Private](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/kc_welcome_containers.html)
+2. [IBM Cloud Private Installation](https://github.com/ibm-cloud-architecture/refarch-privatecloud)
+3. [IBM Cloud Private version 2.1.0.2 Helm instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html)
+
