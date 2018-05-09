@@ -10,7 +10,7 @@
   "APIs": {
     "catalog": {
       "protocol": "https",
-      "service_name": "10.127.165.10",
+      "service_name": "IP_ADDRESS_GOES_HERE",
       "headers": {
         "Host": "api.bluecompute.com"
       },
@@ -20,7 +20,7 @@
     },
     "orders": {
       "protocol": "https",
-      "service_name": "10.127.165.10",
+      "service_name": "IP_ADDRESS_GOES_HERE",
       "headers": {
         "Host": "api.bluecompute.com"
       },
@@ -38,7 +38,7 @@
     },
     "customer": {
       "protocol": "https",
-      "service_name": "10.127.165.10",
+      "service_name": "IP_ADDRESS_GOES_HERE",
       "headers": {
         "Host": "api.bluecompute.com"
       },
@@ -51,7 +51,7 @@
     },
     "oauth20": {
       "protocol": "https",
-      "service_name": "10.127.165.10",
+      "service_name": "IP_ADDRESS_GOES_HERE",
       "headers": {
         "Host": "api.bluecompute.com"
       },
