@@ -31,8 +31,6 @@ Web Microservice serves 'IBM Cloud Native Reference Architecture' suite, availab
 
 #### Pre-requisites
 
-To run the Web microservice, please complete the [Building the app](#building-the-app) section before proceeding to any of the following steps.
-
 1. Locally in Minikube
 
 To run the Web application locally on your laptop on a Kubernetes-based environment such as Minikube (which is meant to be a small development environment) we first need to get few tools installed:
@@ -44,7 +42,7 @@ Finally, we must create a Kubernetes Cluster. As already said before, we are goi
 
 - [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) - Create a single node virtual cluster on your workstation. Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-minikube/) to get Minikube installed on your workstation.
 
-We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page for getting more familiar with Minikube. We can learn there interesting things such as reusing our Docker daemon, getting the Minikube's ip or opening the Minikube's dashboard for GUI interaction with out Kubernetes Cluster.
+We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page for getting more familiar with Minikube. 
 
 2. Remotely in ICP
 
@@ -145,12 +143,6 @@ Successfully tagged bc-web-mp:v1.0.0
 ```
 
 2. Run the helm chart as below.
-
-Before running the helm chart in minikube, access [values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/blob/microprofile/chart/web/values.yaml) and replace the repository with the below.
-
-`repository: bc-web-mp`
-
-Then run the helm chart 
 
 `helm install --name=web chart/web`
 
