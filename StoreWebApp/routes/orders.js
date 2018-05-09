@@ -52,7 +52,7 @@ function setGetOrdersOptions(req, res) {
 
   // Add Headers like Host
   if (_apis.orders.headers) {
-    options.headers = _apis.orders.headers;
+    getOrders_options.headers = _apis.orders.headers;
   }
 
   return new Promise(function (fulfill) {
@@ -100,6 +100,11 @@ function setNewOrderOptions(req, res) {
     body: reqBody,
     JSON: true
   };
+
+  // Add Headers like Host
+  if (_apis.orders.headers) {
+    options.headers = _apis.orders.headers;
+  }
 
   return new Promise(function (fulfill) {
     // Get OAuth Access Token, if needed

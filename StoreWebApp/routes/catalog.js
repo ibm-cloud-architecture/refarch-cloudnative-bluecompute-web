@@ -119,6 +119,11 @@ function setGetItemOptions(req, res) {
     headers: {}
   };
 
+  // Add Headers like Host
+  if (_apis.catalog.headers) {
+    getItem_options.headers = _apis.catalog.headers;
+  }
+
   return new Promise(function (fulfill) {
 
     // Get OAuth Access Token, if needed
