@@ -7,15 +7,21 @@ image:
   tag: latest
   pullPolicy: Always
 service:
-  name: bluecompute-web
+  name: web
   type: NodePort
   externalPort: 80
   internalPort: 8000
   nodeport:
-    port: 
+    port: 31337
 ingress:
+  enabled: false
   hostname:
   path: /
+tls:
+  enabled: false
+  secretName:
+  crt: ENTER_BASE64_ENCODED_CERTIFICATE
+  key: ENTER_BASE64_ENCODED_KEY
 resources:
   limits:
     cpu: 100m
@@ -27,23 +33,23 @@ region:
 clusterName:
 services:
   auth:
-    protocol:
+    protocol: http
     host:
     port:
   catalog:
-    protocol:
+    protocol: http
     host:
     port:
   customer:
-    protocol:
+    protocol: http
     host:
     port:
   orders:
-    protocol:
+    protocol: http
     host:
     port:
   reviews:
-    protocol:
+    protocol: http
     host:
     port:
 

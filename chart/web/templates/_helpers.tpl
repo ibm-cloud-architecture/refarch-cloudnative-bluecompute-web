@@ -2,6 +2,10 @@
 {{/*
 Expand the name of the chart.
 */}}
+{{- define "webServiceName" -}}
+  {{- .Release.Name }}-{{ .Values.service.name -}}
+{{- end -}}
+
 {{- define "name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
