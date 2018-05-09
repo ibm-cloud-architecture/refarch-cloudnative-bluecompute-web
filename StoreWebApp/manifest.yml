@@ -1,8 +1,8 @@
 applications:
-- path: .
+- name: bluecompute
+  path: .
   memory: 512M
-  instances: 1
-  domain: mybluemix.net
-  name: bluecompute-web-fabiogomez-dev
-  host: bluecompute-web-fabiogomez-dev
   disk_quota: 1024M
+  instances: 1
+  routes:
+    - route: bluecompute.mybluemix.net
