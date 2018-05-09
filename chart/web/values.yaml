@@ -3,7 +3,9 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: registry.csplab.cloudns.cx/microprofile/bc-web-mp
+  #repository: registry.csplab.cloudns.cx/microprofile/bc-web-mp
+  #repository: ibmcase/bc-web-mp
+  repository: bc-web-mp
   tag: v1.0.0
   pullPolicy: IfNotPresent
 service:
