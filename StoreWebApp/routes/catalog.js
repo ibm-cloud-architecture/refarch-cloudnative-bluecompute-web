@@ -65,6 +65,11 @@ function setGetItemsOptions(req, res) {
     headers: {}
   };
 
+  // Add Headers like Host
+  if (_apis.catalog.headers) {
+    options.headers = _apis.catalog.headers;
+  }
+
   // Apply the query filter, if one is present
   //if (typeof query.filter !== 'undefined') options.url += '?filter=' + JSON.stringify(query.filter);
   //else options.url += '?filter[order]=name%20ASC';

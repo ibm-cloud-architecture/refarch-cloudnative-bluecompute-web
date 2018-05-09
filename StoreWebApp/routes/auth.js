@@ -56,6 +56,11 @@ function setOAuthOptions(req, res) {
     form: reqBody // body type has a bug in request library that failed with str.replace error
   };
 
+  // Add Headers like Host
+  if (_apis.oauth20.headers) {
+    options.headers = _apis.oauth20.headers;
+  }
+
   options.headers.Authorization = basicToken;
   //options.headers.Content-Type = 'application/x-www-form-urlencoded';
 

@@ -44,6 +44,11 @@ function setGetCustomerOptions(req, res) {
     headers: {}
   };
 
+  // Add Headers like Host
+  if (_apis.customer.headers) {
+    options.headers = _apis.customer.headers;
+  }
+
   //if (_apis.customer.require.indexOf("client_secret") != -1) options.headers["X-IBM-Client-Secret"] = _apis.client_secret;
 
   return new Promise(function (fulfill) {
