@@ -3,6 +3,6 @@ applications:
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: bluecompute-web-gangchen-dev
-  host: bluecompute-web-gangchen-dev
+  name: bluecompute-web-fabiogomez-dev
+  host: bluecompute-web-fabiogomez-dev
   disk_quota: 1024M
