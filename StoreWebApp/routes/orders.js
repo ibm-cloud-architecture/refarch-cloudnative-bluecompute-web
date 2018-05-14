@@ -5,6 +5,7 @@ var Promise = require('promise');
 var UrlPattern = require('url-pattern');
 //var oauth = require('../server/js/oauth.js');
 var config = require('config');
+var utils = require('./utils');
 
 var session;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
@@ -37,7 +38,7 @@ function setGetOrdersOptions(req, res) {
   var params = req.params;
 
   var orders_url = api_url.stringify({
-    protocol: _apis.orders.protocol,
+    protocol: utils.getProtocol(_apis.orders.protocol),
     host: _apis.orders.service_name,
     api: _apis.orders.base_path,
     operation: "orders"
@@ -86,7 +87,7 @@ function setNewOrderOptions(req, res) {
 
 
   var orders_url = api_url.stringify({
-    protocol: _apis.orders.protocol,
+    protocol: utils.getProtocol(_apis.orders.protocol),
     host: _apis.orders.service_name,
     api: _apis.orders.base_path,
     operation: "orders"

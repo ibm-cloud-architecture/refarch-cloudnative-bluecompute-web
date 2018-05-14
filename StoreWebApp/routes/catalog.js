@@ -5,6 +5,7 @@ var Promise = require('promise');
 var UrlPattern = require('url-pattern');
 //var oauth = require('../server/js/oauth.js');
 var config = require('config');
+var utils = require('./utils');
 
 var session, page_filter;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
@@ -51,7 +52,7 @@ function setGetItemsOptions(req, res) {
   var query = req.query;
 
   var items_url = api_url.stringify({
-    protocol: _apis.catalog.protocol,
+    protocol: utils.getProtocol(_apis.catalog.protocol),
     host: _apis.catalog.service_name,
     api: _apis.catalog.base_path,
     operation: "items"
@@ -106,7 +107,7 @@ function setGetItemOptions(req, res) {
   var params = req.params;
 
   var item_url = api_url.stringify({
-    protocol: _apis.catalog.protocol,
+    protocol: utils.getProtocol(_apis.catalog.protocol),
     host: _apis.catalog.service_name,
     api: _apis.catalog.base_path,
     operation: "items/" + params.id
