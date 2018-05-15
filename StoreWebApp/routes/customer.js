@@ -5,6 +5,7 @@ var Promise = require('promise');
 var UrlPattern = require('url-pattern');
 //var oauth = require('../server/js/oauth.js');
 var config = require('config');
+var utils = require('./utils');
 
 var session, page_filter;
 var api_url = new UrlPattern('(:protocol)\\://(:host)(:api)/(:operation)');
@@ -30,7 +31,7 @@ function setGetCustomerOptions(req, res) {
   var query = req.query;
 
   var customer_url = api_url.stringify({
-    protocol: _apis.customer.protocol,
+    protocol: utils.getProtocol(_apis.customer.protocol),
     host: _apis.customer.service_name,
     api: _apis.customer.base_path,
     operation: "customer"
