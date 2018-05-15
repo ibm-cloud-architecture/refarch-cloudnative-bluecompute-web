@@ -1,10 +1,13 @@
 applications:
-- name: bluecompute4
+- name: bluecompute
   path: .
   memory: 512M
   disk_quota: 1024M
   instances: 1
   env:
-    GIT_SSL_NO_VERIFY: true
+    # This option allows npm and bower to install dependencies from GitHub without
+    # verifying SSL. This is an insecure option
+    GIT_SSL_NO_VERIFY: false
   routes:
-    - route: bluecompute4.mybluemix.csplab.local
+    # For IBM Cloud CF, change this route to a unique name
+    - route: bluecompute.mybluemix.net
