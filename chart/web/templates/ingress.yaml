@@ -9,6 +9,7 @@ metadata:
     app: bluecompute
     micro: web-bff
     tier: frontend
+    implementation: microprofile
     heritage: {{.Release.Service | quote }}
     release: {{.Release.Name | quote }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -16,7 +17,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: {{ .Values.ingress.path }} 
+      - path: {{ .Values.ingress.path }}
         backend:
           serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
           servicePort: 80
