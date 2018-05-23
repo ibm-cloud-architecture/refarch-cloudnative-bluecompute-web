@@ -1,7 +1,0 @@
-pushToCloudFoundry(
-	target: 'api.env.bluemix.chechu.com',
- 	organization: 'org',
- 	cloudSpace: 'silk-tests',
- 	credentialsId: 'cf-admin',
-	manifestChoice: [manifestFile: 'StoreWebApp/manigest.yml']
-)
