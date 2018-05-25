@@ -23,16 +23,16 @@
               <img style="border-radius: 50%" ng-src="{{customerInfo.image || 'images/common/ibmprofile.jpg'}}" class="pure-img">
         </div>
         <div class="content" style="padding-top:20px;">
-            <span class="profileColor">First Name: </span><span class="profileColor">{{customerInfo.firstName || 'N/A'}}</span>
+            <span class="profileColor">First Name: </span><span class="profileColor">{{customerInfo.rows[0].doc.firstName || 'N/A'}}</span>
         </div>
         <div class="content">
-            <span class="profileColor">Last Name: </span><span class="profileColor">{{customerInfo.lastName || 'N/A'}}</span>
+            <span class="profileColor">Last Name: </span><span class="profileColor">{{customerInfo.rows[0].doc.lastName || 'N/A'}}</span>
         </div>
         <div class="content">
-            <span class="profileColor">Email: </span><span class="profileColor">{{customerInfo.email || 'N/A'}}</span>
+            <span class="profileColor">Email: </span><span class="profileColor">{{customerInfo.rows[0].doc.email || 'N/A'}}</span>
         </div>
         <div class="content">
-            <span class="profileColor">Username: </span><span class="profileColor">{{customerInfo.username || 'N/A'}}</span>
+            <span class="profileColor">Username: </span><span class="profileColor">{{customerInfo.rows[0].doc.username || 'N/A'}}</span>
         </div>
       </div>
     </div>
