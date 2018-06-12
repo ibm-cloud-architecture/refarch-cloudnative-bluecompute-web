@@ -31,7 +31,7 @@ data:
         "protocol": "http",
         "protocols": "https",
         "catalog": {
-          "service_name": "catalog-service:9080/catalog",
+          "service_name": "{{ .Release.Name }}-catalog:9080/catalog",
           "base_path": "/rest",
           "require": [
           ]
