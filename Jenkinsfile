@@ -22,8 +22,6 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
             stage('Build Docker Image') {
                 sh """
                 #!/bin/bash
-                ls -la ~/.docker
-                ls -la /etc/docker/certs.d
                 docker build -t ${env.REGISTRY}/${env.NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 """
             }
