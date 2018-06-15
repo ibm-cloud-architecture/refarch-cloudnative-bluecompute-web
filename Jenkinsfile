@@ -1,7 +1,7 @@
-def cloud = System.getenv("CLOUD") ?: "kubernetes"
-def namespace = System.getenv("NAMESPACE") ?: "default"
-def registry = System.getenv("REGISTRY") ?: "mycluster.icp:8500"
-def serviceAccount = System.getenv("SERVICE_ACCOUNT") ?: "jenkins"
+def cloud = env.CLOUD ?: "kubernetes"
+def namespace = env.NAMESPACE ?: "default"
+def registry = env.REGISTRY ?: "mycluster.icp:8500"
+def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
 
 podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
