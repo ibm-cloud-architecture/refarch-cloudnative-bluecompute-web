@@ -50,7 +50,7 @@ data:
           ]
         },
         "customerService": {
-          "service_name": "customer-service:9443/customer",
+          "service_name": "{{ .Release.Name }}-customer:9443/customer",
           "base_path": "/rest",
           "paths": {
             "customer": "/customer"
