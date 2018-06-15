@@ -1,8 +1,11 @@
+// Pod Template
 def cloud = env.CLOUD ?: "kubernetes"
-def namespace = env.NAMESPACE ?: "default"
-def registry = env.REGISTRY ?: "mycluster.icp:8500"
 def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
+
+// Pod Environment Variables
+def namespace = env.NAMESPACE ?: "default"
+def registry = env.REGISTRY ?: "mycluster.icp:8500"
 
 podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
