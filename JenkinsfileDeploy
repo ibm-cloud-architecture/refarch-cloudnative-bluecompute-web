@@ -3,7 +3,7 @@ def cloud = env.CLOUD ?: "kubernetes"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
 
 // Pod Environment Variables
-def imagePullSecret = env.IMAGE_PULL_SECRET ?: "registry"
+def imagePullSecret = env.IMAGE_PULL_SECRET
 def imageTag = env.IMAGE_TAG ?: "latest"
 def namespace = env.NAMESPACE ?: "default"
 def registry = env.REGISTRY ?: "mycluster.icp:8500"
@@ -35,7 +35,14 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
                 fi
 
                 # Update Deployment
-                kubectl --namespace jenkins patch deployment bluecompute-ce-web -p '{"spec":{"template":{"spec":{"imagePullSecrets":[{"name":"${env.IMAGE_PULL_SECRET}"}]}}}}'
+                set +e
+                if [ -z ${env.IMAGE_PULL_SECRET+x} ]; then 
+                    echo 'IMAGE_PULL_SECRET not available';
+                else
+                    echo 'Patching imagePullSecrets'
+                    kubectl --namespace jenkins patch deployment bluecompute-ce-web -p '{"spec":{"template":{"spec":{"imagePullSecrets":[{"name":"${env.IMAGE_PULL_SECRET}"}]}}}}'
+                fi
+                set -e
 
                 kubectl --namespace=${env.NAMESPACE} set image \${DEPLOYMENT} web=${env.REGISTRY}/${env.NAMESPACE}/bluecompute-ce-web:${env.IMAGE_TAG}
                 kubectl --namespace=${env.NAMESPACE} rollout status \${DEPLOYMENT}
