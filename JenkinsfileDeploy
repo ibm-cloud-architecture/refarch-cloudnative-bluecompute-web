@@ -36,9 +36,7 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
 
                 # Update Deployment
                 set +e
-                if [ -z ${env.IMAGE_PULL_SECRET+x} ]; then 
-                    echo 'IMAGE_PULL_SECRET not available';
-                else
+                if [ -n ${env.IMAGE_PULL_SECRET} ]; then
                     echo 'Patching imagePullSecrets'
                     kubectl --namespace jenkins patch deployment bluecompute-ce-web -p '{"spec":{"template":{"spec":{"imagePullSecrets":[{"name":"${env.IMAGE_PULL_SECRET}"}]}}}}'
                 fi
