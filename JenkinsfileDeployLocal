@@ -10,7 +10,7 @@ node {
 
 
     stage('Publish build info') {
-        withCredentials([file(credentialsId: CERT_AUTH_ID, variable: 'CERT_AUTH'), [string(credentialsId: TOKEN_ID, variable: 'TOKEN')] ]) {
+        withCredentials([file(credentialsId: CERT_AUTH_ID, variable: 'CERT_AUTH'), string(credentialsId: TOKEN_ID, variable: 'TOKEN')]) {
             sh """
             kubectl=/var/jenkins_home/kubectl
             CLUSTER=k8s
