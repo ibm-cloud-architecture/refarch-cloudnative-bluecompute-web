@@ -61,7 +61,7 @@ data:
           "redirect_url": "http://localhost"
         },
         "customer": {
-            "service_name": "auth-service:9443/oidc/endpoint",
+            "service_name": "{{ .Release.Name }}-auth:9443/oidc/endpoint",
             "base_path": "/OP",
             "paths": {
               "userinfo": "/userinfo"
@@ -73,7 +73,7 @@ data:
         },
         "oauth20": {
           "protocol": "https",
-          "service_name": "auth-service:9443/oidc/endpoint",
+          "service_name": "{{ .Release.Name }}-auth:9443/oidc/endpoint",
           "base_path": "/OP",
           "paths": {
             "authz": "/authorize",
