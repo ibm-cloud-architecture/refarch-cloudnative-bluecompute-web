@@ -37,7 +37,7 @@ data:
           ]
         },
         "order": {
-          "service_name": "orders-service:9443/orders",
+          "service_name": "{{ .Release.Name }}-orders:9443/orders",
           "base_path": "/rest",
           "require": [
             "oauth"
