@@ -8,22 +8,20 @@ node {
     def SERVICE_ACCOUNT = env.SERVICE_ACCOUNT ?: "jenkins"
     def TOKEN_ID = env.TOKEN_ID
 
-
     stage('Publish build info') {
         withCredentials([file(credentialsId: CERT_AUTH_ID, variable: 'CERT_AUTH'), string(credentialsId: TOKEN_ID, variable: 'TOKEN')]) {
             sh """
-            kubectl=/var/jenkins_home/kubectl
             CLUSTER=k8s
 
-            \${kubectl} config set-cluster \${CLUSTER} --server=${SERVER_URL} --embed-certs=true --certificate-authority=${CERT_AUTH}
-            \${kubectl} config set-context \${CLUSTER}-context --cluster=\${CLUSTER}
-            \${kubectl} config set-credentials ${SERVICE_ACCOUNT} --token=${TOKEN}
-            \${kubectl} config set-context \${CLUSTER}-context --user=${SERVICE_ACCOUNT} --namespace=${NAMESPACE}
-            \${kubectl} config use-context \${CLUSTER}-context
+            kubectl config set-cluster \${CLUSTER} --server=${SERVER_URL} --embed-certs=true --certificate-authority=${CERT_AUTH}
+            kubectl config set-context \${CLUSTER}-context --cluster=\${CLUSTER}
+            kubectl config set-credentials ${SERVICE_ACCOUNT} --token=${TOKEN}
+            kubectl config set-context \${CLUSTER}-context --user=${SERVICE_ACCOUNT} --namespace=${NAMESPACE}
+            kubectl config use-context \${CLUSTER}-context
 
-            DEPLOYMENT=`\${kubectl} --namespace=${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
+            DEPLOYMENT=`kubectl --namespace=${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
 
-            \${kubectl} --namespace=${NAMESPACE} get \${DEPLOYMENT}
+            kubectl --namespace=${NAMESPACE} get \${DEPLOYMENT}
 
             if [ \${?} -ne "0" ]; then
                 echo 'No deployment to update'
@@ -33,12 +31,12 @@ node {
             set +e
             if [ -n ${IMAGE_PULL_SECRET} ]; then
                 echo 'Patching imagePullSecrets'
-                \${kubectl} --namespace ${NAMESPACE} patch deployment bluecompute-ce-web -p '{"spec":{"template":{"spec":{"imagePullSecrets":[{"name":"'${IMAGE_PULL_SECRET}'"}]}}}}'
+                kubectl --namespace ${NAMESPACE} patch deployment bluecompute-ce-web -p '{"spec":{"template":{"spec":{"imagePullSecrets":[{"name":"'${IMAGE_PULL_SECRET}'"}]}}}}'
             fi
             set -e
 
-            \${kubectl} --namespace=${NAMESPACE} set image \${DEPLOYMENT} web=${REGISTRY}/${NAMESPACE}/bluecompute-ce-web:${IMAGE_TAG}
-            \${kubectl} --namespace=${NAMESPACE} rollout status \${DEPLOYMENT}
+            kubectl --namespace=${NAMESPACE} set image \${DEPLOYMENT} web=${REGISTRY}/${NAMESPACE}/bluecompute-ce-web:${IMAGE_TAG}
+            kubectl --namespace=${NAMESPACE} rollout status \${DEPLOYMENT}
             """
         }
     }

@@ -1,6 +1,7 @@
 // Pod Template
 def cloud = env.CLOUD ?: "kubernetes"
-def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
+def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
+def serviceAccount = env.SERVICE_ACCOUNT ?: "default"
 
 // Pod Environment Variables
 def namespace = env.NAMESPACE ?: "default"
@@ -29,10 +30,15 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
                 """
             }
             stage('Push Docker Image to Registry') {
-                sh """
-                #!/bin/bash
-                docker push ${env.REGISTRY}/${env.NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
-                """
+                withCredentials([usernamePassword(credentialsId: registryCredsID, 
+                                               usernameVariable: 'USERNAME', 
+                                               passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    #!/bin/bash
+                    docker login -u ${USERNAME} -p ${PASSWORD} ${env.REGISTRY}
+                    docker push ${env.REGISTRY}/${env.NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
+                    """
+                }
             }
         }
         container('kubectl') {
