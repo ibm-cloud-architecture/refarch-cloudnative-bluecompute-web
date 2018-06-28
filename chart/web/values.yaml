@@ -4,9 +4,9 @@
 replicaCount: 1
 image:
   #repository: registry.csplab.cloudns.cx/microprofile/bc-web-mp
-  #repository: ibmcase/bc-web-mp
-  repository: bc-web-mp
-  tag: v1.0.0
+  repository: ibmcase/bc-web-mp
+  #repository: bc-web-mp
+  tag: v2.0.0
   pullPolicy: IfNotPresent
 service:
   name: bluecompute-web
@@ -17,7 +17,7 @@ service:
     port:
 ingress:
   hostname:
-  path: /
+  path: /bluecompute-mp
 resources:
   limits:
     cpu: 100m
