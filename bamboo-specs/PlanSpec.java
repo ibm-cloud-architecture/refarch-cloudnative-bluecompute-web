@@ -31,7 +31,7 @@ public class PlanSpec {
                 .key(new BambooKey("BLUE"))
                 .name("bluecompute")
                 .description("For the entire bluecompute project"),
-            "Bluecompute Web Test",
+            "Bluecompute Web",
             new BambooKey("BLUEWEB"))
             .oid(new BambooOid("jqw67md2io2"))
             .pluginConfigurations(new ConcurrentBuilds()

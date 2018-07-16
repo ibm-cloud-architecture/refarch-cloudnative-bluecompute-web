@@ -2,14 +2,14 @@ project:
   key: BLUE
   plan:
     key: BLUEWEB
-    name: Bluecompute Web Test
+    name: Bluecompute Web
 stages:
   - jobs:
     - scripts:
         - '#!/bin/bash'
         - set -x
         # Docker build and push
-        - docker build -t ${bamboo.REGISTRbY}/${bamboo.K8S_NAMESPACE}/bluecompute-ce-web:${bamboo.buildNumber} .
+        - docker build -t ${bamboo.REGISTRY}/${bamboo.K8S_NAMESPACE}/bluecompute-ce-web:${bamboo.buildNumber} .
         - docker login -u ${bamboo.REGISTRY_USER} -p ${bamboo.REGISTRY_PASSWORD} ${bamboo.REGISTRY}
         - docker push ${bamboo.REGISTRY}/${bamboo.K8S_NAMESPACE}/bluecompute-ce-web:${bamboo.buildNumber}
       interpreter: shell
