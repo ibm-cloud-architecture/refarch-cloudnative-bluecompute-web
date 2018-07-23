@@ -6,7 +6,7 @@ metadata:
     micro: web-bff
     tier: frontend
     implementation: microprofile
-    release: {{.Release.Name | quote }}
+    release: {{ .Release.Name }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
   name: {{ .Release.Name }}-{{ .Chart.Name }}-config
   namespace: {{ .Release.Namespace }}

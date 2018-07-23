@@ -8,7 +8,7 @@ metadata:
     micro: web-bff
     tier: frontend
     implementation: microprofile
-    release: {{.Release.Name | quote }}
+    release: {{ .Release.Name }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 spec:
   type: {{ .Values.service.type }}
@@ -26,4 +26,5 @@ spec:
     app: bluecompute
     micro: web-bff
     tier: frontend
+    release: {{ .Release.Name }}
     implementation: microprofile
