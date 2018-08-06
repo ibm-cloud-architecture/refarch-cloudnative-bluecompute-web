@@ -1,3 +1,5 @@
+***In this repo, the branches will be refactored within 14 days. The current branches will be condensed down to `master`, `spring`, `microprofile` and `tutorial`. Existing `master` will be renamed to `spring` and the new `master` will have documentation pointing to the relevant branches.***
+
 # BlueCompute Web Application by IBM Cloud
 
 *This project is part of the 'IBM Cloud Native Reference Architecture' suite, available at
