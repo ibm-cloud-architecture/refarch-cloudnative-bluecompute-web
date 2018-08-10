@@ -38,6 +38,8 @@ There are two versions of this application, each available in their own branch, 
 - [Spring](../../tree/spring/) - Uses the backend microservices that are leveraged using Spring Boot.
 
 ## References
-1. [IBM Cloud Private](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/kc_welcome_containers.html)
-2. [IBM Cloud Private Installation](https://github.com/ibm-cloud-architecture/refarch-privatecloud)
-3. [IBM Cloud Private version 2.1.0.2 Helm instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html)
+- [Kubernetes](https://kubernetes.io/)
+- [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/)
+- [Docker Edge](https://docs.docker.com/edge/)
+- [IBM Cloud](https://www.ibm.com/cloud/)
+- [IBM Cloud Private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/)
