@@ -5,6 +5,8 @@
 *This project is part of the 'IBM Cloud Native Reference Architecture' suite, available at
 https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes*
 
+## Table of Contents
+
 - [Introduction](#introduction)
 - [How it works](#how-it-works)
 - [Implementation](#implementation)
