@@ -1,14 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ template "web.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    release: {{.Release.Name | quote }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    {{- include "web.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -16,12 +12,8 @@ spec:
     protocol: TCP
     port: {{ .Values.service.externalPort }}
     targetPort: {{ .Values.service.internalPort }}
-{{- if eq .Values.service.type "NodePort" }}
-{{- if .Values.service.nodeport.port }}
-    nodePort: {{ .Values.service.nodeport.port }}
-{{- end }}
+{{- if and (eq .Values.service.type "NodePort") .Values.service.nodePort }}
+    nodePort: {{ .Values.service.nodePort }}
 {{- end }}
   selector:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
+    {{- include "web.labels" . | indent 4 }}

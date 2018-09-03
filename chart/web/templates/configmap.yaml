@@ -1,14 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: {{ template "web.fullname" . }}-config
   labels:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    release: {{.Release.Name | quote }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-  name: {{ .Release.Name }}-{{ .Chart.Name }}-config
-  namespace: {{ .Release.Namespace }}
+    {{- include "web.labels" . | indent 4 }}
 data:
   checks: "# Check the main website, including text content\r\n/\tIBM Cloud Architecture\r\n\r\n#Check
     the Inventory page\r\n/catalog/ Dayton Meat Chopper\r\n\r\n# Check for stylesheets
@@ -19,8 +14,8 @@ data:
   default.json: |
     {
       "Application": {
-        "cluster_name": "{{ template "clusterName" . }}",
-        "region": "{{ template "region" . }}"
+        "cluster_name": "{{ template "web.cluster.name" . }}",
+        "region": "{{ template "web.cluster.region" . }}"
       },
       "Auth-Server": {
         "client_id":"bluecomputeweb",
@@ -28,30 +23,30 @@ data:
       },
       "APIs": {
         "catalog": {
-          "protocol": "{{ template "catalogProtocol" . }}",
-          "service_name": "{{ template "catalogHost" . }}:{{ template "catalogPort" . }}",
+          "protocol": "{{ template "web.catalog.protocol" . }}",
+          "service_name": "{{ template "web.catalog.host" . }}:{{ template "web.catalog.port" . }}",
           "base_path": "/micro",
           "require": [
           ]
         },
         "orders": {
-          "protocol": "{{ template "ordersProtocol" . }}",
-          "service_name": "{{ template "ordersHost" . }}:{{ template "ordersPort" . }}",
+          "protocol": "{{ template "web.orders.protocol" . }}",
+          "service_name": "{{ template "web.orders.host" . }}:{{ template "web.orders.port" . }}",
           "base_path": "/micro",
           "require": [
             "oauth"
           ]
         },
         "review": {
-          "protocol": "{{ template "reviewsProtocol" . }}",
+          "protocol": "{{ template "web.reviews.protocol" . }}",
           "base_path": "/api",
           "require": [
             "oauth"
           ]
         },
         "customer": {
-          "protocol": "{{ template "customerProtocol" . }}",
-          "service_name": "{{ template "customerHost" . }}:{{ template "customerPort" . }}",
+          "protocol": "{{ template "web.customer.protocol" . }}",
+          "service_name": "{{ template "web.customer.host" . }}:{{ template "web.customer.port" . }}",
           "base_path": "/micro",
           "require": [
             "client_id",
@@ -60,8 +55,8 @@ data:
           ]
         },
         "oauth20": {
-          "protocol": "{{ template "authProtocol" . }}",
-          "service_name": "{{ template "authHost" . }}:{{ template "authPort" . }}",
+          "protocol": "{{ template "web.auth.protocol" . }}",
+          "service_name": "{{ template "web.auth.host" . }}:{{ template "web.auth.port" . }}",
           "base_path": "/oauth",
           "paths": {
             "authz": "/authorize",

@@ -4,15 +4,14 @@
 replicaCount: 1
 image:
   repository: ibmcase/bluecompute-web
-  tag: latest
+  tag: 0.5.0
   pullPolicy: Always
 service:
   name: web
   type: NodePort
   externalPort: 80
   internalPort: 8000
-  nodeport:
-    port: 31337
+  nodePort: 31337
 ingress:
   enabled: false
   hostname:
@@ -29,8 +28,9 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
-region: 
-clusterName:
+cluster:
+  name:
+  region:
 services:
   auth:
     protocol: http
@@ -54,12 +54,6 @@ services:
     port:
 
 global:
-  bluemix:
-    apiKey:
-
-    target:
-      endpoint: 
-      org:
-      space:
-    
-    clusterName:
+  cluster:
+    name:
+    region:

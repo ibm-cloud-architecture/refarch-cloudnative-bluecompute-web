@@ -2,13 +2,11 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
-  annotations:
-    ingress.kubernetes.io/rewrite-target: /
-    ingress.bluemix.net/rewrite-path: "serviceName={{ .Release.Name }}-{{ .Chart.Name }} rewrite=/"
+  name: {{ template "web.fullname" . }}
+  #annotations:
+  #  ingress.kubernetes.io/rewrite-target: /
   labels:
-    release: {{ .Release.Name | quote }}
-    chart: {{ .Chart.Name}}-{{ .Chart.Version }}
+    {{- include "web.labels" . | indent 4 }}
 spec:
   {{- if .Values.tls.enabled }}
   tls:
@@ -16,7 +14,7 @@ spec:
     {{- if .Values.ingress.hostname }}
     - {{ .Values.ingress.hostname }}
     {{- else }}
-    - {{ template "webServiceName" . }}
+    - {{ template "web.fullname" . }}
     {{- end }}
     {{- if .Values.tls.secretName }}
     secretName: {{ .Values.tls.secretName }}
@@ -28,12 +26,12 @@ spec:
   {{- if .Values.ingress.hostname }}
   - host: {{ .Values.ingress.hostname }}
   {{- else }}
-  - host: {{ template "webServiceName" . }}
+  - host: {{ template "web.fullname" . }}
   {{- end }}
     http:
       paths:
       - path: {{ .Values.ingress.path }}
         backend:
-          serviceName: {{ template "webServiceName" . }}
+          serviceName: {{ template "web.fullname" . }}
           servicePort: {{ .Values.service.externalPort }}
 {{- end }}
