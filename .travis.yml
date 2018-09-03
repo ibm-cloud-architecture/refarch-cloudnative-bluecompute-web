@@ -24,6 +24,8 @@ jobs:
       # Perform linting
       - jshint app.js
       - jshint routes/
+      # Get back to root folder
+      - cd ..
       script:
       # Start Application
       - npm start &
