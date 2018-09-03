@@ -35,7 +35,8 @@ jobs:
       - bash scripts/api_tests.sh 127.0.0.1 8000
     - stage: docker build, deploy, and test
       services:
-      - dockerscript:
+      - docker
+      script:
       # Build Docker image
       - docker build -t "${IMAGE_NAME}:${TAG}" .
       # Start Web Container and Connect to local MySQL Service
