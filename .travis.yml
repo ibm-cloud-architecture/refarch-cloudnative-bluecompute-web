@@ -24,13 +24,13 @@ jobs:
       # Perform linting
       - jshint app.js
       - jshint routes/
-      # Get back to root folder
-      - cd ..
       script:
       # Start Application
       - npm start &
       # Wait for the Web app to start accepting connections
       - sleep 10
+      # Get back to root folder
+      - cd ..
       # Run Web API Test
       - bash scripts/api_tests.sh 127.0.0.1 8000
     - stage: docker build, deploy, and test
