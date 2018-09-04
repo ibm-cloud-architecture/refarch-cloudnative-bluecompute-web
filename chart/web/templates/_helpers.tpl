@@ -1,45 +1,38 @@
-{{/* vim: set filetype=mustache: */}}
-{{/*
-Expand the name of the chart.
-*/}}
-{{- define "webServiceName" -}}
-  {{- .Release.Name }}-{{ .Values.service.name -}}
+{{- define "web.fullname" -}}
+  {{- .Release.Name }}-{{ .Chart.Name -}}
 {{- end -}}
 
-{{- define "name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{/* Auth Labels Template */}}
+{{- define "web.labels" }}
+app: bluecompute
+micro: web-bff
+tier: frontend
+heritage: {{ .Release.Service | quote }}
+release: {{ .Release.Name | quote }}
+chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+{{- end }}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "fullname" -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "clusterName" -}}
-  {{- if .Values.clusterName -}}
-    {{ .Values.clusterName }}
-  {{- else if .Values.global.bluemix.clusterName -}}
-    {{ .Values.global.bluemix.clusterName }}
+{{- define "web.cluster.name" -}}
+  {{- if .Values.global.cluster.name -}}
+    {{ .Values.global.cluster.name }}
+  {{- else if .Values.cluster.name -}}
+    {{ .Values.cluster.name }}
   {{- else -}}
     {{- printf "??" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "region" -}}
-  {{- if .Values.region -}}
-    {{ .Values.region }}
-  {{- else if .Values.global.bluemix.target.endpoint -}}
-    {{ (split "." .Values.global.bluemix.target.endpoint)._1 }}
+{{- define "web.cluster.region" -}}
+  {{- if .Values.global.cluster.region -}}
+    {{ .Values.global.cluster.region }}
+  {{- else if .Values.cluster.region -}}
+    {{ .Values.cluster.region }}
   {{- else -}}
     {{- printf "??" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "catalogHost" -}}
+{{- define "web.catalog.host" -}}
   {{- if .Values.services.catalog.host -}}
     {{/* a specific service is requested */}}
     {{- printf "%s" .Values.services.catalog.host -}}
@@ -49,7 +42,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "catalogPort" -}}
+{{- define "web.catalog.port" -}}
   {{- if .Values.services.catalog.port -}}
     {{/* a specific service is requested */}}
     {{- $port := default .Values.services.catalog.port | toString -}}
@@ -60,7 +53,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "catalogProtocol" -}}
+{{- define "web.catalog.protocol" -}}
   {{- if .Values.services.catalog.protocol -}}
     {{- printf "%s" .Values.services.catalog.protocol -}}
   {{- else -}}
@@ -68,7 +61,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "authHost" -}}
+{{- define "web.auth.host" -}}
   {{- if .Values.services.auth.host -}}
     {{/* a specific service is requested */}}
     {{- printf "%s" .Values.services.auth.host -}}
@@ -78,7 +71,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "authPort" -}}
+{{- define "web.auth.port" -}}
   {{- if .Values.services.auth.port -}}
     {{/* a specific service is requested */}}
     {{- $port := default .Values.services.auth.port | toString -}}
@@ -89,7 +82,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "authProtocol" -}}
+{{- define "web.auth.protocol" -}}
   {{- if .Values.services.auth.protocol -}}
     {{- printf "%s" .Values.services.auth.protocol -}}
   {{- else -}}
@@ -97,7 +90,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "customerHost" -}}
+{{- define "web.customer.host" -}}
   {{- if .Values.services.customer.host -}}
     {{/* a specific service is requested */}}
     {{- printf "%s" .Values.services.customer.host -}}
@@ -107,7 +100,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "customerPort" -}}
+{{- define "web.customer.port" -}}
   {{- if .Values.services.customer.port -}}
     {{/* a specific service is requested */}}
     {{- $port := default .Values.services.customer.port | toString -}}
@@ -118,7 +111,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "customerProtocol" -}}
+{{- define "web.customer.protocol" -}}
   {{- if .Values.services.customer.protocol -}}
     {{- printf "%s" .Values.services.customer.protocol -}}
   {{- else -}}
@@ -126,7 +119,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "ordersHost" -}}
+{{- define "web.orders.host" -}}
   {{- if .Values.services.orders.host -}}
     {{/* a specific service is requested */}}
     {{- printf "%s" .Values.services.orders.host -}}
@@ -136,7 +129,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "ordersPort" -}}
+{{- define "web.orders.port" -}}
   {{- if .Values.services.orders.port -}}
     {{/* a specific service is requested */}}
     {{- $port := default .Values.services.orders.port | toString -}}
@@ -147,7 +140,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "ordersProtocol" -}}
+{{- define "web.orders.protocol" -}}
   {{- if .Values.services.orders.protocol -}}
     {{- printf "%s" .Values.services.orders.protocol -}}
   {{- else -}}
@@ -155,7 +148,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "reviewsHost" -}}
+{{- define "web.reviews.host" -}}
   {{- if .Values.services.reviews.host -}}
     {{/* a specific service is requested */}}
     {{- printf "%s" .Values.services.reviews.host -}}
@@ -165,7 +158,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "reviewsPort" -}}
+{{- define "web.reviews.port" -}}
   {{- if .Values.services.reviews.port -}}
     {{/* a specific service is requested */}}
     {{- $port := default .Values.services.reviews.port | toString -}}
@@ -176,7 +169,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- end -}}
 {{- end -}}
 
-{{- define "reviewsProtocol" -}}
+{{- define "web.reviews.protocol" -}}
   {{- if .Values.services.reviews.protocol -}}
     {{- printf "%s" .Values.services.reviews.protocol -}}
   {{- else -}}

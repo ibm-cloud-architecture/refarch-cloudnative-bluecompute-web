@@ -1,26 +1,20 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ template "web.fullname" . }}
   labels:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    release: {{.Release.Name | quote }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    {{- include "web.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
-        app: bluecompute
-        micro: web-bff
-        tier: frontend
+        {{- include "web.labels" . | indent 8 }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
+      - name: web
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         ports:
         - containerPort: {{ .Values.service.internalPort }}
           protocol: TCP
@@ -30,9 +24,11 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: {{ .Release.Name }}-{{ .Chart.Name }}-config
+          name: {{ template "web.fullname" . }}-config
           items:
           - key: checks
             path: checks
           - key: default.json
             path: default.json
+        resources:
+{{ toYaml .Values.resources | indent 10 }}

@@ -42,3 +42,10 @@ bower_components
 
 # Config files
 *default.json.*
+
+# Chart related files
+chart/web/charts
+chart/web/requirements.lock
+
+# Ignore test YAML files
+*.yaml.test
