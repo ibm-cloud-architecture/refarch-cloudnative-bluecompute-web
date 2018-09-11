@@ -21,6 +21,8 @@ tls:
   secretName:
   crt: ENTER_BASE64_ENCODED_CERTIFICATE
   key: ENTER_BASE64_ENCODED_KEY
+  ibmCloud:
+    redirectToHTTPS: false
 
 resources:
   limits:
