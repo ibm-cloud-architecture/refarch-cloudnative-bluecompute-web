@@ -3,8 +3,10 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ template "web.fullname" . }}
-  #annotations:
-  #  ingress.kubernetes.io/rewrite-target: /
+  {{- if .Values.ingress.ibmCloud.redirectToHTTPS }}
+  annotations:
+   ingress.bluemix.net/redirect-to-https: "True"
+  {{- end }}
   labels:
     {{- include "web.labels" . | indent 4 }}
 spec:

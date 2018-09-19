@@ -13,9 +13,6 @@ minikube update-context
 minikube ip
 # Wait for Minikube to be up and ready.
 JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
-# Set minikube Docker Registry to be the local one
-#- minikube docker-env
-#- eval $(minikube docker-env)
 
 # Download Helm CLI
 curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && rm get_helm.sh
