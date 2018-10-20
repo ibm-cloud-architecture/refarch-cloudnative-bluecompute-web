@@ -134,10 +134,10 @@ In this section, we are going to deploy the Web Application using Helm as well a
 ```bash
 # Deploy Web and MySQL to Kubernetes cluster
 helm upgrade --install web --set service.type=NodePort \
-  --set services.auth.host=auth-auth,services.auth.port=8080 \
+  --set services.auth.host=auth-auth,services.auth.port=8083 \
   --set services.catalog.host=catalog-catalog,services.catalog.port=8081 \
-  --set services.customer.host=auth-customer,services.customer.port=8080 \
-  --set services.orders.host=orders-orders,services.orders.port=8080 \
+  --set services.customer.host=auth-customer,services.customer.port=8082 \
+  --set services.orders.host=orders-orders,services.orders.port=8084 \
   chart/web
 ```
 
@@ -231,10 +231,10 @@ The above commands assume that the service names for the microservices are as sh
 ```bash
 kubectl get services | grep NodePort
 
-auth-auth                                     NodePort    172.21.167.156   <none>        8080:31355/TCP   3h
-auth-customer                                 NodePort    172.21.106.167   <none>        8080:32376/TCP   3h
+auth-auth                                     NodePort    172.21.167.156   <none>        8083:31355/TCP   3h
+auth-customer                                 NodePort    172.21.106.167   <none>        8082:32376/TCP   3h
 catalog-catalog                               NodePort    172.21.102.138   <none>        8081:30027/TCP   3h
-orders-orders                                 NodePort    172.21.144.87    <none>        8080:31383/TCP   2h
+orders-orders                                 NodePort    172.21.144.87    <none>        8084:31383/TCP   2h
 ```
 
 The output above shows you the service names on the left column and their corresponding node ports in the 5th column between the `:` and the `/` (i.e. for `auth-auth`, the NodePort is 31355).

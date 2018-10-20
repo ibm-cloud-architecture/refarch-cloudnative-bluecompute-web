@@ -8,8 +8,9 @@
 
 {{/* Auth Labels Template */}}
 {{- define "web.labels" }}
-app: bluecompute
-micro: web-bff
+app: web
+version: v1
+micro: web
 tier: frontend
 heritage: {{ .Release.Service | quote }}
 release: {{ .Release.Name | quote }}
@@ -82,7 +83,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8083" -}}
   {{- end -}}
 {{- end -}}
 
@@ -111,7 +112,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8082" -}}
   {{- end -}}
 {{- end -}}
 
@@ -140,7 +141,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8084" -}}
   {{- end -}}
 {{- end -}}
 
@@ -169,7 +170,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8085" -}}
   {{- end -}}
 {{- end -}}
 
