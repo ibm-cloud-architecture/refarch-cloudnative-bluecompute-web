@@ -17,7 +17,7 @@
     },
     "orders": {
       "protocol": "http",
-      "service_name": "orders-service:8080",
+      "service_name": "orders-service:8084",
       "base_path": "/micro",
       "require": [
         "oauth"
@@ -32,7 +32,7 @@
     },
     "customer": {
       "protocol": "http",
-      "service_name": "customer-service:8080",
+      "service_name": "customer-service:8082",
       "base_path": "/micro",
       "require": [
         "client_id",
@@ -42,7 +42,7 @@
     },
     "oauth20": {
       "protocol": "http",
-      "service_name": "auth-service:8080",
+      "service_name": "auth-service:8083",
       "base_path": "/oauth",
       "paths": {
         "authz": "/authorize",

@@ -58,6 +58,11 @@ services:
     host:
     port:
 
+labels:
+  app: web
+  version: v1
+  tier: frontend
+
 global:
   cluster:
     name:
