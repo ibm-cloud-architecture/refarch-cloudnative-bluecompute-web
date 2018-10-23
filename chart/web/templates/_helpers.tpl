@@ -8,10 +8,9 @@
 
 {{/* Auth Labels Template */}}
 {{- define "web.labels" }}
-app: web
-version: v1
-micro: web
-tier: frontend
+{{- range $key, $value := .Values.labels }}
+{{ $key }}: {{ $value | quote }}
+{{- end }}
 heritage: {{ .Release.Service | quote }}
 release: {{ .Release.Name | quote }}
 chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
