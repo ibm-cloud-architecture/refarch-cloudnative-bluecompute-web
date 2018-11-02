@@ -67,3 +67,15 @@ global:
   cluster:
     name:
     region:
+  istio:
+    enabled:
+
+istio:
+  enabled: false
+  # ISTIO_MUTUAL, SIMPLE, DISABLE
+  mTLS: ISTIO_MUTUAL
+  # LEAST_CONN, ROUND_ROBIN
+  loadBalancer: LEAST_CONN
+  enableGateway: false
+  httpsRedirect: false
+  hosts:

@@ -1,0 +1,20 @@
+{{ if or .Values.global.istio.enabled .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "web.fullname" . }}
+spec:
+  host: {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: {{ .Values.istio.loadBalancer }}
+    portLevelSettings:
+    - port:
+        number: {{ .Values.service.externalPort }}
+      tls:
+        mode: {{ .Values.istio.mTLS }}
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+{{ end }}

@@ -1,0 +1,13 @@
+{{ if or .Values.global.istio.enabled .Values.istio.enabled }}
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "Policy"
+metadata:
+  name: {{ template "web.fullname" . }}
+spec:
+  targets:
+  - name: {{ template "web.fullname" . }}
+    ports:
+    - number: {{ .Values.service.externalPort }}
+  peers:
+  - mtls: {}
+{{ end }}
