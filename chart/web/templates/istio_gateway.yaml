@@ -1,0 +1,23 @@
+{{ if and (or .Values.global.istio.enabled .Values.istio.enabled) .Values.istio.enableGateway }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ template "web.fullname" . }}-gateway
+spec:
+  selector:
+    #app: {{ .Values.labels.app }}
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: {{ .Values.service.externalPort }}
+      name: http
+      protocol: HTTP
+    hosts:
+    {{- if .Values.istio.hosts }}
+{{ toYaml .Values.istio.hosts | indent 4 }}
+    {{- else if .Values.istio.enableGateway }}
+    - "*"
+    {{- end }}
+    tls:
+      httpsRedirect: {{ .Values.istio.httpsRedirect }}
+{{ end }}

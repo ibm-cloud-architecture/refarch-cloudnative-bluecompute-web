@@ -1,4 +1,4 @@
 apiVersion: v1
 description: BlueCompute Web BFF app
 name: web
-version: 0.5.0
+version: 0.6.0
