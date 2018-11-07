@@ -4,13 +4,15 @@ kind: VirtualService
 metadata:
   name: {{ template "web.fullname" . }}
 spec:
-  {{- if .Values.istio.enableGateway }}
   hosts:
-  {{- if .Values.istio.hosts }}
+  {{- if and .Values.istio.enableGateway .Values.istio.hosts }}
 {{ toYaml .Values.istio.hosts | indent 2 }}
-  {{- else }}
+  {{- else if .Values.istio.enableGateway }}
   - "*"
+  {{- else }}
+  - {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
   {{- end }}
+  {{- if .Values.istio.enableGateway }}
   gateways:
   - {{ template "web.fullname" . }}-gateway
   {{- end }}
