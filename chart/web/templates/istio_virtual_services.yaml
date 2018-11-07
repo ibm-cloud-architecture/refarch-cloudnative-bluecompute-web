@@ -8,7 +8,7 @@ spec:
   hosts:
   {{- if .Values.istio.hosts }}
 {{ toYaml .Values.istio.hosts | indent 2 }}
-  {{- else if .Values.istio.enableGateway }}
+  {{- else }}
   - "*"
   {{- end }}
   gateways:
