@@ -76,6 +76,6 @@ istio:
   mTLS: ISTIO_MUTUAL
   # LEAST_CONN, ROUND_ROBIN
   loadBalancer: LEAST_CONN
-  enableGateway: false
+  enableGateway: true
   httpsRedirect: false
   hosts:

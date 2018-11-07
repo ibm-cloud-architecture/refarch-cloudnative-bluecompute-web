@@ -9,5 +9,7 @@ spec:
     ports:
     - number: {{ .Values.service.externalPort }}
   peers:
+  {{- if eq .Values.istio.mTLS "ISTIO_MUTUAL" }}
   - mtls: {}
+  {{- end }}
 {{ end }}

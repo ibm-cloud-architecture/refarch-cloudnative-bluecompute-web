@@ -1,36 +1,23 @@
 {{ if and (or .Values.global.istio.enabled .Values.istio.enabled) .Values.istio.enableGateway }}
-#apiVersion: networking.istio.io/v1alpha3
-#kind: Gateway
-#metadata:
-#  name: {{ template "web.fullname" . }}-gateway
-#spec:
-#  selector:
-#    app: {{ .Values.labels.app }}
-#  servers:
-#  - port:
-#      number: {{ .Values.service.externalPort }}
-#      name: http
-#      protocol: HTTP
-#    hosts:
-#    - {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
-#    {{- range .Values.istio.hosts }}
-#    - {{ . | title | quote }}
-#    {{- end }}
-#    tls:
-#      httpsRedirect: {{ .Values.istio.httpsRedirect }}
-
-#apiVersion: networking.istio.io/v1alpha3
-#kind: Gateway
-#metadata:
-#  name: {{ template "web.fullname" . }}-gateway
-#spec:
-#  selector:
-#    istio: ingressgateway # use istio default controller
-#  servers:
-#  - port:
-#      number: 80
-#      name: http
-#      protocol: HTTP
-#    hosts:
-#    - "*"
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ template "web.fullname" . }}-gateway
+spec:
+  selector:
+    #app: {{ .Values.labels.app }}
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: {{ .Values.service.externalPort }}
+      name: http
+      protocol: HTTP
+    hosts:
+    {{- if .Values.istio.hosts }}
+{{ toYaml .Values.istio.hosts | indent 4 }}
+    {{- else if .Values.istio.enableGateway }}
+    - "*"
+    {{- end }}
+    tls:
+      httpsRedirect: {{ .Values.istio.httpsRedirect }}
 {{ end }}
