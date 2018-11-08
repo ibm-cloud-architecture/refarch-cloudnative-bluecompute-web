@@ -15,14 +15,14 @@ ingress:
   enabled: false
   hostname:
   path: /
+  ibmCloud:
+    redirectToHTTPS: false
 
 tls:
   enabled: false
   secretName:
   crt: ENTER_BASE64_ENCODED_CERTIFICATE
   key: ENTER_BASE64_ENCODED_KEY
-  ibmCloud:
-    redirectToHTTPS: false
 
 resources:
   limits:
