@@ -13,16 +13,15 @@ service:
 
 ingress:
   enabled: false
-  hostname:
+  hostname: "web.bluecompute.com"
   path: /
-  ibmCloud:
-    redirectToHTTPS: false
-
-tls:
-  enabled: false
-  secretName:
-  crt: ENTER_BASE64_ENCODED_CERTIFICATE
-  key: ENTER_BASE64_ENCODED_KEY
+  annotations:
+    ingress.bluemix.net/redirect-to-https: "True"
+  enableTLS: false
+  TLS:
+  - secretName: web.bluecompute.com
+    hosts:
+      - web.bluecompute.com
 
 resources:
   limits:
@@ -69,6 +68,8 @@ global:
     region:
   istio:
     enabled:
+    gateway:
+      name:
 
 istio:
   enabled: false
@@ -76,6 +77,16 @@ istio:
   mTLS: ISTIO_MUTUAL
   # LEAST_CONN, ROUND_ROBIN
   loadBalancer: LEAST_CONN
-  enableGateway: true
-  httpsRedirect: false
-  hosts:
+  gateway:
+    enabled: false
+    name:
+    hosts:
+      - "web.bluecompute.com"
+    TLS:
+      enabled: false
+      # SIMPLE, MUTUAL
+      mode: SIMPLE
+      httpsRedirect: false
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
+      caCertificates: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem

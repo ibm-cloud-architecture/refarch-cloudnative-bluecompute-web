@@ -5,19 +5,17 @@ metadata:
   name: {{ template "web.fullname" . }}
 spec:
   hosts:
-  {{- if and .Values.istio.enableGateway .Values.istio.hosts }}
-{{ toYaml .Values.istio.hosts | indent 2 }}
-  {{- else if .Values.istio.enableGateway }}
-  - "*"
+  {{- if or .Values.istio.gateway.enabled .Values.istio.gateway.name }}
+  {{ toYaml .Values.istio.gateway.hosts }}
   {{- else }}
   - {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
   {{- end }}
-  {{- if .Values.istio.enableGateway }}
-  gateways:
-  - {{ template "web.fullname" . }}-gateway
-  {{- end }}
+  {{- template "web.istio.gateway" . }}
   http:
-  - route:
+  - match:
+    - uri:
+        prefix: {{ .Values.ingress.path }}
+    route:
     - destination:
         host: {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
         port:
