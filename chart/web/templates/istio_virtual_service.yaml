@@ -5,7 +5,7 @@ metadata:
   name: {{ template "web.fullname" . }}
 spec:
   hosts:
-  {{- if or .Values.istio.gateway.enabled .Values.istio.gateway.name }}
+  {{- if or .Values.istio.gateway.enabled .Values.istio.gateway.name .Values.global.istio.gateway.name }}
   {{ toYaml .Values.istio.gateway.hosts }}
   {{- else }}
   - {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
