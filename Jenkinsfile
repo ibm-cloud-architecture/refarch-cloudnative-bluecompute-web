@@ -30,7 +30,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
     ],
     containers: [
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')
+        containerTemplate(name: 'docker' , image: 'docker:18.09.0', ttyEnabled: true, command: 'cat')
   ]) {
 
     node(podLabel) {
