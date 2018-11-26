@@ -44,7 +44,7 @@ podTemplate(label: 'mypod',
                 set +e
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
-                DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
+                DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=web,tier=frontend,version=v1 -o name`
 
                 kubectl --namespace=\${NAMESPACE} get \${DEPLOYMENT}
 
