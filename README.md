@@ -2,6 +2,8 @@
 
 ## Web Service
 
+[![Build Status](https://api.travis-ci.org/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web.svg?branch=microprofile)](https://travis-ci.org/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web)
+
 *This project is part of the 'IBM Cloud Native Reference Architecture' suite, available at
 https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes*
 
