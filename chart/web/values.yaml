@@ -7,7 +7,7 @@ image:
   repository: ibmcase/bc-web-mp
   #repository: bc-web-mp
   tag: v2.0.0
-  #pullPolicy: IfNotPresent
+  pullPolicy: Always
 service:
   name: bluecompute-web
   type: NodePort
