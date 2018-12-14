@@ -18,6 +18,20 @@ spec:
         ports:
         - containerPort: {{ .Values.service.internalPort }}
           protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.managementPort }}
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.managementPort }}
+          initialDelaySeconds: 35
+          periodSeconds: 20
+          failureThreshold: 6
         volumeMounts:
         - name: config-volume
           mountPath: /StoreWebApp/config

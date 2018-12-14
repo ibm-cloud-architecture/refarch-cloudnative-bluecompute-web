@@ -5,6 +5,7 @@
  */
 var open = require('open');
 var app = require('../app');
+var managementApp = require('../routes/health');
 var debug = require('debug')('consumer:server');
 var http = require('http');
 
@@ -12,14 +13,18 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '8000');
+var port = normalizePort(process.env.SERVICE_PORT || '8000');
 app.set('port', port);
+
+var managementPort = normalizePort(process.env.MANAGEMENT_PORT || '9000');
+managementApp.set('port', managementPort);
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+var managementServer = http.createServer(managementApp);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -28,6 +33,10 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+managementServer.listen(managementPort);
+managementServer.on('error', onError);
+managementServer.on('listening', onListeningManagement);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -92,4 +101,12 @@ function onListening() {
   var isLinux = /^linux/.test(process.platform);
   if (isLinux) open('http://127.0.0.1:' + addr.port, "google-chrome");
   else open('http://127.0.0.1:' + addr.port);
+}
+
+function onListeningManagement() {
+  var addr = managementServer.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
 }
