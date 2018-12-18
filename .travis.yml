@@ -7,6 +7,8 @@ env:
     - IMAGE_NAME=bluecompute-web
     - RELEASE_NAME=web
     - TAG=travis-latest
+    - SERVICE_PORT=8000
+    - MANAGEMENT_PORT=9000
 stages:
   - local build and test
   - docker build, deploy, and test
@@ -31,8 +33,10 @@ jobs:
       - sleep 10
       # Get back to root folder
       - cd ..
-      # Run Web API Test
-      - bash scripts/api_tests.sh 127.0.0.1 8000
+      # Let the application start
+      - bash scripts/health_check.sh
+      # Run API Test
+      - bash scripts/api_tests.sh 127.0.0.1 ${SERVICE_PORT}
     - stage: docker build, deploy, and test
       services:
       - docker
@@ -40,20 +44,23 @@ jobs:
       # Build Docker image
       - docker build -t "${IMAGE_NAME}:${TAG}" .
       # Start Web Container and Connect to local MySQL Service
-      - docker run --net=host --name web -d -p 8000:8000 "${IMAGE_NAME}:${TAG}"
+      - docker run --net=host --name ${RELEASE_NAME} -d -p ${SERVICE_PORT}:${SERVICE_PORT} -p ${MANAGEMENT_PORT}:${MANAGEMENT_PORT} "${IMAGE_NAME}:${TAG}"
       # Wait for the Web container to start accepting connections
       - sleep 10
       # Check that the Web container is running
       - docker ps
       # Check logs to see if it started properly
       - docker logs web
-      # Run Web API Test
-      - bash scripts/api_tests.sh 127.0.0.1 8000
+      # Let the application start
+      - bash scripts/health_check.sh
+      # Run API Test
+      - bash scripts/api_tests.sh 127.0.0.1 ${SERVICE_PORT}
     - stage: kubernetes build, deploy, and test
       services:
       - docker
       env:
       - CHANGE_MINIKUBE_NONE_USER=true
+      - CHART_NAME=web
       before_script:
       # Install nsenter, which is needed for minikube to work
       - bash scripts/install_minikube_and_helm.sh
@@ -61,20 +68,23 @@ jobs:
       # Build Docker image
       - docker build -t "${IMAGE_NAME}:${TAG}" .
       # helm lint
-      - helm lint chart/web
+      - helm lint chart/${CHART_NAME}
       # helm package
-      - helm package chart/web
-      # helm install Web from packaged chart. Use pullPolicy=Never so it uses local docker image
-      - CHART_VERSION="$(cat chart/web/Chart.yaml | grep version | awk '{print $2}')"
-      - helm upgrade --install web --set service.type=NodePort,image.repository="${IMAGE_NAME}",image.tag="${TAG}",image.pullPolicy=Never web-${CHART_VERSION}.tgz
-      # Wait for Web to be ready
-      - kubectl get deployments ${RELEASE_NAME}-web -o yaml
-      - READY=$(kubectl get deployments ${RELEASE_NAME}-web -o yaml | grep "readyReplicas" | awk '{print $2}')
-      - echo $READY
-      - until [ -n "$READY" ] && [ ${READY} -ge 1 ]; do READY=$(kubectl get deployments ${RELEASE_NAME}-web -o yaml | grep "readyReplicas" | awk '{print $2}'); kubectl get deployments -o wide; echo "Waiting for web to be ready"; sleep 10; done
-      # Wait for Web deployment to start accepting connections
-      - sleep 10
-      # Run Web API Test
-      - MINIKUBE_IP=$(minikube ip)
-      - NODE_PORT=$(kubectl get service ${RELEASE_NAME}-web -o=jsonpath='{.spec.ports[0].nodePort}')
-      - bash scripts/api_tests.sh $MINIKUBE_IP $NODE_PORT $HS256_KEY
+      - helm package chart/${CHART_NAME}
+      # helm install from packaged chart. Use pullPolicy=Never so it uses local docker image
+      - CHART_VERSION="$(cat chart/${CHART_NAME}/Chart.yaml | grep version | awk '{print $2}')"
+      - helm upgrade --install ${RELEASE_NAME} --set image.repository="${IMAGE_NAME}",image.tag="${TAG}",image.pullPolicy=Never ${CHART_NAME}-${CHART_VERSION}.tgz
+      # Get Deployment Name
+      - DEPLOYMENT="deployment/${RELEASE_NAME}-${CHART_NAME}"
+      # Wait for deployment to be ready
+      - kubectl rollout status ${DEPLOYMENT}
+      # Get logs
+      - kubectl logs -f ${DEPLOYMENT} &
+      # Port Forwarding
+      - kubectl port-forward ${DEPLOYMENT} ${SERVICE_PORT} ${MANAGEMENT_PORT} &
+      - echo "Sleeping for 3 seconds while connection is established..."
+      - sleep 3
+      # Let the application start
+      - bash scripts/health_check.sh
+      # Run API Test
+      - bash scripts/api_tests.sh

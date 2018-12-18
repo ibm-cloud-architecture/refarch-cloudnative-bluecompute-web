@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function is_healthy {
-	curl -s ${HEALTH_URL} | grep "status" | grep "UP";
+	curl -s ${HEALTH_URL} | jq -r ".status";
 }
 
 URL="$1";
@@ -20,7 +20,7 @@ HEALTHY=$(is_healthy)
 
 echo -n "Waiting for service to be ready"
 
-until [ -n "$HEALTHY" ] && [ "${HEALTHY}" == '{"status":"UP"}' ]; do
+until [ -n "$HEALTHY" ] && [ "${HEALTHY}" == 'UP' ]; do
 	HEALTHY=$(is_healthy);
 	echo -n .;
 	sleep 1;
