@@ -25,6 +25,23 @@ def microServiceName = env.MICROSERVICE_NAME ?: "web"
 def servicePort = env.MICROSERVICE_PORT ?: "8000"
 def managementPort = env.MANAGEMENT_PORT ?: "9000"
 
+// Configuration of services that web app interacts with
+def authProtocol = env.AUTH_PROTOCOL ?: "http"
+def authHost = env.AUTH_HOST ?: "auth"
+def authPort = env.AUTH_PORT ?: "8083"
+
+def catalogProtocol = env.CATALOG_PROTOCOL ?: "http"
+def catalogHost = env.CATALOG_HOST ?: "catalog"
+def catalogPort = env.CATALOG_PORT ?: "8081"
+
+def customerProtocol = env.CUSTOMER_PROTOCOL ?: "http"
+def customerHost = env.CUSTOMER_HOST ?: "customer"
+def customerPort = env.CUSTOMER_PORT ?: "8082"
+
+def ordersProtocol = env.ORDERS_PROTOCOL ?: "http"
+def ordersHost = env.ORDERS_HOST ?: "orders"
+def ordersPort = env.ORDERS_PORT ?: "8084"
+
 /*
   Optional Pod Environment Variables
  */
@@ -41,9 +58,26 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
         envVar(key: 'MICROSERVICE_NAME', value: microServiceName),
         envVar(key: 'MICROSERVICE_PORT', value: servicePort),
         envVar(key: 'MANAGEMENT_PORT', value: managementPort),
+        envVar(key: 'AUTH_PROTOCOL', value: authProtocol),
+        envVar(key: 'AUTH_HOST', value: authHost),
+        envVar(key: 'AUTH_PORT', value: authPort),
+        envVar(key: 'CATALOG_PROTOCOL', value: catalogProtocol),
+        envVar(key: 'CATALOG_HOST', value: catalogHost),
+        envVar(key: 'CATALOG_PORT', value: catalogPort),
+        envVar(key: 'CUSTOMER_PROTOCOL', value: customerProtocol),
+        envVar(key: 'CUSTOMER_HOST', value: customerHost),
+        envVar(key: 'CUSTOMER_PORT', value: customerPort),
+        envVar(key: 'ORDERS_PROTOCOL', value: ordersProtocol),
+        envVar(key: 'ORDERS_HOST', value: ordersHost),
+        envVar(key: 'ORDERS_PORT', value: ordersPort),
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
+    volumes: [
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+    ],
     containers: [
+        containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'docker' , image: 'ibmcase/docker-bash:1', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'kubernetes', image: 'ibmcase/jenkins-slave-utils:1', ttyEnabled: true, command: 'cat')
   ]) {
 
@@ -93,6 +127,18 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                     --set image.repository=\${IMAGE} \
                     --set image.tag=${IMAGE_TAG} \
                     --set service.externalPort=${MICROSERVICE_PORT} \
+                    --set services.auth.protocol=${AUTH_PROTOCOL} \
+                    --set services.auth.host=${AUTH_HOST} \
+                    --set services.auth.port=${AUTH_PORT} \
+                    --set services.catalog.protocol=${CATALOG_PROTOCOL} \
+                    --set services.catalog.host=${CATALOG_HOST} \
+                    --set services.catalog.port=${CATALOG_PORT} \
+                    --set services.customer.protocol=${CUSTOMER_PROTOCOL} \
+                    --set services.customer.host=${CUSTOMER_HOST} \
+                    --set services.customer.port=${CUSTOMER_PORT} \
+                    --set services.orders.protocol=${ORDERS_PROTOCOL} \
+                    --set services.orders.host=${ORDERS_HOST} \
+                    --set services.orders.port=${ORDERS_PORT} \
                     chart/${MICROSERVICE_NAME} --wait --tls
                 set -x
                 """
