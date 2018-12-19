@@ -91,9 +91,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                 bash scripts/health_check.sh "http://127.0.0.1:${MANAGEMENT_PORT}"
 
                 # Run tests
-                set +x
                 bash scripts/api_tests.sh 127.0.0.1 ${MICROSERVICE_PORT}
-                set -x;
 
                 # Kill process
                 kill \${PID}
