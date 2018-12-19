@@ -242,7 +242,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
 
                 # Get deployment
                 if [ "${DEPLOY_NEW_VERSION}" == "true" ]; then
-                    QUERY_LABELS="${SERVICE_LABELS},version=v${IMAGE_TAG}"
+                    QUERY_LABELS="${SERVICE_LABELS},version=v${env.BUILD_NUMBER}"
                 else
                     QUERY_LABELS="${SERVICE_LABELS}"
                 fi
