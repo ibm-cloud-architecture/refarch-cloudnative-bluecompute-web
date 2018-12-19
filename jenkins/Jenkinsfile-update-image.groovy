@@ -67,11 +67,16 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                 # Perform linting
                 jshint app.js
                 jshint routes/
+
+                cd ..
                 """
             }
             stage('Local - Run and Test') {
                 sh """
                 #!/bin/bash
+
+                # Go to source directory
+                cd StoreWebApp
 
                 # Start Application
                 npm start &
