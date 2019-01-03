@@ -11,7 +11,7 @@ RUN npm install
 RUN npm -g install bower
 RUN bower --allow-root install --force
 
-EXPOSE 8000
+EXPOSE 8000 9000
 
 COPY startup.sh startup.sh
 
