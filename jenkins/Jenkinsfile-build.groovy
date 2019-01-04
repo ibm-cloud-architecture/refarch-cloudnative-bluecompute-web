@@ -14,6 +14,7 @@ def podLabel = "web"
 def cloud = env.CLOUD ?: "kubernetes"
 def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
+def dockerSocket = env.DOCKER_SOCKET ?: "/var/run/docker.sock"
 
 // Pod Environment Variables
 def namespace = env.NAMESPACE ?: "default"
@@ -71,7 +72,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
     volumes: [
-        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+        hostPathVolume(hostPath: dockerSocket, mountPath: dockerSocket)
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
