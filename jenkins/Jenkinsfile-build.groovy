@@ -72,7 +72,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
     volumes: [
-        hostPathVolume(hostPath: dockerSocket, mountPath: dockerSocket)
+        hostPathVolume(hostPath: dockerSocket, mountPath: "/var/run/docker.sock")
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
