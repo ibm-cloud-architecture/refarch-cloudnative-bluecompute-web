@@ -14,6 +14,7 @@ def podLabel = "web"
 def cloud = env.CLOUD ?: "kubernetes"
 def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
+def dockerHost = "tcp://localhost:2375"
 
 // Pod Environment Variables
 def namespace = env.NAMESPACE ?: "default"
@@ -47,6 +48,7 @@ def ordersPort = env.ORDERS_PORT ?: "8084"
 def helmHome = env.HELM_HOME ?: env.JENKINS_HOME + "/.helm"
 
 podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVars: [
+        envVar(key: 'DOCKER_HOST', value: dockerHost),
         envVar(key: 'CLUSTER_URL', value: clusterURL),
         envVar(key: 'CLUSTER_ACCOUNT_ID', value: clusterAccountId),
         envVar(key: 'NAMESPACE', value: namespace),
@@ -75,7 +77,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'docker' , image: 'ibmcase/docker:18.09-dind', ttyEnabled: true, command: 'cat', privileged: true),
+        containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', ttyEnabled: true, command: 'cat', privileged: true),
         containerTemplate(name: 'kubernetes', image: 'ibmcase/jenkins-slave-utils:1', ttyEnabled: true, command: 'cat')
   ]) {
 
