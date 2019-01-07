@@ -84,7 +84,6 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
     node(podLabel) {
         checkout scm
 
-        /*
         // Local
         container(name:'nodejs', shell:'/bin/bash') {
             stage('Local - Build and Unit Test') {
@@ -130,7 +129,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 kill \${PID}
                 """
             }
-        }*/
+        }
 
         // Docker
         container(name:'docker', shell:'/bin/bash') {
