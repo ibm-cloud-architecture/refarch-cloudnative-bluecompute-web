@@ -134,20 +134,28 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
 
         // Docker
         container(name:'docker', shell:'/bin/bash') {
-            stage('Docker - Build Image') {
-                sh """
-                #!/bin/bash
+            try {
+                stage('Docker - Build Image') {
+                    sh """
+                    #!/bin/bash
 
-                # Get image
-                if [ "${REGISTRY}" == "docker.io" ]; then
-                    IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
-                else
-                    IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                fi
+                    # Get image
+                    if [ "${REGISTRY}" == "docker.io" ]; then
+                        IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    else
+                        IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    fi
 
-                docker build -t \${IMAGE} .
-                """
+                    docker build -t \${IMAGE} .
+                    """
+                }
             }
+            catch(Exception e) {
+                containerLog 'docker-in-docker'
+                containerLog 'docker'
+                throw e
+            }
+
             stage('Docker - Run and Test') {
                 sh """
                 #!/bin/bash
