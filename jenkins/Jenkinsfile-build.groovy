@@ -14,7 +14,6 @@ def podLabel = "web"
 def cloud = env.CLOUD ?: "kubernetes"
 def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
-def dockerHost = "tcp://localhost:2375"
 
 // Pod Environment Variables
 def namespace = env.NAMESPACE ?: "default"
@@ -76,7 +75,6 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
-        //containerTemplate(name: 'docker' , image: 'ibmcase/docker:18.09', ttyEnabled: true, command: 'cat', envVars: [envVar(key: 'DOCKER_HOST', value: dockerHost)]),
         containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', privileged: true),
         containerTemplate(name: 'kubernetes', image: 'ibmcase/jenkins-slave-utils:1', ttyEnabled: true, command: 'cat')
   ]) {
@@ -84,147 +82,139 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
     node(podLabel) {
         checkout scm
 
-        try {
-            /*
-            // Local
-            container(name:'nodejs', shell:'/bin/bash') {
-                stage('Local - Build and Unit Test') {
-                    sh """
-                    #!/bin/bash
-                    # Go to source directory
-                    cd StoreWebApp
+        // Local
+        container(name:'nodejs', shell:'/bin/bash') {
+            stage('Local - Build and Unit Test') {
+                sh """
+                #!/bin/bash
+                # Go to source directory
+                cd StoreWebApp
 
-                    # Install dependencies
-                    npm install
+                # Install dependencies
+                npm install
 
-                    # Perform linting
-                    jshint app.js
-                    jshint routes/
+                # Perform linting
+                jshint app.js
+                jshint routes/
 
-                    cd ..
-                    """
-                }
-                stage('Local - Run and Test') {
-                    sh """
-                    #!/bin/bash
+                cd ..
+                """
+            }
+            stage('Local - Run and Test') {
+                sh """
+                #!/bin/bash
 
-                    # Go to source directory
-                    cd StoreWebApp
+                # Go to source directory
+                cd StoreWebApp
 
-                    # Start Application
-                    npm start &
-                    PID=`echo \$!`
+                # Start Application
+                npm start &
+                PID=`echo \$!`
 
-                    # Wait for the Web app to start accepting connections
-                    sleep 10
+                # Wait for the Web app to start accepting connections
+                sleep 10
 
-                    # Get back to root folder
-                    cd ..
+                # Get back to root folder
+                cd ..
 
-                    # Let the application start
-                    bash scripts/health_check.sh "http://127.0.0.1:${MANAGEMENT_PORT}"
+                # Let the application start
+                bash scripts/health_check.sh "http://127.0.0.1:${MANAGEMENT_PORT}"
 
-                    # Run tests
-                    bash scripts/api_tests.sh 127.0.0.1 ${MICROSERVICE_PORT}
+                # Run tests
+                bash scripts/api_tests.sh 127.0.0.1 ${MICROSERVICE_PORT}
 
-                    # Kill process
-                    kill \${PID}
-                    """
-                }
-            }*/
-
-            // Docker
-            container(name:'docker', shell:'/bin/bash') {
-                stage('Docker - Build Image') {
-                    sh """
-                    #!/bin/bash
-
-                    # Get image
-                    if [ "${REGISTRY}" == "docker.io" ]; then
-                        IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    else
-                        IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    fi
-
-                    docker build -t \${IMAGE} .
-                    """
-                }
-
-                stage('Docker - Run and Test') {
-                    sh """
-                    #!/bin/bash
-
-                    # Get image
-                    if [ "${REGISTRY}" == "docker.io" ]; then
-                        IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    else
-                        IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    fi
-
-                    # Kill Container if it already exists
-                    docker kill ${MICROSERVICE_NAME} || true
-                    docker rm ${MICROSERVICE_NAME} || true
-
-                    # Start Container
-                    echo "Starting ${MICROSERVICE_NAME} container"
-                    set +x
-                    docker run --name ${MICROSERVICE_NAME} -d \
-                        -p ${MICROSERVICE_PORT}:${MICROSERVICE_PORT} \
-                        -p ${MANAGEMENT_PORT}:${MANAGEMENT_PORT} \
-                        -e SERVICE_PORT=${MICROSERVICE_PORT} \
-                        \${IMAGE}
-                    set -x
-
-                    # Check that application started successfully
-                    docker ps
-
-                    # Check the logs
-                    docker logs -f ${MICROSERVICE_NAME} &
-                    PID=`echo \$!`
-
-                    # Get the container IP Address
-                    CONTAINER_IP=`docker inspect ${MICROSERVICE_NAME} | jq -r '.[0].NetworkSettings.IPAddress'`
-
-                    # Let the application start
-                    bash scripts/health_check.sh "http://\${CONTAINER_IP}:${MANAGEMENT_PORT}"
-
-                    # Run tests
-                    bash scripts/api_tests.sh \${CONTAINER_IP} ${MICROSERVICE_PORT}
-
-                    # Kill process
-                    kill \${PID}
-
-                    # Kill Container
-                    docker kill ${MICROSERVICE_NAME} || true
-                    docker rm ${MICROSERVICE_NAME} || true
-                    """
-                }
-                stage('Docker - Push Image to Registry') {
-                    withCredentials([usernamePassword(credentialsId: registryCredsID,
-                                                   usernameVariable: 'USERNAME',
-                                                   passwordVariable: 'PASSWORD')]) {
-                        sh """
-                        #!/bin/bash
-
-                        # Get image
-                        if [ "${REGISTRY}" == "docker.io" ]; then
-                            IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
-                        else
-                            IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                        fi
-
-                        docker login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY}
-
-                        docker push \${IMAGE}
-                        """
-                    }
-                }
+                # Kill process
+                kill \${PID}
+                """
             }
         }
-        catch(Exception e) {
-            containerLog 'docker-in-docker'
-            containerLog 'docker'
-            throw e
+
+        // Docker
+        container(name:'docker', shell:'/bin/bash') {
+            stage('Docker - Build Image') {
+                sh """
+                #!/bin/bash
+
+                # Get image
+                if [ "${REGISTRY}" == "docker.io" ]; then
+                    IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
+                else
+                    IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
+                fi
+
+                docker build -t \${IMAGE} .
+                """
+            }
+
+            stage('Docker - Run and Test') {
+                sh """
+                #!/bin/bash
+
+                # Get image
+                if [ "${REGISTRY}" == "docker.io" ]; then
+                    IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
+                else
+                    IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
+                fi
+
+                # Kill Container if it already exists
+                docker kill ${MICROSERVICE_NAME} || true
+                docker rm ${MICROSERVICE_NAME} || true
+
+                # Start Container
+                echo "Starting ${MICROSERVICE_NAME} container"
+                set +x
+                docker run --name ${MICROSERVICE_NAME} -d \
+                    -p ${MICROSERVICE_PORT}:${MICROSERVICE_PORT} \
+                    -p ${MANAGEMENT_PORT}:${MANAGEMENT_PORT} \
+                    -e SERVICE_PORT=${MICROSERVICE_PORT} \
+                    \${IMAGE}
+                set -x
+
+                # Check that application started successfully
+                docker ps
+
+                # Check the logs
+                docker logs -f ${MICROSERVICE_NAME} &
+                PID=`echo \$!`
+
+                # Get the container IP Address
+                CONTAINER_IP=`docker inspect ${MICROSERVICE_NAME} | jq -r '.[0].NetworkSettings.IPAddress'`
+
+                # Let the application start
+                bash scripts/health_check.sh "http://\${CONTAINER_IP}:${MANAGEMENT_PORT}"
+
+                # Run tests
+                bash scripts/api_tests.sh \${CONTAINER_IP} ${MICROSERVICE_PORT}
+
+                # Kill process
+                kill \${PID}
+
+                # Kill Container
+                docker kill ${MICROSERVICE_NAME} || true
+                docker rm ${MICROSERVICE_NAME} || true
+                """
+            }
+            stage('Docker - Push Image to Registry') {
+                withCredentials([usernamePassword(credentialsId: registryCredsID,
+                                               usernameVariable: 'USERNAME',
+                                               passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    #!/bin/bash
+
+                    # Get image
+                    if [ "${REGISTRY}" == "docker.io" ]; then
+                        IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    else
+                        IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    fi
+
+                    docker login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY}
+
+                    docker push \${IMAGE}
+                    """
+                }
+            }
         }
     }
 }
