@@ -14,6 +14,7 @@ def podLabel = "web"
 def cloud = env.CLOUD ?: "kubernetes"
 def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
+def tls = env.TLS ?: "" // Set to "--tls" for IBM Cloud Private
 
 // Pod Environment Variables
 def namespace = env.NAMESPACE ?: "default"
@@ -86,18 +87,24 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
 
         // Kubernetes
         container(name:'kubernetes', shell:'/bin/bash') {
-            stage('Initialize CLIs') {
-                withCredentials([usernamePassword(credentialsId: clusterCredentialId,
-                                               passwordVariable: 'CLUSTER_PASSWORD',
-                                               usernameVariable: 'CLUSTER_USERNAME')]) {
-                    sh """
-                    echo "Initializing Helm ..."
-                    export HELM_HOME=${HELM_HOME}
-                    helm init -c
-
-                    echo "Login with cloudctl ..."
-                    cloudctl login -a ${CLUSTER_URL} -u ${CLUSTER_USERNAME}  -p "${CLUSTER_PASSWORD}" -c ${CLUSTER_ACCOUNT_ID} -n ${NAMESPACE} --skip-ssl-validation
-                    """
+            stage('Initialize helm') {
+                sh """
+                echo "Initializing Helm ..."
+                export HELM_HOME=${HELM_HOME}
+                helm init -c
+                """
+            }
+            // Initialize cloudctl for IBM Cloud Private
+            if (env.TLS && env.TLS == "--tls") {
+                stage ('Initialize cloudctl') {
+                    withCredentials([usernamePassword(credentialsId: clusterCredentialId,
+                                                   passwordVariable: 'CLUSTER_PASSWORD',
+                                                   usernameVariable: 'CLUSTER_USERNAME')]) {
+                        sh """
+                        echo "Login with cloudctl ..."
+                        cloudctl login -a ${CLUSTER_URL} -u ${CLUSTER_USERNAME}  -p "${CLUSTER_PASSWORD}" -c ${CLUSTER_ACCOUNT_ID} -n ${NAMESPACE} --skip-ssl-validation
+                        """
+                    }
                 }
             }
             stage('Kubernetes - Deploy new Docker Image') {
@@ -139,7 +146,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                     --set services.orders.protocol=${ORDERS_PROTOCOL} \
                     --set services.orders.host=${ORDERS_HOST} \
                     --set services.orders.port=${ORDERS_PORT} \
-                    chart/${MICROSERVICE_NAME} --wait --tls
+                    chart/${MICROSERVICE_NAME} --wait ${TLS}
                 set -x
                 """
             }
