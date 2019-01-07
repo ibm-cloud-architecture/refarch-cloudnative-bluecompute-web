@@ -77,7 +77,8 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', ttyEnabled: true, command: 'cat', privileged: true),
+        containerTemplate(name: 'docker' , image: 'ibmcase/docker:18.09', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'docker-in-docker', image: 'docker:18.09-dind', ttyEnabled: true, command: 'cat', privileged: true),
         containerTemplate(name: 'kubernetes', image: 'ibmcase/jenkins-slave-utils:1', ttyEnabled: true, command: 'cat')
   ]) {
 
