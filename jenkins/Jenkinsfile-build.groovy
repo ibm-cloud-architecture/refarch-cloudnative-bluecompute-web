@@ -71,11 +71,11 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
     volumes: [
-        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+        emptyDirVolume(mountPath: '/var/lib/docker', memory: false)
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'docker' , image: 'ibmcase/docker-bash:1', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', privileged: true),
         containerTemplate(name: 'kubernetes', image: 'ibmcase/jenkins-slave-utils:1', ttyEnabled: true, command: 'cat')
   ]) {
 
@@ -145,6 +145,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 docker build -t \${IMAGE} .
                 """
             }
+
             stage('Docker - Run and Test') {
                 sh """
                 #!/bin/bash

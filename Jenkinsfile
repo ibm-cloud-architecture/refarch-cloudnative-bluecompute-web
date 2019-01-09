@@ -25,12 +25,11 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
         envVar(key: 'POD_NAME', value: podName)
     ],
     volumes: [
-        hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
-        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+        emptyDirVolume(mountPath: '/var/lib/docker', memory: false)
     ],
     containers: [
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'docker' , image: 'docker:18.06.1-ce', ttyEnabled: true, command: 'cat')
+        containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', privileged: true)
   ]) {
 
     node(podLabel) {
