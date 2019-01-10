@@ -15,7 +15,7 @@ COPY StoreWebApp/package*.json StoreWebApp/bower.json StoreWebApp/.bowerrc ./
 RUN ls -la; cat bower.json; cat .bowerrc
 
 USER node
-RUN npm install
+RUN npm install --verbose
 USER root
 
 RUN ls -la public/resources/bower_components; ls -la
