@@ -108,7 +108,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 cd StoreWebApp
 
                 # Start Application
-                npm start &
+                node ./bin/www &
                 PID=`echo \$!`
 
                 # Wait for the Web app to start accepting connections

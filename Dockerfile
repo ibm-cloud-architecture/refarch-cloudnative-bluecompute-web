@@ -12,17 +12,14 @@ RUN mkdir -p /home/node/app/node_modules /home/node/app/public/resources/bower_c
 WORKDIR /home/node/app
 
 COPY StoreWebApp/package*.json StoreWebApp/bower.json StoreWebApp/.bowerrc ./
-RUN ls -la; cat bower.json; cat .bowerrc
 
 USER node
-RUN npm install --verbose
+RUN npm install
 USER root
-
-RUN ls -la public/resources/bower_components; ls -la
 
 COPY startup.sh ./
 COPY StoreWebApp .
-COPY --chown=node:node StoreWebApp .
+RUN chown -R node:node .
 
 USER node
 
