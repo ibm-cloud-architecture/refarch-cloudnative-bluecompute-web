@@ -1,12 +1,12 @@
 podTemplate(label: 'mypod',
     volumes: [
-        emptyDirVolume(mountPath: '/var/lib/docker', memory: false),
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
         secretVolume(secretName: 'registry-account', mountPath: '/var/run/secrets/registry-account'),
         configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
     ],
     containers: [
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', privileged: true)
+        containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')
   ]) {
 
     node('mypod') {
@@ -27,10 +27,12 @@ podTemplate(label: 'mypod',
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
 
-                set +x
+                set -x
                 DOCKER_USER=`cat /var/run/secrets/registry-account/username`
                 DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
                 docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
+
+                sleep 1200
                 set -x
 
                 docker push \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER}
