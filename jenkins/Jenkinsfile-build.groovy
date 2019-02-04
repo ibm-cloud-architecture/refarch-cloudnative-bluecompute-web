@@ -74,7 +74,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         emptyDirVolume(mountPath: '/var/lib/docker', memory: false)
     ],
     containers: [
-        containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6-alpine', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', privileged: true),
         containerTemplate(name: 'kubernetes', image: 'ibmcase/jenkins-slave-utils:1', ttyEnabled: true, command: 'cat')
   ]) {
@@ -108,7 +108,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 cd StoreWebApp
 
                 # Start Application
-                npm start &
+                node ./bin/www &
                 PID=`echo \$!`
 
                 # Wait for the Web app to start accepting connections

@@ -34,7 +34,7 @@ spec:
           failureThreshold: 6
         volumeMounts:
         - name: config-volume
-          mountPath: /StoreWebApp/config
+          mountPath: /home/node/app/config
       volumes:
       - name: config-volume
         configMap:
