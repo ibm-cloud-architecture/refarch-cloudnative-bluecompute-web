@@ -3,7 +3,7 @@ URL="$1";
 SERVICE_PATH="catalog";
 
 if [ -z "$URL" ]; then
-	URL="http://localhost:8080"
+	URL="http://localhost:8000"
 	echo "No URL provided! Using ${URL}"
 fi
 
