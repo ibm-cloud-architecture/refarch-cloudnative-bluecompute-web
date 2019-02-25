@@ -67,4 +67,4 @@ if [ -n "$ORDERS_PROTOCOL" ]; then
 	mv config/default2.json config/default.json
 fi
 
-npm start
+node ./bin/www
