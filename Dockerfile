@@ -28,7 +28,7 @@ RUN npm install
 USER 0
 
 COPY startup.sh startup.sh
-COPY StoreWebApp .
+COPY StoreWebApp ./
 
 # Chown
 RUN chown -R 2000:0 $APP_HOME
