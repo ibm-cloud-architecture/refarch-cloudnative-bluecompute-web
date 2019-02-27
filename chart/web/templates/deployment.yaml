@@ -34,7 +34,7 @@ spec:
           failureThreshold: 6
         volumeMounts:
         - name: config-volume
-          mountPath: /home/node/app/config
+          mountPath: /app/config
         resources:
 {{ toYaml .Values.resources | indent 10 }}
       volumes:
