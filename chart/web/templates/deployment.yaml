@@ -35,9 +35,6 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /home/node/app/config
-        securityContext:
-          runAsUser: 2000
-          allowPrivilegeEscalation: false
         resources:
 {{ toYaml .Values.resources | indent 10 }}
       volumes:
