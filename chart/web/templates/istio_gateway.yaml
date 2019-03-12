@@ -1,0 +1,35 @@
+{{ if or .Values.global.istio.enabled .Values.istio.enabled }}
+{{ if and .Values.istio.gateway.enabled (not .Values.global.istio.gateway.name) }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ template "web.fullname" . }}-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    tls:
+      httpsRedirect: {{ .Values.istio.gateway.TLS.httpsRedirect }}
+    hosts:
+    {{ toYaml .Values.istio.gateway.hosts }}
+{{- if .Values.istio.gateway.TLS.enabled }}
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: {{ .Values.istio.gateway.TLS.mode }}
+      serverCertificate: {{ .Values.istio.gateway.TLS.serverCertificate }}
+      privateKey: {{ .Values.istio.gateway.TLS.privateKey }}
+{{- if and (eq .Values.istio.gateway.TLS.mode "MUTUAL") .Values.istio.gateway.TLS.caCertificates }}
+      caCertificates: {{ .Values.istio.gateway.TLS.caCertificates }}
+{{- end }}
+    hosts:
+    {{ toYaml .Values.istio.gateway.hosts }}
+{{- end }}
+{{ end }}
+{{ end }}

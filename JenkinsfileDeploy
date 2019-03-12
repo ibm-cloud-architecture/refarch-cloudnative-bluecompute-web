@@ -1,0 +1,59 @@
+/*
+    To learn how to use this sample pipeline, follow the guide below and enter the
+    corresponding values for your environment and for this repository:
+    - https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes
+*/
+
+// Pod Template
+def podLabel = "web"
+def cloud = env.CLOUD ?: "kubernetes"
+def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
+
+// Pod Environment Variables
+def namespace = env.NAMESPACE ?: "default"
+def registry = env.REGISTRY ?: "docker.io"
+def imageName = env.IMAGE_NAME ?: "ibmcase/bluecompute-web"
+def imageTag = env.IMAGE_TAG ?: "latest"
+def deploymentLabels = env.DEPLOYMENT_LABELS ?: "app=web,tier=frontend,version=v1"
+def podName = env.POD_NAME ?: "web"
+
+podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, envVars: [
+        envVar(key: 'NAMESPACE', value: namespace),
+        envVar(key: 'REGISTRY', value: registry),
+        envVar(key: 'IMAGE_NAME', value: imageName),
+        envVar(key: 'IMAGE_TAG', value: imageTag),
+        envVar(key: 'DEPLOYMENT_LABELS', value: deploymentLabels),
+        envVar(key: 'POD_NAME', value: podName)
+    ],
+    containers: [
+        containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat')
+  ]) {
+
+    node(podLabel) {
+        container('kubectl') {
+            stage('Deploy new Docker Image') {
+                sh """
+                #!/bin/bash
+                DEPLOYMENT=`kubectl --namespace=${env.NAMESPACE} get deployments -l ${env.DEPLOYMENT_LABELS} -o name`
+                kubectl --namespace=${env.NAMESPACE} get \${DEPLOYMENT}
+                if [ \${?} -ne "0" ]; then
+                    # No deployment to update
+                    echo 'No deployment to update'
+                    exit 1
+                fi
+
+                # Get image
+                if [ "${env.REGISTRY}" = "docker.io" ]; then
+                    IMAGE=${env.IMAGE_NAME}:${env.IMAGE_TAG}
+                else
+                    IMAGE=${env.REGISTRY}/${env.NAMESPACE}/${env.IMAGE_NAME}:${env.IMAGE_TAG}
+                fi
+
+                # Update deployment and check rollout status
+                kubectl --namespace=${env.NAMESPACE} set image \${DEPLOYMENT} ${env.POD_NAME}=\${IMAGE}
+                kubectl --namespace=${env.NAMESPACE} rollout status \${DEPLOYMENT}
+                """
+            }
+        }
+    }
+}

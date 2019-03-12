@@ -1,25 +1,25 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  name: {{ template "web.fullname" . }}
+{{- if .Values.ingress.annotations }}
   annotations:
-    ingress.kubernetes.io/rewrite-target: /
-    ingress.bluemix.net/rewrite-path: "serviceName={{ .Release.Name }}-{{ .Chart.Name }} rewrite=/"
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+{{- end }}
   labels:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    heritage: {{.Release.Service | quote }}
-    release: {{.Release.Name | quote }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    {{- include "web.labels" . | indent 4 }}
 spec:
   rules:
-  - http:
+  - host: {{ .Values.ingress.hostname | quote }}
+    http:
       paths:
-      - path: {{ .Values.ingress.path }} 
+      - path: {{ .Values.ingress.path }}
         backend:
-          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
-          servicePort: 80
-{{- if .Values.ingress.hostname }}
-    host: {{ .Values.ingress.hostname | quote }}
-{{- end -}}
+          serviceName: {{ template "web.fullname" . }}
+          servicePort: {{ .Values.service.externalPort }}
+{{- if .Values.ingress.enableTLS }}
+  tls:
+{{ toYaml .Values.ingress.TLS | indent 2 }}
+{{- end }}
+{{- end }}

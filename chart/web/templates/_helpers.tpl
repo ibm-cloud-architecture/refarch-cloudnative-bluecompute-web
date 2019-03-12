@@ -1,137 +1,196 @@
-{{/* vim: set filetype=mustache: */}}
-{{/*
-Expand the name of the chart.
-*/}}
-{{- define "name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- define "web.fullname" -}}
+  {{- if .Values.fullnameOverride -}}
+    {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+  {{- else -}}
+    {{- printf "%s-%s" .Release.Name .Chart.Name -}}
+  {{- end -}}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "fullname" -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{/* Auth Labels Template */}}
+{{- define "web.labels" }}
+{{- range $key, $value := .Values.labels }}
+{{ $key }}: {{ $value | quote }}
+{{- end }}
+heritage: {{ .Release.Service | quote }}
+release: {{ .Release.Name | quote }}
+chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+{{- end }}
 
-{{- define "clusterName" -}}
-  {{- if .Values.clusterName -}}
-    {{ .Values.clusterName }}
-  {{- else if .Values.global.bluemix.clusterName -}}
-    {{ .Values.global.bluemix.clusterName }}
+{{- define "web.cluster.name" -}}
+  {{- if .Values.global.cluster.name -}}
+    {{ .Values.global.cluster.name }}
+  {{- else if .Values.cluster.name -}}
+    {{ .Values.cluster.name }}
   {{- else -}}
     {{- printf "??" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "region" -}}
-  {{- if .Values.region -}}
-    {{ .Values.region }}
-  {{- else if .Values.global.bluemix.target.endpoint -}}
-    {{ (split "." .Values.global.bluemix.target.endpoint)._1 }}
+{{- define "web.cluster.region" -}}
+  {{- if .Values.global.cluster.region -}}
+    {{ .Values.global.cluster.region }}
+  {{- else if .Values.cluster.region -}}
+    {{ .Values.cluster.region }}
   {{- else -}}
     {{- printf "??" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "catalogHost" -}}
+{{- define "web.catalog.host" -}}
   {{- if .Values.services.catalog.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.catalog.host }}
+    {{- printf "%s" .Values.services.catalog.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-catalog" .Release.Name -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "catalogPort" -}}
-  {{- if .Values.services.catalog.host -}}
+{{- define "web.catalog.port" -}}
+  {{- if .Values.services.catalog.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.catalog.port }}
+    {{- $port := default .Values.services.catalog.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
     {{- printf "8081" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "authHost" -}}
+{{- define "web.catalog.protocol" -}}
+  {{- if .Values.services.catalog.protocol -}}
+    {{- printf "%s" .Values.services.catalog.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "web.auth.host" -}}
   {{- if .Values.services.auth.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.auth.host }}
+    {{- printf "%s" .Values.services.auth.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-auth" .Release.Name -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "authPort" -}}
-  {{- if .Values.services.auth.host -}}
+{{- define "web.auth.port" -}}
+  {{- if .Values.services.auth.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.auth.port }}
+    {{- $port := default .Values.services.auth.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8083" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "customerHost" -}}
+{{- define "web.auth.protocol" -}}
+  {{- if .Values.services.auth.protocol -}}
+    {{- printf "%s" .Values.services.auth.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "web.customer.host" -}}
   {{- if .Values.services.customer.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.customer.host }}
+    {{- printf "%s" .Values.services.customer.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-customer" .Release.Name -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "customerPort" -}}
-  {{- if .Values.services.customer.host -}}
+{{- define "web.customer.port" -}}
+  {{- if .Values.services.customer.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.customer.port }}
+    {{- $port := default .Values.services.customer.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8082" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "ordersHost" -}}
+{{- define "web.customer.protocol" -}}
+  {{- if .Values.services.customer.protocol -}}
+    {{- printf "%s" .Values.services.customer.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "web.orders.host" -}}
   {{- if .Values.services.orders.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.orders.host }}
+    {{- printf "%s" .Values.services.orders.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-orders" .Release.Name -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "ordersPort" -}}
-  {{- if .Values.services.orders.host -}}
+{{- define "web.orders.port" -}}
+  {{- if .Values.services.orders.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.orders.port }}
+    {{- $port := default .Values.services.orders.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8084" -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "reviewsHost" -}}
+{{- define "web.orders.protocol" -}}
+  {{- if .Values.services.orders.protocol -}}
+    {{- printf "%s" .Values.services.orders.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "web.reviews.host" -}}
   {{- if .Values.services.reviews.host -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.reviews.host }}
+    {{- printf "%s" .Values.services.reviews.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
     {{- printf "%s-reviews" .Release.Name -}}
   {{- end -}}
 {{- end -}}
 
-{{- define "reviewsPort" -}}
-  {{- if .Values.services.reviews.host -}}
+{{- define "web.reviews.port" -}}
+  {{- if .Values.services.reviews.port -}}
     {{/* a specific service is requested */}}
-    {{ .Values.services.reviews.port }}
+    {{- $port := default .Values.services.reviews.port | toString -}}
+    {{- printf "%s" $port -}}
   {{- else -}}
     {{/* assume default port */}}
-    {{- printf "8080" -}}
+    {{- printf "8085" -}}
   {{- end -}}
 {{- end -}}
 
+{{- define "web.reviews.protocol" -}}
+  {{- if .Values.services.reviews.protocol -}}
+    {{- printf "%s" .Values.services.reviews.protocol -}}
+  {{- else -}}
+    {{- printf "http" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Istio Gateway */}}
+{{- define "web.istio.gateway" }}
+  {{- if or .Values.global.istio.gateway.name .Values.istio.gateway.enabled .Values.istio.gateway.name }}
+  gateways:
+  {{ if .Values.global.istio.gateway.name -}}
+  - {{ .Values.global.istio.gateway.name }}
+  {{- else if .Values.istio.gateway.enabled }}
+  - {{ template "web.fullname" . }}-gateway
+  {{ else if .Values.istio.gateway.name -}}
+  - {{ .Values.istio.gateway.name }}
+  {{ end }}
+  {{- end }}
+{{- end }}

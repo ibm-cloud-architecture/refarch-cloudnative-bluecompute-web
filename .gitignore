@@ -40,5 +40,12 @@ bower_components
 # Mac
 .DS_Store
 
-# Ignore docker/StoreWebApp/
-docker/StoreWebApp
+# Config files
+*default.json.*
+
+# Chart related files
+chart/web/charts
+chart/web/requirements.lock
+
+# Ignore test YAML files
+*.yaml.test

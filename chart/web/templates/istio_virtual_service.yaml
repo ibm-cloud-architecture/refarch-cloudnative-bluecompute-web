@@ -1,0 +1,24 @@
+{{ if or .Values.global.istio.enabled .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ template "web.fullname" . }}
+spec:
+  hosts:
+  {{- if or .Values.istio.gateway.enabled .Values.istio.gateway.name .Values.global.istio.gateway.name }}
+  {{ toYaml .Values.istio.gateway.hosts }}
+  {{- else }}
+  - {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  {{- end }}
+  {{- template "web.istio.gateway" . }}
+  http:
+  - match:
+    - uri:
+        prefix: {{ .Values.ingress.path }}
+    route:
+    - destination:
+        host: {{ template "web.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.service.externalPort }}
+        subset: v1
+{{ end }}

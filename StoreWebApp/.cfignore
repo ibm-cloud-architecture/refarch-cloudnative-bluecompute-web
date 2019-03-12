@@ -1,0 +1,5 @@
+node_modules
+public/resources/bower_components
+
+# Config files
+config/default.json.*

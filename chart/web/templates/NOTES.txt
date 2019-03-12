@@ -1,16 +1,26 @@
-1. Get the application URL by running these commands:
-{{- if contains "NodePort" .Values.service.type }}
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ template "fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT/login
-{{- else if contains "LoadBalancer" .Values.service.type }}
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get svc -w {{ template "fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-  echo http://$SERVICE_IP:{{ .Values.service.externalPort }}
-{{- else if contains "ClusterIP"  .Values.service.type }}
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "fullname" . }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8000 to use your application"
-  kubectl port-forward $POD_NAME 8000:{{ .Values.service.externalPort }}
-{{- end }}
-Contact GitHub API Training Shop Blog About
+###################################################
+######   Web was successfully installed!!!   ######
+###################################################
+
+To access the Web Microservice API, please follow the steps below:
+
+1. To get the IP Address for the Web Application, run one the following commands based on your environment:
+  IBM Cloud Container Service:
+  NODE_IP=$(ibmcloud cs workers $YOUR_CLUSTER_NAME | grep -v '^*' | egrep -v "(ID|OK)" | awk '{print $2;}' | head -n1)
+
+  IBM Cloud Private:
+  NODE_IP=$PROXY_NODE_EXTERNAL_IP
+
+  Minikube:
+  NODE_IP=$(minikube ip)
+
+  Others:
+  NODE_IP=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}')
+
+2. To get the Port for the Web Application, run the following command:
+  PORT=$(kubectl --namespace {{ .Release.Namespace }} get service {{ .Release.Name }}-{{ .Chart.Name }} -o jsonpath='{.spec.ports[0].nodePort}')
+
+3. To get the entire URL for the Web Application, run the following command:
+  echo "http://$NODE_IP:$PORT"
+
+4. Open a new browser tab, paste the above URL, and press Enter to view the Bluecompute Web Application.

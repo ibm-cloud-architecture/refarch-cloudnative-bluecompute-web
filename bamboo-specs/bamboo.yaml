@@ -1,0 +1,30 @@
+project:
+  key: BLUE
+  plan:
+    key: BLUEWEB
+    name: Bluecompute Web
+stages:
+  - jobs:
+    - scripts:
+        - '#!/bin/bash'
+        - set -x
+        # Docker build and push
+        - docker build -t ${bamboo.REGISTRY}/${bamboo.K8S_NAMESPACE}/bluecompute-ce-web:${bamboo.buildNumber} .
+        - docker login -u ${bamboo.REGISTRY_USER} -p ${bamboo.REGISTRY_PASSWORD} ${bamboo.REGISTRY}
+        - docker push ${bamboo.REGISTRY}/${bamboo.K8S_NAMESPACE}/bluecompute-ce-web:${bamboo.buildNumber}
+      interpreter: shell
+    - scripts:
+        - '#!/bin/bash'
+        - set -x
+        # Get configuration file from Agent/Host
+        - export KUBECONFIG=${bamboo.K8S_CFG_FILE_PATH}
+        # Get existing deployment
+        - DEPLOYMENT=$(kubectl --namespace=${bamboo.K8S_NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name)
+        - kubectl --namespace=${bamboo.K8S_NAMESPACE} get ${DEPLOYMENT}
+        # If no deployment to update, exit
+        - if [ ${?} -ne "0" ]; then echo 'No deployment to update'; exit 1; fi
+        # Update Deployment's Image
+        - kubectl --namespace=${bamboo.K8S_NAMESPACE} set image ${DEPLOYMENT} web=${bamboo.REGISTRY}/${bamboo.K8S_NAMESPACE}/bluecompute-ce-web:${bamboo.buildNumber}
+        # Check rollout status
+        - kubectl --namespace=${bamboo.K8S_NAMESPACE} rollout status ${DEPLOYMENT}
+      interpreter: shell

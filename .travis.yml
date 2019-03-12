@@ -1,12 +1,90 @@
+sudo: required
 language: node_js
 node_js:
 - "6"
-
-before_install: 
-- npm install
-- npm install -g jshint
-- cd StoreWebApp
-
-script: 
-- jshint app.js
-- jshint routes/
+env:
+  global:
+    - IMAGE_NAME=bluecompute-web
+    - RELEASE_NAME=web
+    - TAG=travis-latest
+    - SERVICE_PORT=8000
+    - MANAGEMENT_PORT=9000
+stages:
+  - local build and test
+  - docker build, deploy, and test
+  - kubernetes build, deploy, and test
+jobs:
+  include:
+    - stage: local build and test
+      before_script:
+      # Go to source directory
+      - cd StoreWebApp
+      # Install dependencies
+      - npm install
+      # Install jshint to check for code linting
+      - npm install -g jshint
+      # Perform linting
+      - jshint app.js
+      - jshint routes/
+      script:
+      # Start Application
+      - npm start &
+      # Wait for the Web app to start accepting connections
+      - sleep 10
+      # Get back to root folder
+      - cd ..
+      # Let the application start
+      - bash scripts/health_check.sh
+      # Run API Test
+      - bash scripts/api_tests.sh 127.0.0.1 ${SERVICE_PORT}
+    - stage: docker build, deploy, and test
+      services:
+      - docker
+      script:
+      # Build Docker image
+      - docker build -t "${IMAGE_NAME}:${TAG}" .
+      # Start Web Container and Connect to local MySQL Service
+      - docker run --net=host --name ${RELEASE_NAME} -d -p ${SERVICE_PORT}:${SERVICE_PORT} -p ${MANAGEMENT_PORT}:${MANAGEMENT_PORT} "${IMAGE_NAME}:${TAG}"
+      # Wait for the Web container to start accepting connections
+      - sleep 10
+      # Check that the Web container is running
+      - docker ps
+      # Check logs to see if it started properly
+      - docker logs web
+      # Let the application start
+      - bash scripts/health_check.sh
+      # Run API Test
+      - bash scripts/api_tests.sh 127.0.0.1 ${SERVICE_PORT}
+    - stage: kubernetes build, deploy, and test
+      services:
+      - docker
+      env:
+      - CHANGE_MINIKUBE_NONE_USER=true
+      - CHART_NAME=web
+      before_script:
+      # Install nsenter, which is needed for minikube to work
+      - bash scripts/install_minikube_and_helm.sh
+      script:
+      # Build Docker image
+      - docker build -t "${IMAGE_NAME}:${TAG}" .
+      # helm lint
+      - helm lint chart/${CHART_NAME}
+      # helm package
+      - helm package chart/${CHART_NAME}
+      # helm install from packaged chart. Use pullPolicy=Never so it uses local docker image
+      - CHART_VERSION="$(cat chart/${CHART_NAME}/Chart.yaml | grep version | awk '{print $2}')"
+      - helm upgrade --install ${RELEASE_NAME} --set image.repository="${IMAGE_NAME}",image.tag="${TAG}",image.pullPolicy=Never ${CHART_NAME}-${CHART_VERSION}.tgz
+      # Get Deployment Name
+      - DEPLOYMENT="deployment/${RELEASE_NAME}-${CHART_NAME}"
+      # Wait for deployment to be ready
+      - kubectl rollout status ${DEPLOYMENT}
+      # Get logs
+      - kubectl logs -f ${DEPLOYMENT} &
+      # Port Forwarding
+      - kubectl port-forward ${DEPLOYMENT} ${SERVICE_PORT} ${MANAGEMENT_PORT} &
+      - echo "Sleeping for 3 seconds while connection is established..."
+      - sleep 3
+      # Let the application start
+      - bash scripts/health_check.sh
+      # Run API Test
+      - bash scripts/api_tests.sh
