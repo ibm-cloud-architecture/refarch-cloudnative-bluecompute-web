@@ -37,6 +37,8 @@ spec:
           mountPath: /app/config
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        securityContext:
+        {{- include "web.securityContext" . | indent 10 }}
       volumes:
       - name: config-volume
         configMap:
