@@ -181,6 +181,13 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
   {{- end -}}
 {{- end -}}
 
+{{/* Web Security Context */}}
+{{- define "web.securityContext" }}
+{{- range $key, $value := .Values.securityContext }}
+{{ $key }}: {{ $value }}
+{{- end }}
+{{- end }}
+
 {{/* Istio Gateway */}}
 {{- define "web.istio.gateway" }}
   {{- if or .Values.global.istio.gateway.name .Values.istio.gateway.enabled .Values.istio.gateway.name }}

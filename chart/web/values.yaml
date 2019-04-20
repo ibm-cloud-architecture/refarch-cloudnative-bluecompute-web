@@ -63,6 +63,11 @@ labels:
   version: v1
   tier: frontend
 
+securityContext:
+  runAsUser: 2000
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+
 global:
   cluster:
     name:
