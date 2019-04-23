@@ -42,7 +42,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" .Values.services.catalog.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
-    {{- printf "catalog-catalog" .Release.Name -}}
+    {{- printf "catalog-catalog" -}}
   {{- end -}}
 {{- end -}}
 
@@ -71,7 +71,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" .Values.services.auth.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
-    {{- printf "auth-auth" .Release.Name -}}
+    {{- printf "auth-auth" -}}
   {{- end -}}
 {{- end -}}
 
@@ -100,7 +100,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" .Values.services.customer.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
-    {{- printf "customer-customer" .Release.Name -}}
+    {{- printf "customer-customer" -}}
   {{- end -}}
 {{- end -}}
 
@@ -129,7 +129,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" .Values.services.orders.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
-    {{- printf "orders-orders" .Release.Name -}}
+    {{- printf "orders-orders" -}}
   {{- end -}}
 {{- end -}}
 
@@ -158,7 +158,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- printf "%s" .Values.services.reviews.host -}}
   {{- else -}}
     {{/* assume one is installed with the release */}}
-    {{- printf "reviews-reviews" .Release.Name -}}
+    {{- printf "reviews-reviews" -}}
   {{- end -}}
 {{- end -}}
 
