@@ -15,6 +15,9 @@ spec:
       - name: {{ .Chart.Name | quote }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
         ports:
         - containerPort: {{ .Values.service.internalPort }}
           protocol: TCP
@@ -32,9 +35,6 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        volumeMounts:
-        - name: config-volume
-          mountPath: /app/config
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         securityContext:
