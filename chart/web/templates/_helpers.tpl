@@ -181,6 +181,14 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
   {{- end -}}
 {{- end -}}
 
+{{/* Web Resources */}}
+{{- define "web.resources" }}
+limits:
+  memory: {{ .Values.resources.limits.memory }}
+requests:
+  memory: {{ .Values.resources.requests.memory }}
+{{- end }}
+
 {{/* Web Security Context */}}
 {{- define "web.securityContext" }}
 {{- range $key, $value := .Values.securityContext }}

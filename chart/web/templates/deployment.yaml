@@ -36,7 +36,7 @@ spec:
           periodSeconds: 20
           failureThreshold: 6
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+        {{- include "web.resources" . | indent 10 }}
         securityContext:
         {{- include "web.securityContext" . | indent 10 }}
       volumes:
