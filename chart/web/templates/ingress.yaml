@@ -11,13 +11,15 @@ metadata:
     {{- include "web.labels" . | indent 4 }}
 spec:
   rules:
-  - host: {{ .Values.ingress.hostname | quote }}
-    http:
+  - http:
       paths:
       - path: {{ .Values.ingress.path }}
         backend:
           serviceName: {{ template "web.fullname" . }}
           servicePort: {{ .Values.service.externalPort }}
+  {{- if .Values.ingress.hostname }}
+    host: .Values.ingress.hostname | quote }}
+  {{- end }}
 {{- if .Values.ingress.enableTLS }}
   tls:
 {{ toYaml .Values.ingress.TLS | indent 2 }}

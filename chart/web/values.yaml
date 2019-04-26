@@ -14,7 +14,7 @@ service:
 
 ingress:
   enabled: false
-  hostname: "web.bluecompute.com"
+  hostname: #web.bluecompute.com
   path: /
   annotations:
     ingress.bluemix.net/redirect-to-https: "True"
