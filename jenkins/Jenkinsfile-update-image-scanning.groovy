@@ -101,6 +101,11 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 """
             }
 
+            stage('Aqua MicroScanner') {
+                def image = registry + namespace + imageName + currentBuild.number
+                aquaMicroscanner imageName: image, notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+            }
+
             stage('Docker - Push Image to Registry') {
                 withCredentials([usernamePassword(credentialsId: registryCredsID,
                                                usernameVariable: 'USERNAME',
@@ -121,10 +126,6 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                     """
                 }
             }
-        }
-        stage('Aqua MicroScanner') {
-            def image = registry + namespace + imageName + currentBuild.number
-            aquaMicroscanner imageName: image, notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
         }
     }
 }
