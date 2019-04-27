@@ -218,12 +218,17 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 }
             }
         }
+    }
 
+    node("aqua") {
         stage('Aqua MicroScanner') {
             def image = registry + namespace + imageName + currentBuild.number
             aquaMicroScanner imageName: image, notCompliesCmd: 'exit 1', onDisallowed: 'fail'
+            aquaMicroscanner imageName: image, notCompliesCmd: '', onDisallowed: 'ignore', outputFormat: 'html'
         }
+    }
 
+    node(podLabel) {
         // Kubernetes
         container(name:'kubernetes', shell:'/bin/bash') {
             stage('Initialize helm') {
