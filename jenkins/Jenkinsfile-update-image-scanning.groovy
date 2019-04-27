@@ -72,7 +72,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
     volumes: [
-        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
         emptyDirVolume(mountPath: '/var/lib/docker', memory: false)
     ],
     containers: [
