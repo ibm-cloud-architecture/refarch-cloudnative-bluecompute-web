@@ -219,7 +219,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
 
         stage('Aqua MicroScanner') {
             def imageName = registry + namespace + imageName + currentBuild.number
-            aquaMicroScanner imageName: imageName notCompliesCmd: 'exit 1', onDisallowed: 'fail'
+            aquaMicroScanner imageName: imageName, notCompliesCmd: 'exit 1', onDisallowed: 'fail'
         }
 
         // Kubernetes
