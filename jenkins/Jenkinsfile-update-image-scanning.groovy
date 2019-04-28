@@ -109,8 +109,9 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
             }
 
             stage('Aqua MicroScanner') {
-                def image = registry + namespace + imageName + currentBuild.number
-                aquaMicroscanner imageName: image, notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+                //def image = registry + namespace + imageName + currentBuild.number
+                //aquaMicroscanner imageName: image, notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+                aquaMicroscanner imageName: "ibmcase/bluecompute-web:0.6.0", notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
             }
 
             stage('Docker - Push Image to Registry') {
