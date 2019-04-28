@@ -87,6 +87,33 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         // Docker
         container(name:'docker', shell:'/bin/bash') {
             stage('Docker - Build Image') {
+                withCredentials([usernamePassword(credentialsId: registryCredsID,
+                                               usernameVariable: 'USERNAME',
+                                               passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    #!/bin/bash
+
+                    # Docker Login
+                    docker login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY}
+
+                    # Get image
+                    if [ "${REGISTRY}" == "docker.io" ]; then
+                        IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    else
+                        IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    fi
+
+                    docker build -t \${IMAGE} .
+                    """
+                }
+            }
+
+            stage('Aqua MicroScanner') {
+                def image = registry + namespace + imageName + currentBuild.number
+                aquaMicroscanner imageName: image, notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+            }
+
+            stage('Docker - Push Image to Registry') {
                 sh """
                 #!/bin/bash
 
@@ -97,34 +124,8 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                     IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
                 fi
 
-                docker build -t \${IMAGE} .
+                docker push \${IMAGE}
                 """
-            }
-
-            stage('Aqua MicroScanner') {
-                def image = registry + namespace + imageName + currentBuild.number
-                aquaMicroscanner imageName: image, notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
-            }
-
-            stage('Docker - Push Image to Registry') {
-                withCredentials([usernamePassword(credentialsId: registryCredsID,
-                                               usernameVariable: 'USERNAME',
-                                               passwordVariable: 'PASSWORD')]) {
-                    sh """
-                    #!/bin/bash
-
-                    # Get image
-                    if [ "${REGISTRY}" == "docker.io" ]; then
-                        IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    else
-                        IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    fi
-
-                    docker login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY}
-
-                    docker push \${IMAGE}
-                    """
-                }
             }
         }
     }
