@@ -71,7 +71,8 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
     volumes: [
-        emptyDirVolume(mountPath: '/var/lib/docker', memory: false)
+        emptyDirVolume(mountPath: '/var/lib/docker', memory: false),
+        hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d')
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6', ttyEnabled: true, command: 'cat'),
@@ -130,7 +131,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
 
         // Docker
         container(name:'docker', shell:'/bin/bash') {
-            stage('Docker - Build Image') {
+            /*stage('Docker - Build Image') {
                 sh """
                 #!/bin/bash
 
@@ -193,7 +194,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 docker kill ${MICROSERVICE_NAME} || true
                 docker rm ${MICROSERVICE_NAME} || true
                 """
-            }
+            }*/
             stage('Docker - Push Image to Registry') {
                 withCredentials([usernamePassword(credentialsId: registryCredsID,
                                                usernameVariable: 'USERNAME',
@@ -210,7 +211,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
 
                     docker login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY}
 
-                    docker push \${IMAGE}
+                    # docker push \${IMAGE}
                     """
                 }
             }
