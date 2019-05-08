@@ -71,8 +71,9 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
     volumes: [
-        emptyDirVolume(mountPath: '/var/lib/docker', memory: false),
-        hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d')
+        configMapVolume(mountPath: '/etc/docker', configMapName: 'docker-config'),
+        emptyDirVolume(mountPath: '/var/lib/docker', memory: false)//,
+        //hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d')
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6', ttyEnabled: true, command: 'cat'),
