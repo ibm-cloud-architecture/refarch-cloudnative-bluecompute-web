@@ -56,7 +56,8 @@ jobs:
       - CHANGE_MINIKUBE_NONE_USER=true
       before_script:
       # Install nsenter, which is needed for minikube to work
-      - bash scripts/install_minikube_and_helm.sh
+      - wget https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/scripts/install_minikube_and_helm.sh && chmod +x install_minikube_and_helm.sh && bash install_minikube_and_helm.sh && rm install_minikube_and_helm.sh
+      # - bash scripts/install_minikube_and_helm.sh
       script:
       # Build Docker image
       - docker build -t "${IMAGE_NAME}:${TAG}" .
@@ -68,6 +69,7 @@ jobs:
       - CHART_VERSION="$(cat chart/web/Chart.yaml | grep version | awk '{print $2}')"
       - helm install --set image.repository=${IMAGE_NAME} --set image.tag=${TAG} --set image.pullPolicy=Never --name web ./chart/web
       # Wait for Web to be ready
+      - kubectl get deployments
       - kubectl get deployments ${RELEASE_NAME}-web -o yaml
       - READY=$(kubectl get deployments ${RELEASE_NAME}-web -o yaml | grep "readyReplicas" | awk '{print $2}')
       - echo $READY
