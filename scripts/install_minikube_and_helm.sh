@@ -1,14 +1,21 @@
 #!/bin/bash
 
+# Install socat, which is neede for port-forwarding
+sudo apt-get update
+sudo apt-get install socat
+
+# Possibly not necessary
 # Install nsenter, which is needed for minikube to work
-bash scripts/install_nsenter.sh
+# bash scripts/install_nsenter.sh
+
 # Download kubectl, which is a requirement for using minikube.
 KUBERNETES_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-echo "$KUBERNETES_VERSION"
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+
 # Download minikube.
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.1.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
-sudo minikube start --vm-driver=none --kubernetes-version=$KUBERNETES_VERSION # --extra-config=kubelet.cgroup-driver=systemd
+# Start minikube
+sudo minikube start --vm-driver=none --kubernetes-version=$KUBERNETES_VERSION
 # Update minikube direcotry permissions
 sudo chown -R travis: /home/travis/.minikube/
 # Fix the kubectl context, as it's often stale.
@@ -18,7 +25,7 @@ minikube ip
 # Wait for Minikube to be up and ready.
 JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
 
-# Download Helm CLI
+# Download helm
 curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && rm get_helm.sh
 # Create Tiller Service Account
 kubectl -n kube-system create sa tiller && kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
