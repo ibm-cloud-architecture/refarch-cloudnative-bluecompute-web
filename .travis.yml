@@ -61,6 +61,8 @@ jobs:
       script:
       # Build Docker image
       - docker build -t "${IMAGE_NAME}:${TAG}" .
+      # Check helm version
+      - helm version # Should be above 2.10 for our Istio files to run
       # helm lint
       - helm lint chart/web
       # helm package

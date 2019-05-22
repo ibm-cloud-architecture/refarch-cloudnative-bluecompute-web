@@ -4,10 +4,6 @@
 sudo apt-get update
 sudo apt-get install socat
 
-# Possibly not necessary
-# Install nsenter, which is needed for minikube to work
-# bash scripts/install_nsenter.sh
-
 # Download kubectl, which is a requirement for using minikube.
 KUBERNETES_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
@@ -26,7 +22,10 @@ minikube ip
 JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
 
 # Download helm
-curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && rm get_helm.sh
+curl https://git.io/get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+# rm get_helm.sh
 # Create Tiller Service Account
 kubectl -n kube-system create sa tiller && kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
 # Install Helm on Minikube
