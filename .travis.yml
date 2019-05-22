@@ -56,9 +56,7 @@ jobs:
       - CHANGE_MINIKUBE_NONE_USER=true
       before_script:
       # Install nsenter, which is needed for minikube to work
-      - echo "Pre install minikube"
       - bash scripts/install_minikube_and_helm.sh
-      - echo "Post install minikube"
       script:
       # Build Docker image
       - docker build -t "${IMAGE_NAME}:${TAG}" .
