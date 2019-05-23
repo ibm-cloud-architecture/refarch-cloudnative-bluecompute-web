@@ -22,7 +22,7 @@ minikube ip
 JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
 
 # Download helm
-curl https://git.io/get_helm.sh
+curl -LO https://git.io/get_helm.sh
 chmod 700 get_helm.sh
 ./get_helm.sh
 # rm get_helm.sh
