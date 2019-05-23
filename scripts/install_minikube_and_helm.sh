@@ -37,7 +37,8 @@ helm version
 
 # Add incubator and bluecompute-charts Helm repos
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-# helm repo add ibmcase-charts https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
+# Add the IBM Cloud Charts helm repos
+helm repo add ibm-charts https://registry.bluemix.net/helm/ibm-charts
 
 # Get cluster info
 kubectl cluster-info
