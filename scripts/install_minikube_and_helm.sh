@@ -32,8 +32,6 @@ kubectl -n kube-system create sa tiller && kubectl create clusterrolebinding til
 helm init --service-account tiller
 # Wait for helm to be ready
 until helm list; do echo "waiting for helm to be ready"; sleep 1; done
-# Then show helm version
-helm version
 
 # Add incubator and bluecompute-charts Helm repos
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator

@@ -1,7 +1,9 @@
+{{ if or .Values.global.istio.enabled .Values.istio.enabled }}
+{{ if and .Values.istio.gateway.enabled }}
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: web-gateway
+  name: bluecompute-web-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
@@ -14,31 +16,5 @@ spec:
       httpsRedirect: false
     hosts:
     - "*"
-  # - port:
-  #     number: 9080
-  #     name: http-liberty
-  #     protocol: HTTP
-  #   hosts:
-  #   - "*"
-  # - port:
-  #     number: 9443
-  #     name: https-liberty
-  #     protocol: HTTPS
-  #   tls:
-  #     mode: PASSTHROUGH # enables HTTPS on this port
-  #     serverCertificate: /etc/certs/root-cert.pem
-  #     privateKey: /etc/certs/key.pem
-  #     caCertificates: /etc/certs/cert-chain.pem
-  #   hosts:
-  #   - "*"
-  # - port:
-  #     number: 443
-  #     name: https
-  #     protocol: HTTPS
-  #   tls:
-  #     mode: MUTUAL # enables HTTPS on this port
-  #     serverCertificate: /etc/certs/root-cert.pem
-  #     privateKey: /etc/certs/key.pem
-  #     caCertificates: /etc/certs/cert-chain.pem
-  #   hosts:
-  #   - "*"
+{{ end }}
+{{ end }}

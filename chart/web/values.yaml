@@ -2,12 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
+
 image:
   #repository: registry.csplab.cloudns.cx/microprofile/bc-web-mp
   repository: ibmcase/bc-web-mp
   #repository: bc-web-mp
   tag: v2.0.0
   pullPolicy: Always
+
 service:
   name: bluecompute-web
   type: NodePort
@@ -15,9 +17,12 @@ service:
   internalPort: 8000
   nodeport:
     port:
+
 ingress:
+  enabled: false
   hostname:
   path: /bluecompute-mp
+
 resources:
   limits:
     cpu: 100m
@@ -25,8 +30,10 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
+
 region:
 clusterName:
+
 services:
   auth:
     host:
@@ -47,10 +54,14 @@ services:
 global:
   bluemix:
     apiKey:
-
     target:
       endpoint:
       org:
       space:
 
     clusterName:
+
+istio:
+  enabled: false
+  gateway:
+    enabled: false
