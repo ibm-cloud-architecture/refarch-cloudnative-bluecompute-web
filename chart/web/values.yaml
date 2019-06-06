@@ -4,10 +4,10 @@
 replicaCount: 1
 image:
   #repository: registry.csplab.cloudns.cx/microprofile/bc-web-mp
-  repository: ibmcase/bc-web-mp
   #repository: bc-web-mp
-  tag: v2.0.0
-  pullPolicy: Always
+  repository: web
+  tag: latest
+  pullPolicy: IfNotPresent
 service:
   name: bluecompute-web
   type: NodePort
