@@ -62,7 +62,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
 
                     podman login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY} --tls-verify=false
 
-                    podman push \${IMAGE}
+                    podman push \${IMAGE} --tls-verify=false
                     """
                 }
             }
