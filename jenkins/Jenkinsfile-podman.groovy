@@ -152,7 +152,13 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                     IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}
                 fi
 
-                NAME="${MICROSERVICE_NAME}"
+                # Helm Parameters
+                if [ "${DEPLOY_NEW_VERSION}" == "true" ]; then
+                    NAME="${MICROSERVICE_NAME}-v${env.BUILD_NUMBER}"
+                    VERSION_LABEL="--set labels.version=v${env.BUILD_NUMBER}"
+                else
+                    NAME="${MICROSERVICE_NAME}"
+                fi
 
                 echo "Installing chart/${MICROSERVICE_NAME} chart with name \${NAME} and waiting for pods to be ready"
 
@@ -183,7 +189,11 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 #!/bin/bash
 
                 # Get deployment
-                QUERY_LABELS="${SERVICE_LABELS}"
+                if [ "${DEPLOY_NEW_VERSION}" == "true" ]; then
+                    QUERY_LABELS="${SERVICE_LABELS},version=v${env.BUILD_NUMBER}"
+                else
+                    QUERY_LABELS="${SERVICE_LABELS}"
+                fi
 
                 DEPLOYMENT=`kubectl --namespace=${NAMESPACE} get deployments -l \${QUERY_LABELS} -o name | head -n 1`
 
