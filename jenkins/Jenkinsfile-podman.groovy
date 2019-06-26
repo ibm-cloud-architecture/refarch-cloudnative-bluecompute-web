@@ -48,9 +48,28 @@ def ordersPort = env.ORDERS_PORT ?: "8084"
 def helmHome = env.HELM_HOME ?: env.JENKINS_HOME + "/.helm"
 
 podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVars: [
+        envVar(key: 'CLUSTER_URL', value: clusterURL),
+        envVar(key: 'CLUSTER_ACCOUNT_ID', value: clusterAccountId),
         envVar(key: 'NAMESPACE', value: namespace),
         envVar(key: 'REGISTRY', value: registry),
         envVar(key: 'IMAGE_NAME', value: imageName),
+        envVar(key: 'SERVICE_LABELS', value: serviceLabels),
+        envVar(key: 'MICROSERVICE_NAME', value: microServiceName),
+        envVar(key: 'MICROSERVICE_PORT', value: servicePort),
+        envVar(key: 'MANAGEMENT_PORT', value: managementPort),
+        envVar(key: 'AUTH_PROTOCOL', value: authProtocol),
+        envVar(key: 'AUTH_HOST', value: authHost),
+        envVar(key: 'AUTH_PORT', value: authPort),
+        envVar(key: 'CATALOG_PROTOCOL', value: catalogProtocol),
+        envVar(key: 'CATALOG_HOST', value: catalogHost),
+        envVar(key: 'CATALOG_PORT', value: catalogPort),
+        envVar(key: 'CUSTOMER_PROTOCOL', value: customerProtocol),
+        envVar(key: 'CUSTOMER_HOST', value: customerHost),
+        envVar(key: 'CUSTOMER_PORT', value: customerPort),
+        envVar(key: 'ORDERS_PROTOCOL', value: ordersProtocol),
+        envVar(key: 'ORDERS_HOST', value: ordersHost),
+        envVar(key: 'ORDERS_PORT', value: ordersPort),
+        envVar(key: 'HELM_HOME', value: helmHome)
     ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6', ttyEnabled: true, command: 'cat'),
