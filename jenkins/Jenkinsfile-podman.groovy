@@ -25,11 +25,6 @@ def microServiceName = env.MICROSERVICE_NAME ?: "web"
 def servicePort = env.MICROSERVICE_PORT ?: "8000"
 def managementPort = env.MANAGEMENT_PORT ?: "9000"
 
-// Pod Environment Variables
-def namespace = env.NAMESPACE ?: "default"
-def registry = env.REGISTRY ?: "docker.io"
-def imageName = env.IMAGE_NAME ?: "ibmcase/bluecompute-web"
-
 // Configuration of services that web app interacts with
 def authProtocol = env.AUTH_PROTOCOL ?: "http"
 def authHost = env.AUTH_HOST ?: "auth"
@@ -154,6 +149,18 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                     --set image.repository=\${IMAGE} \
                     --set image.tag=${env.BUILD_NUMBER} \
                     --set service.externalPort=${MICROSERVICE_PORT} \
+                    --set services.auth.protocol=${AUTH_PROTOCOL} \
+                    --set services.auth.host=${AUTH_HOST} \
+                    --set services.auth.port=${AUTH_PORT} \
+                    --set services.catalog.protocol=${CATALOG_PROTOCOL} \
+                    --set services.catalog.host=${CATALOG_HOST} \
+                    --set services.catalog.port=${CATALOG_PORT} \
+                    --set services.customer.protocol=${CUSTOMER_PROTOCOL} \
+                    --set services.customer.host=${CUSTOMER_HOST} \
+                    --set services.customer.port=${CUSTOMER_PORT} \
+                    --set services.orders.protocol=${ORDERS_PROTOCOL} \
+                    --set services.orders.host=${ORDERS_HOST} \
+                    --set services.orders.port=${ORDERS_PORT} \
                     chart/${MICROSERVICE_NAME} --wait ${TLS}
                 set -x
                 """
