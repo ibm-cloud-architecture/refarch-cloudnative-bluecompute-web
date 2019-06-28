@@ -201,9 +201,6 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                     sh """
                     #!/bin/bash
 
-                    # Test
-                    cp /docker-config
-
                     # Get image
                     if [ "${REGISTRY}" == "docker.io" ]; then
                         IMAGE=${IMAGE_NAME}:${env.BUILD_NUMBER}
