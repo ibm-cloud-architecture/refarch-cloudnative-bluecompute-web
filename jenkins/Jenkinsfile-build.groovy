@@ -70,23 +70,19 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
         envVar(key: 'ORDERS_PORT', value: ordersPort),
         envVar(key: 'HELM_HOME', value: helmHome)
     ],
-    /*volumes: [
-        configMapVolume(mountPath: '/docker-config', configMapName: 'docker-config'),
-        emptyDirVolume(mountPath: '/etc/docker', memory: false),
-        emptyDirVolume(mountPath: '/var/lib/docker', memory: false)//,
-        //hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d')
-    ],*/
+    volumes: [
+        emptyDirVolume(mountPath: '/var/lib/docker', memory: false)
+    ],
     containers: [
         containerTemplate(name: 'nodejs', image: 'ibmcase/nodejs:6', ttyEnabled: true, command: 'cat'),
-        //containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', privileged: true)
-        containerTemplate(name: 'podman', image: 'ibmcase/podman:ubuntu-16.04', ttyEnabled: true, command: 'cat', privileged: true)
+        containerTemplate(name: 'docker', image: 'ibmcase/docker:18.09-dind', privileged: true)
   ]) {
 
     node(podLabel) {
         checkout scm
 
         // Local
-        /*container(name:'nodejs', shell:'/bin/bash') {
+        container(name:'nodejs', shell:'/bin/bash') {
             stage('Local - Build and Unit Test') {
                 sh """
                 #!/bin/bash
@@ -130,10 +126,10 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 kill \${PID}
                 """
             }
-        }*/
+        }
 
         // Docker
-        container(name:'podman', shell:'/bin/bash') {
+        container(name:'docker', shell:'/bin/bash') {
             stage('Docker - Build Image') {
                 sh """
                 #!/bin/bash
@@ -145,7 +141,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                     IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
                 fi
 
-                podman build -t \${IMAGE} .
+                docker build -t \${IMAGE} .
                 """
             }
 
@@ -161,13 +157,13 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 fi
 
                 # Kill Container if it already exists
-                podman kill ${MICROSERVICE_NAME} || true
-                podman rm ${MICROSERVICE_NAME} || true
+                docker kill ${MICROSERVICE_NAME} || true
+                docker rm ${MICROSERVICE_NAME} || true
 
                 # Start Container
                 echo "Starting ${MICROSERVICE_NAME} container"
                 set +x
-                podman run --name ${MICROSERVICE_NAME} -d \
+                docker run --name ${MICROSERVICE_NAME} -d \
                     -p ${MICROSERVICE_PORT}:${MICROSERVICE_PORT} \
                     -p ${MANAGEMENT_PORT}:${MANAGEMENT_PORT} \
                     -e SERVICE_PORT=${MICROSERVICE_PORT} \
@@ -175,14 +171,14 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 set -x
 
                 # Check that application started successfully
-                podman ps
+                docker ps
 
                 # Check the logs
-                podman logs -f ${MICROSERVICE_NAME} &
+                docker logs -f ${MICROSERVICE_NAME} &
                 PID=`echo \$!`
 
                 # Get the container IP Address
-                CONTAINER_IP=`podman inspect ${MICROSERVICE_NAME} | jq -r '.[0].NetworkSettings.IPAddress'`
+                CONTAINER_IP=`docker inspect ${MICROSERVICE_NAME} | jq -r '.[0].NetworkSettings.IPAddress'`
 
                 # Let the application start
                 bash scripts/health_check.sh "http://\${CONTAINER_IP}:${MANAGEMENT_PORT}"
@@ -194,8 +190,8 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                 kill \${PID}
 
                 # Kill Container
-                podman kill ${MICROSERVICE_NAME} || true
-                podman rm ${MICROSERVICE_NAME} || true
+                docker kill ${MICROSERVICE_NAME} || true
+                docker rm ${MICROSERVICE_NAME} || true
                 """
             }
             stage('Docker - Push Image to Registry') {
@@ -215,9 +211,9 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, envVa
                         IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${env.BUILD_NUMBER}
                     fi
 
-                    podman login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY} --tls-verify=false
+                    docker login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY}
 
-                    podman push \${IMAGE}
+                    docker push \${IMAGE}
                     """
                 }
             }
