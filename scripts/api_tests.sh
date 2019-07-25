@@ -8,26 +8,26 @@ function parse_arguments() {
 	fi
 
 	if [ -z "${MICROSERVICE_HOST}" ]; then
-		echo "MICROSERVICE_HOST not set. Using default key";
+		echo "MICROSERVICE_HOST not set. Using default value";
 		MICROSERVICE_HOST=127.0.0.1;
 	fi
 
 	# MICROSERVICE_PORT
-	if [ -z "${MICROSERVICE_PORT}" ]; then
-		echo "MICROSERVICE_PORT not set. Using parameter \"$2\"";
-		MICROSERVICE_PORT=$2;
+	if [ -z "${MICROSERVICE_PATH}" ]; then
+		echo "MICROSERVICE_PATH not set. Using parameter \"$2\"";
+		MICROSERVICE_PATH=$2;
 	fi
 
-	if [ -z "${MICROSERVICE_PORT}" ]; then
-		echo "MICROSERVICE_PORT not set. Using default key";
-		MICROSERVICE_PORT=8000;
+	if [ -z "${MICROSERVICE_PATH}" ]; then
+		echo "MICROSERVICE_PATH not set. Using default value";
+		MICROSERVICE_PATH=bluecompute-mp;
 	fi
 
-	echo "Using http://${MICROSERVICE_HOST}:${MICROSERVICE_PORT}"
+	echo "Using http://${MICROSERVICE_HOST}/${MICROSERVICE_PATH}"
 }
 
 function get_home_page() {
-	CURL=$(curl --write-out %{http_code} --silent --output /dev/null --max-time 5 -X GET http://${MICROSERVICE_HOST}:${MICROSERVICE_PORT});
+	CURL=$(curl --insecure --write-out %{http_code} --silent --output /dev/null --max-time 5 -X GET https://${MICROSERVICE_HOST}/${MICROSERVICE_PATH});
 	echo "get_home_page status code: \"${CURL}\""
 
 	# Check for 201 Status Code
@@ -40,7 +40,7 @@ function get_home_page() {
 }
 
 function home_page_has_title() {
-	CURL=$(curl --silent http://${MICROSERVICE_HOST}:${MICROSERVICE_PORT} | grep "IBM Cloud Architecture");
+	CURL=$(curl --insecure --silent https://${MICROSERVICE_HOST}/${MICROSERVICE_PATH} | grep "IBM Cloud Architecture");
 	SUCCESS=$?;
 
 	# Check for 200 Status Code
