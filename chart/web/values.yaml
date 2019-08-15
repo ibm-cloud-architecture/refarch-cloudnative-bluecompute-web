@@ -11,11 +11,12 @@ image:
 service:
   name: bluecompute-web
   type: NodePort
-  externalPort: 80
+  servicePort: 80
   internalPort: 8000
   nodeport:
     port:
 ingress:
+  enabled: false
   hostname:
   path: /bluecompute-mp
 resources:
@@ -54,3 +55,9 @@ global:
       space:
 
     clusterName:
+
+istio:
+  enabled: false
+  gateway:
+    enabled: false
+  mTLS: ISTIO_MUTUAL
