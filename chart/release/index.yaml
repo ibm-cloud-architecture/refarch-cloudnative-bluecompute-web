@@ -2,7 +2,18 @@ apiVersion: v1
 entries:
   web:
   - apiVersion: v1
-    created: "2019-08-13T10:44:22.031797-05:00"
+    created: "2019-08-16T11:18:44.830136-05:00"
+    description: BlueCompute Web BFF app
+    digest: 1730ad0ca861f6569cad58be5d206c4372444a073cf629ef0032f7032279859c
+    home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
+    name: web
+    sources:
+    - https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/microprofile
+    urls:
+    - web-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v1
+    created: "2019-08-16T11:18:44.829764-05:00"
     description: BlueCompute Web BFF app
     digest: 32962aaec0632529896fcd2a8321e49b1ef48d6bc84127e9d08082297c643a2b
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -12,4 +23,4 @@ entries:
     urls:
     - web-0.0.1.tgz
     version: 0.0.1
-generated: "2019-08-13T10:44:22.029424-05:00"
+generated: "2019-08-16T11:18:44.828673-05:00"
