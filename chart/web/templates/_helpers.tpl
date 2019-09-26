@@ -1,3 +1,16 @@
+{{- define "web.labels" }}
+{{- range $key, $value := .Values.labels }}
+{{ $key }}: {{ $value | quote }}
+{{- end }}
+app.kubernetes.io/name: {{ .Release.Name }}-web
+helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+heritage: {{ .Release.Service | quote }}
+release: {{ .Release.Name | quote }}
+chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+{{- end }}
+
 {{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.

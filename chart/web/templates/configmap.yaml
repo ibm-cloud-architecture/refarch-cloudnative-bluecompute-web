@@ -2,12 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    implementation: microprofile
-    release: {{ .Release.Name }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    {{- include "web.labels" . | indent 4 }}
   name: {{ .Release.Name }}-{{ .Chart.Name }}-config
   namespace: {{ .Release.Namespace }}
 data:
