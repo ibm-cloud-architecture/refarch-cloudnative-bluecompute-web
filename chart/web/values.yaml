@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   #repository: registry.csplab.cloudns.cx/microprofile/bc-web-mp
   #repository: bc-web-mp
-  repository: web
+  repository: ibmcase/bc-web-mp
   tag: latest
   pullPolicy: IfNotPresent
 service:
