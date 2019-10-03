@@ -4,12 +4,7 @@ metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    implementation: microprofile
-    release: {{ .Release.Name }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    {{- include "web.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -23,8 +18,4 @@ spec:
 {{ end }}
 {{ end }}
   selector:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    release: {{ .Release.Name }}
-    implementation: microprofile
+    {{- include "web.labels" . | indent 4 }}

@@ -1,24 +1,18 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   labels:
-    app: bluecompute
-    micro: web-bff
-    tier: frontend
-    implementation: microprofile
-    release: {{ .Release.Name }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    {{- include "web.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "web.labels" . | indent 6 }}
   template:
     metadata:
       labels:
-        app: bluecompute
-        micro: web-bff
-        tier: frontend
-        release: {{ .Release.Name }}
-        implementation: microprofile
+        {{- include "web.labels" . | indent 8 }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
