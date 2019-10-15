@@ -80,9 +80,9 @@ label {
 }
 
 a.pure-button-primary {
-  background: #3d70b2;;
+  background: #3d70b2;
   /*color: #1f8dd6;*/
-  color: #white;
+  color: white;
   border-radius: 5px;
   font-size: 120%;
 }

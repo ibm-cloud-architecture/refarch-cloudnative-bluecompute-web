@@ -6,7 +6,6 @@ image:
   #repository: registry.csplab.cloudns.cx/microprofile/bc-web-mp
   #repository: bc-web-mp
   repository: ibmcase/bc-web-mp
-  tag: latest
   pullPolicy: IfNotPresent
 service:
   name: bluecompute-web
@@ -44,6 +43,14 @@ services:
   reviews:
     host:
     port:
+
+versions:
+  - name: web-stable
+    image:
+      tag: latest
+  - name: web-canary
+    image:
+      tag: canary
 
 global:
   bluemix:
