@@ -1,21 +1,27 @@
+{{- range .Values.versions }}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ $.Release.Name }}-{{ .name }}
+  namespace: {{ $.Release.Namespace }}
   labels:
-    {{- include "web.labels" . | indent 4 }}
+    {{- include "web.labels" $ | indent 4 }}
+    version: {{ .image.tag }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ $.Values.service.type }}
   ports:
   - name: http
     protocol: TCP
-    port: {{ .Values.service.servicePort }}
-    targetPort: {{ .Values.service.internalPort }}
-{{ if eq .Values.service.type "NodePort" }}
-{{ if .Values.service.nodeport.port }}
-    nodePort: {{ .Values.service.nodeport.port }}
+    port: {{ $.Values.service.servicePort }}
+    targetPort: {{ $.Values.service.internalPort }}
+{{ if eq $.Values.service.type "NodePort" }}
+{{ if $.Values.service.nodeport.port }}
+    nodePort: {{ $.Values.service.nodeport.port }}
 {{ end }}
 {{ end }}
   selector:
-    {{- include "web.labels" . | indent 4 }}
+    {{- include "web.labels" $ | indent 4 }}
+    version: {{ .image.tag }}
+
+{{ end }}

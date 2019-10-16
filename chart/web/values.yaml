@@ -45,7 +45,7 @@ services:
     port:
 
 versions:
-  - name: web-stable
+  - name: web
     image:
       tag: latest
   - name: web-canary

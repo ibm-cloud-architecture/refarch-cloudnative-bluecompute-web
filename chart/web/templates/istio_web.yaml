@@ -34,8 +34,6 @@ spec:
       httpsRedirect: false
     hosts:
     - "*"
-{{ end }}
+{{ end }} # istio gateway enablement
 
-{{ end }}
-
----
+{{ end }} # istio enablement
