@@ -12,7 +12,6 @@ spec:
   selector:
     matchLabels:
       {{- include "web.labels" $ | indent 6 }}
-      version: {{ .image.tag }}
   template:
     metadata:
       labels:
