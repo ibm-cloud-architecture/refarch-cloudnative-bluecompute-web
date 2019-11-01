@@ -101,7 +101,7 @@ To deploy it on Minikube, please follow the instructions provided [here](https:/
 
 ### Prequisite: [Install Istio](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/docs/istio.md#setting-up-your-istio-environment)
 
-To run the web application properly with Istio, you must first enable Istio from `values.yaml`. Change the value of `istio.enabled` and `istio.gateway.enabled` to true in `values.yaml`, or alternatively use the `--set` flag with `helm install` to set the values for the helm deployment.
+To run the web application properly with Istio, you must first enable Istio from `values.yaml`. Change the value of `istio.enabled` and `istio.gateway.enabled` to `true` in `values.yaml`, or alternatively use the `--set` flag with `helm install` to set the values for the helm deployment.
 
 ```
 helm install --name=web --set istio.enabled=true,istio.gateway.enabled=true chart/web 
