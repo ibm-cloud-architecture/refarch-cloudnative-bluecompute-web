@@ -1,25 +1,29 @@
+{{- range .Values.versions }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ $.Release.Name }}-{{ .name }}
   labels:
-    {{- include "web.labels" . | indent 4 }}
+    {{- include "web.labels" $ | indent 4 }}
+    version: {{ .image.tag }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ $.Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "web.labels" . | indent 6 }}
+      {{- include "web.labels" $ | indent 6 }}
   template:
     metadata:
       labels:
-        {{- include "web.labels" . | indent 8 }}
+        {{- include "web.labels" $ | indent 8 }}
+        version: {{ .image.tag }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }} 
+      - name: {{ .name }}
+        image: "{{ $.Values.image.repository }}:{{ .image.tag }}"
+        imagePullPolicy: {{ $.Values.image.pullPolicy }} 
         ports:
-        - containerPort: {{ .Values.service.internalPort }}
+        - containerPort: {{ $.Values.service.internalPort }}
           protocol: TCP
         volumeMounts:
         - name: config-volume
@@ -27,9 +31,10 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: {{ .Release.Name }}-{{ .Chart.Name }}-config
+          name: {{ $.Release.Name }}-{{ $.Chart.Name }}-config
           items:
           - key: checks
             path: checks
           - key: default.json
             path: default.json
+{{ end }}

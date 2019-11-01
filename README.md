@@ -43,8 +43,6 @@ To deploy it on Minikube, please follow the instructions provided [here](https:/
 
 ## Running the Web Application Locally
 
-To deploy the Web application locally...
-
 #### Running the application on Minikube
 
 1. Run the helm chart as below.
@@ -98,3 +96,29 @@ To deploy the Web application locally...
 	<p align="center">
 	    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
 	</p>
+
+## Running the Web Application with Istio
+
+### Prequisite: [Install Istio](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/docs/istio.md#setting-up-your-istio-environment)
+
+To run the web application properly with Istio, you must first enable Istio from `values.yaml`. Change the value of `istio.enabled` and `istio.gateway.enabled` to `true` in `values.yaml`, or alternatively use the `--set` flag with `helm install` to set the values for the helm deployment.
+
+```
+helm install --name=web --set istio.enabled=true,istio.gateway.enabled=true chart/web 
+```
+
+With Istio enabled, we can access the web application through the Istio ingress gateway. To find your Istio gateway port, run
+```
+kubectl get svc istio-ingressgateway -n istio-system
+```
+and look for the port mapped to 80, which should usually default to 31380. Use this together with your host IP (minikube ip or server ip).
+
+### Traffic Routing
+
+When accessing the web application through the Istio gateway, try refreshing the page a few times. You should notice two different versions of the page with different color banners.
+
+The traffic routing setup in the VirtualService in [`istio_web.yaml`]() splits the traffic 50/50 between the `latest` and `canary` version of the web application when accessed through the Istio ingress gateway. These weights can be modified in the VirtualService. 
+
+Alternatively, you can target certain browsers for a specified version of the web application by using a match rule on user-agent headers (commented out in `istio_web.yaml`).
+
+These are just a couple of examples for traffic routing using chosen weights or browsers. Many other methods of traffic routing may be applied, such as based on user identity, permissions, URL, or anything found in HTTP request headers.
