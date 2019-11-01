@@ -7,7 +7,8 @@ env:
   global:
     - IMAGE_NAME=bluecompute-web
     - RELEASE_NAME=web
-    - TAG=travis-latest
+    - TAG1=latest
+    - TAG2=canary
 stages:
   - local build and test
   - docker build, deploy, and test
@@ -39,9 +40,9 @@ jobs:
       - docker
       script:
       # Build Docker image
-      - docker build -t "${IMAGE_NAME}:${TAG}" .
+      - docker build -t "${IMAGE_NAME}:${TAG1}" .
       # Start Web Container and Connect to local MySQL Service
-      - docker run --net=host --name web -d -p 8000:8000 "${IMAGE_NAME}:${TAG}"
+      - docker run --net=host --name web -d -p 8000:8000 "${IMAGE_NAME}:${TAG1}"
       # Wait for the Web container to start accepting connections
       - sleep 10
       # Check that the Web container is running
@@ -61,15 +62,16 @@ jobs:
       - chmod +x install_minikube_and_helm.sh
       - bash install_minikube_and_helm.sh
       script:
-      # Build Docker image
-      - docker build -t "${IMAGE_NAME}:${TAG}" .
+      # Build Docker images
+      - docker build -t "${IMAGE_NAME}:${TAG1}" .
+      - docker build -t "${IMAGE_NAME}:${TAG2}" .
       # helm lint
       - helm lint chart/web
       # helm package
       - helm package chart/web
       # helm install Web from packaged chart. Use pullPolicy=Never so it uses local docker image
       - CHART_VERSION="$(cat chart/web/Chart.yaml | grep version | awk '{print $2}')"
-      - helm install --set image.repository=${IMAGE_NAME} --set image.tag=${TAG} --set image.pullPolicy=Never --name web ./chart/web
+      - helm install --set image.repository=${IMAGE_NAME} --set image.pullPolicy=Never --name web ./chart/web
       # Wait for Web to be ready
       - kubectl get deployments ${RELEASE_NAME}-web -o yaml
       - READY=$(kubectl get deployments ${RELEASE_NAME}-web -o yaml | grep "readyReplicas" | awk '{print $2}')
