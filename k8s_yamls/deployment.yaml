@@ -4,7 +4,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: web
-  labels:    
+  labels:
     app: "web"
     tier: "frontend"
     version: "v1"
@@ -15,7 +15,7 @@ spec:
   replicas: 1
   template:
     metadata:
-      labels:        
+      labels:
         app: "web"
         tier: "frontend"
         version: "v1"
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: "web"
-        image: "ibmcase/bluecompute-web:0.6.0"
+        image: __IMAGE__
         imagePullPolicy: "Always"
         volumeMounts:
         - name: config-volume
@@ -47,12 +47,12 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        resources:          
+        resources:
           limits:
             memory: 128Mi
           requests:
             memory: 128Mi
-        securityContext:          
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
